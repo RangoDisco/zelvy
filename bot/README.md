@@ -9,6 +9,6 @@ Works as follows, every I should:
 3. Burn at least 1000kcal.
 4. Eat at most 2100kcal.
 5. Drink at least 2L of water.
-
+32
 If one of these tasks is not completed, the bot will @ a random person on my discord server and I will have to pay him
 5€.
