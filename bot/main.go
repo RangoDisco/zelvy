@@ -1,14 +1,36 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"io"
 	"log"
+	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"time"
 )
+
+type Metrics struct {
+	ID           string    `json:"id"`
+	Date         string    `json:"date"`
+	Steps        int       `json:"steps"`
+	KcalBurned   int       `json:"kcalBurned"`
+	KcalConsumed int       `json:"kcalConsumed"`
+	Workouts     []Workout `json:"workouts"`
+}
+
+type Workout struct {
+	ID           string `json:"id"`
+	MetricsID    string `json:"metricsId"`
+	Name         string `json:"name"`
+	Duration     int    `json:"duration"`
+	KcalBurned   int    `json:"kcalBurned"`
+	ActivityType string `json:"activityType"`
+}
 
 // Bot parameters
 var (
@@ -32,8 +54,6 @@ func init() {
 		os.Exit(1)
 	}
 }
-
-// Register commands
 
 func checkErr(e error) {
 	if e != nil {
@@ -86,7 +106,7 @@ func main() {
 	ticket := time.NewTicker(1 * time.Minute)
 	go func() {
 		for range ticket.C {
-			sendScheduleMessage(dg, ChannelID, "Super 123")
+			sendScheduleMessage(dg, ChannelID)
 		}
 	}()
 
@@ -100,8 +120,34 @@ func main() {
 	<-c
 }
 
-func sendScheduleMessage(s *discordgo.Session, channelID, message string) {
-	_, err := s.ChannelMessageSend(channelID, message)
+func sendScheduleMessage(s *discordgo.Session, channelID string) {
+	// First fetch today's metrics
+	res, err := http.Get("http://localhost:8080/api/metrics/today")
+	checkErr(err)
+
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(res.Body)
+
+	if res.StatusCode != http.StatusOK {
+		log.Fatal("Failed to get metrics")
+	}
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		log.Fatalf("error reading response body: %v", err)
+	}
+
+	// Unmarshal response body to Metrics struct
+	var metrics Metrics
+	if err := json.Unmarshal(body, &metrics); err != nil {
+		log.Fatalf("error unmarshalling response body: %v", err)
+	}
+
+	_, err = s.ChannelMessageSend(channelID, strconv.Itoa(metrics.Steps))
 	checkErr(err)
 
 }
