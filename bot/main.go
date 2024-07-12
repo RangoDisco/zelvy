@@ -11,7 +11,6 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
-	"time"
 )
 
 type Metrics struct {
@@ -103,14 +102,16 @@ func main() {
 	}(dg)
 
 	// Start a ticket to send a message every minute
-	ticket := time.NewTicker(1 * time.Minute)
-	go func() {
-		for range ticket.C {
-			sendScheduleMessage(dg, ChannelID)
-		}
-	}()
+	//ticket := time.NewTicker(1 * time.Minute)
+	//go func() {
+	//	for range ticket.C {
+	//		sendScheduleMessage(dg, ChannelID)
+	//	}
+	//}()
+	//
+	//defer ticket.Stop()
 
-	defer ticket.Stop()
+	sendScheduleMessage(dg, ChannelID)
 
 	// Keep the bot running
 	fmt.Println("Running...")
@@ -147,7 +148,33 @@ func sendScheduleMessage(s *discordgo.Session, channelID string) {
 		log.Fatalf("error unmarshalling response body: %v", err)
 	}
 
-	_, err = s.ChannelMessageSend(channelID, strconv.Itoa(metrics.Steps))
+	// Build message
+	embed := createEmbedMessage(metrics)
+
+	_, err = s.ChannelMessageSendEmbed(channelID, embed)
 	checkErr(err)
 
+}
+
+func createEmbedMessage(metrics Metrics) *discordgo.MessageEmbed {
+
+	embed := NewEmbed().
+		SetTitle("Est-ce que c'est ok aujourd'hui ?").
+		SetDescription("Voici les métriques du jour").
+		AddField("Nombre de pas", strconv.Itoa(metrics.Steps)).
+		AddField("Calories consomées", appendStatus(metrics.KcalConsumed, 2100)).
+		AddField("Calories brulées", appendStatus(metrics.KcalBurned, 1000))
+
+	for _, workout := range metrics.Workouts {
+		embed.AddField(workout.Name, strconv.Itoa(workout.Duration)+" min")
+	}
+
+	return embed.MessageEmbed
+}
+
+func appendStatus(value int, threshold int) string {
+	if value >= threshold {
+		return strconv.Itoa(value) + "/" + strconv.Itoa(threshold) + " :white_check_mark:"
+	}
+	return strconv.Itoa(value) + "/" + strconv.Itoa(threshold) + " :x:"
 }
