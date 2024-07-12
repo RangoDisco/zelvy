@@ -2,12 +2,28 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
 	"net/http"
 	"rangodisco.eu/zelby-server/models"
+	"time"
 )
+
+type WorkoutData struct {
+	KcalBurned   int    `json:"kcalBurned"`
+	ActivityType string `json:"activityType"`
+	Name         string `json:"name"`
+	Duration     int    `json:"duration"`
+}
+
+type RequestBody struct {
+	KcalBurned   int           `json:"kcalBurned"`
+	Steps        int           `json:"steps"`
+	Workouts     []WorkoutData `json:"workouts"`
+	KcalConsumed int           `json:"kcalConsumed"`
+}
 
 func setupDb() *gorm.DB {
 	// Open database connection
@@ -28,7 +44,7 @@ func setupDb() *gorm.DB {
 func main() {
 
 	// Setup database
-	_ = setupDb()
+	db := setupDb()
 
 	// Start gin server
 	r := gin.Default()
@@ -38,6 +54,47 @@ func main() {
 			"message": "pong",
 		})
 	})
+
+	r.POST("/api/send-metrics", func(c *gin.Context) {
+		// Parse body
+		var body RequestBody
+		if err := c.ShouldBindJSON(&body); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		// Convert to models
+		metrics := models.Metrics{
+			ID:           uuid.New(),
+			Date:         time.Now(),
+			Steps:        body.Steps,
+			KcalBurned:   body.KcalBurned,
+			KcalConsumed: body.KcalConsumed,
+		}
+
+		for _, w := range body.Workouts {
+			workout := models.Workout{
+				ID:           uuid.New(),
+				MetricsRefer: metrics.ID,
+				KcalBurned:   w.KcalBurned,
+				ActivityType: w.ActivityType,
+				Name:         w.Name,
+				Duration:     w.Duration,
+			}
+			metrics.Workouts = append(metrics.Workouts, workout)
+		}
+
+		// Save metrics and workouts
+		if err := db.Create(&metrics).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Metrics saved successfully!"})
+
+	})
+
+	// Run server
 	err := r.Run()
 	if err != nil {
 		return
