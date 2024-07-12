@@ -9,7 +9,7 @@ type Workout struct {
 	ID           uuid.UUID `gorm:"type:uuid;primary_key"`
 	Name         string
 	KcalBurned   int
-	Type         string
+	ActivityType string
 	Duration     int
 	MetricsRefer uuid.UUID
 }
