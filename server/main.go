@@ -49,13 +49,24 @@ func main() {
 	// Start gin server
 	r := gin.Default()
 
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
+	r.GET("/api/metrics/today", func(c *gin.Context) {
+		var metrics models.Metrics
+
+		// Get today's date
+		sod := time.Now().Truncate(24 * time.Hour)
+		eod := sod.Add(24 * time.Hour)
+
+		// Query metrics from today
+		if err := db.Where("date >= ? AND date < ?", sod, eod).Preload("Workouts").Find(&metrics).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"metrics": metrics})
+
 	})
 
-	r.POST("/api/send-metrics", func(c *gin.Context) {
+	r.POST("/api/metrics", func(c *gin.Context) {
 		// Parse body
 		var body RequestBody
 		if err := c.ShouldBindJSON(&body); err != nil {
