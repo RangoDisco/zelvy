@@ -62,7 +62,7 @@ func main() {
 			return
 		}
 
-		c.JSON(http.StatusOK, gin.H{"metrics": metrics})
+		c.JSON(http.StatusOK, metrics)
 
 	})
 

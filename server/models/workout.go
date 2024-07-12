@@ -7,10 +7,10 @@ import (
 
 type Workout struct {
 	ID           uuid.UUID `gorm:"type:uuid;primary_key"`
-	Name         string
-	KcalBurned   int
-	ActivityType string
-	Duration     int
+	Name         string    `json:"name"`
+	KcalBurned   int       `json:"kcalBurned"`
+	ActivityType string    `json:"activityType"`
+	Duration     int       `json:"duration"`
 	MetricsRefer uuid.UUID
 }
 

@@ -8,10 +8,10 @@ import (
 
 type Metrics struct {
 	ID           uuid.UUID `gorm:"type:uuid;primary_key"`
-	Date         time.Time
-	Steps        int
-	KcalBurned   int
-	KcalConsumed int
+	Date         time.Time `json:"date"`
+	Steps        int       `json:"steps"`
+	KcalBurned   int       `json:"kcalBurned"`
+	KcalConsumed int       `json:"kcalConsumed"`
 	Workouts     []Workout `gorm:"foreignKey:MetricsRefer"`
 }
 
