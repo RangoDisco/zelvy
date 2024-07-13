@@ -164,7 +164,6 @@ func compareMetricsWithGoals(metrics models.Metrics, goals []models.Goal) []Metr
 			metric = populateWorkoutMetric(duration, g.Value, "Durée supplémentaire", true)
 		}
 
-		metric.Success = helpers.IsMetricSuccessful(metric.Value, g.Value, true)
 		comparedMetrics = append(comparedMetrics, metric)
 	}
 

@@ -5,31 +5,15 @@ import (
 	"flag"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"github.com/joho/godotenv"
+	"github.com/rangodisco/zelby/bot/helpers"
+	"github.com/rangodisco/zelby/bot/helpers/message"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
 )
-
-type Metrics struct {
-	ID           string    `json:"id"`
-	Date         string    `json:"date"`
-	Steps        int       `json:"steps"`
-	KcalBurned   int       `json:"kcalBurned"`
-	KcalConsumed int       `json:"kcalConsumed"`
-	Workouts     []Workout `json:"workouts"`
-}
-
-type Workout struct {
-	ID           string `json:"id"`
-	MetricsID    string `json:"metricsId"`
-	Name         string `json:"name"`
-	Duration     int    `json:"duration"`
-	KcalBurned   int    `json:"kcalBurned"`
-	ActivityType string `json:"activityType"`
-}
 
 // Bot parameters
 var (
@@ -62,7 +46,13 @@ func checkErr(e error) {
 
 func main() {
 
-	// Instantiate new Discord session
+	// Init env
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
+	// Init new Discord session
 	dg, err := discordgo.New("Bot " + Token)
 	checkErr(err)
 
@@ -111,7 +101,7 @@ func main() {
 	//
 	//defer ticket.Stop()
 
-	sendScheduleMessage(dg, ChannelID)
+	sendScheduleMessage(dg)
 
 	// Keep the bot running
 	fmt.Println("Running...")
@@ -121,7 +111,7 @@ func main() {
 	<-c
 }
 
-func sendScheduleMessage(s *discordgo.Session, channelID string) {
+func sendScheduleMessage(s *discordgo.Session) {
 	// First fetch today's routes
 	res, err := http.Get("http://localhost:8080/api/metrics/today")
 	checkErr(err)
@@ -143,42 +133,28 @@ func sendScheduleMessage(s *discordgo.Session, channelID string) {
 	}
 
 	// Unmarshal response body to Metrics struct
-	var metrics Metrics
+	var metrics message.Metrics
 	if err := json.Unmarshal(body, &metrics); err != nil {
 		log.Fatalf("error unmarshalling response body: %v", err)
 	}
 
-	// Build message
-	embed := createEmbedMessage(metrics)
+	// Pick a winner
+	winner := helpers.PickWinner(s)
 
-	_, err = s.ChannelMessageSendEmbed(channelID, embed)
-	checkErr(err)
+	// Calculate results
+	//isSuccess := helpers.IsSuccess(metrics.Metrics)
+	isSuccess := true
 
-}
+	// Create thread
+	thread := message.CreateThread(s, ChannelID, isSuccess)
 
-//func compareMetricsWithGoals(routes Metrics, goals []Goal) {
-//
-//}
+	// Send first stats message
+	message.SendRecap(s, thread.ID, metrics)
 
-func createEmbedMessage(metrics Metrics) *discordgo.MessageEmbed {
+	// Send workout details
+	message.SendWorkoutsDetails(s, thread.ID, metrics)
 
-	embed := NewEmbed().
-		SetTitle("Est-ce que c'est ok aujourd'hui ?").
-		SetDescription("Voici les métriques du jour").
-		AddField("Nombre de pas", strconv.Itoa(metrics.Steps)).
-		AddField("Calories consomées", appendStatus(metrics.KcalConsumed, 2100)).
-		AddField("Calories brulées", appendStatus(metrics.KcalBurned, 1000))
+	// Send results
+	message.SendResults(s, thread.ID, isSuccess, winner)
 
-	for _, workout := range metrics.Workouts {
-		embed.AddField(workout.Name, strconv.Itoa(workout.Duration)+" min")
-	}
-
-	return embed.MessageEmbed
-}
-
-func appendStatus(value int, threshold int) string {
-	if value >= threshold {
-		return strconv.Itoa(value) + "/" + strconv.Itoa(threshold) + " :white_check_mark:"
-	}
-	return strconv.Itoa(value) + "/" + strconv.Itoa(threshold) + " :x:"
 }
