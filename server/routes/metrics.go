@@ -114,26 +114,27 @@ func addMetrics(c *gin.Context) {
 				w.Name = "Marche"
 				break
 			}
-
-			workout := models.Workout{
-				ID:           uuid.New(),
-				MetricsRefer: metrics.ID,
-				KcalBurned:   w.KcalBurned,
-				ActivityType: w.ActivityType,
-				Name:         w.Name,
-				Duration:     w.Duration,
-			}
-			metrics.Workouts = append(metrics.Workouts, workout)
 		}
 
-		// Save routes and workouts
-		if err := database.DB.Create(&metrics).Error; err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
+		workout := models.Workout{
+			ID:           uuid.New(),
+			MetricsRefer: metrics.ID,
+			KcalBurned:   w.KcalBurned,
+			ActivityType: w.ActivityType,
+			Name:         w.Name,
+			Duration:     w.Duration,
 		}
-
-		c.JSON(http.StatusOK, gin.H{"message": "Metrics saved successfully!"})
+		metrics.Workouts = append(metrics.Workouts, workout)
 	}
+
+	// Save routes and workouts
+	if err := database.DB.Create(&metrics).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Metrics saved successfully!"})
+
 }
 
 // Helpers
