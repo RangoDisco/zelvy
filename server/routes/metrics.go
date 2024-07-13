@@ -4,11 +4,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/rangodisco/zelby/server/database"
+	"github.com/rangodisco/zelby/server/helpers"
 	"github.com/rangodisco/zelby/server/models"
 	"net/http"
+	"strconv"
 	"time"
 )
 
+// TYPES
 type WorkoutData struct {
 	KcalBurned   int    `json:"kcalBurned"`
 	ActivityType string `json:"activityType"`
@@ -24,10 +27,11 @@ type RequestBody struct {
 }
 
 type Metric struct {
-	Type      string `json:"type"`
-	Value     int    `json:"value"`
-	Threshold int    `json:"threshold"`
-	Success   bool   `json:"success"`
+	Name         string `json:"name"`
+	Value        int    `json:"value"`
+	DisplayValue string `json:"displayValue"`
+	Threshold    string `json:"threshold"`
+	Success      bool   `json:"success"`
 }
 
 type MetricsResponse struct {
@@ -43,6 +47,7 @@ func RegisterMetricsRoutes(r *gin.Engine) {
 	r.POST("/api/metrics", addMetrics)
 }
 
+// ROUTES
 func getTodayMetrics(c *gin.Context) {
 
 	var metrics models.Metrics
@@ -75,64 +80,6 @@ func getTodayMetrics(c *gin.Context) {
 	c.JSON(http.StatusOK, metricsResponse)
 }
 
-func compareMetricsWithGoals(metrics models.Metrics, goals []models.Goal) []Metric {
-	var comparedMetrics []Metric
-	shouldThresholdBeBigger := true
-
-	for _, g := range goals {
-		var metric Metric
-
-		// Add threshold and type to metric
-		metric.Threshold = g.Value
-		metric.Type = g.Type
-
-		switch g.Type {
-		case "kcalBurned":
-			metric.Value = metrics.KcalBurned
-			break
-
-		case "kcalConsumed":
-			metric.Value = metrics.KcalConsumed
-			shouldThresholdBeBigger = false
-			break
-
-		case "litterDrank":
-			metric.Value = metrics.CentiliterDrank
-			break
-
-		case "mainWorkoutDuration":
-			// Find workouts with type "strength" and sum duration
-			for _, w := range metrics.Workouts {
-				if w.ActivityType == "strength" {
-					metric.Value = metric.Value + w.Duration
-				}
-			}
-			break
-
-		case "extraWorkoutDuration":
-			// Sum all workouts duration EXCEPT strength
-			for _, w := range metrics.Workouts {
-				if w.ActivityType != "strength" {
-					metric.Value = metric.Value + w.Duration
-				}
-			}
-			break
-		}
-
-		// Compare metric with threshold. Note that only kcalConsumed should be lower than threshold
-		if shouldThresholdBeBigger {
-			metric.Success = metric.Value >= metric.Threshold
-		} else {
-			metric.Success = metric.Value <= metric.Threshold
-		}
-
-		// Finally push in comparedMetrics
-		comparedMetrics = append(comparedMetrics, metric)
-	}
-	return comparedMetrics
-
-}
-
 func addMetrics(c *gin.Context) {
 	// Parse body
 	var body RequestBody
@@ -151,22 +98,98 @@ func addMetrics(c *gin.Context) {
 	}
 
 	for _, w := range body.Workouts {
-		workout := models.Workout{
-			ID:           uuid.New(),
-			MetricsRefer: metrics.ID,
-			KcalBurned:   w.KcalBurned,
-			ActivityType: w.ActivityType,
-			Name:         w.Name,
-			Duration:     w.Duration,
+		// Handle name based on activity type in case null
+		if w.Name == "" {
+			switch w.ActivityType {
+			case "strength":
+				w.Name = "Séance de musculation"
+				break
+			case "running":
+				w.Name = "Footing"
+				break
+			case "cycling":
+				w.Name = "Vélo"
+				break
+			case "walk":
+				w.Name = "Marche"
+				break
+			}
+
+			workout := models.Workout{
+				ID:           uuid.New(),
+				MetricsRefer: metrics.ID,
+				KcalBurned:   w.KcalBurned,
+				ActivityType: w.ActivityType,
+				Name:         w.Name,
+				Duration:     w.Duration,
+			}
+			metrics.Workouts = append(metrics.Workouts, workout)
 		}
-		metrics.Workouts = append(metrics.Workouts, workout)
+
+		// Save routes and workouts
+		if err := database.DB.Create(&metrics).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{"message": "Metrics saved successfully!"})
+	}
+}
+
+// Helpers
+func compareMetricsWithGoals(metrics models.Metrics, goals []models.Goal) []Metric {
+	var comparedMetrics []Metric
+
+	for _, g := range goals {
+		var metric Metric
+		// Add threshold and type to metric
+		metric.Threshold = strconv.Itoa(g.Value)
+
+		switch g.Type {
+		case "kcalBurned":
+			metric = populateMetric(metrics.KcalBurned, g.Value, "Calories brulées", true)
+
+		case "kcalConsumed":
+			metric = populateMetric(metrics.KcalConsumed, g.Value, "Calories consommées", false)
+
+		case "litterDrank":
+			metric = populateMetric(metrics.CentiliterDrank, g.Value, "Litres bus", true)
+
+		case "mainWorkoutDuration":
+			duration := helpers.CalculateMainWorkoutDuration(metrics.Workouts)
+			metric = populateWorkoutMetric(duration, g.Value, "Durée séance", true)
+
+		case "extraWorkoutDuration":
+			duration := helpers.CalculateExtraWorkoutDuration(metrics.Workouts)
+			metric = populateWorkoutMetric(duration, g.Value, "Durée supplémentaire", true)
+		}
+
+		metric.Success = helpers.IsMetricSuccessful(metric.Value, g.Value, true)
+		comparedMetrics = append(comparedMetrics, metric)
 	}
 
-	// Save routes and workouts
-	if err := database.DB.Create(&metrics).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
+	return comparedMetrics
 
-	c.JSON(http.StatusOK, gin.H{"message": "Metrics saved successfully!"})
+}
+
+// Helper function to populate metric
+func populateMetric(value int, threshold int, name string, shouldThresholdBeSmaller bool) Metric {
+	return Metric{
+		Value:        value,
+		DisplayValue: strconv.Itoa(value),
+		Threshold:    strconv.Itoa(threshold),
+		Name:         name,
+		Success:      helpers.IsMetricSuccessful(value, threshold, shouldThresholdBeSmaller),
+	}
+}
+
+// Helper function to populate workout metric
+func populateWorkoutMetric(duration int, goalValue int, name string, shouldThresholdBeSmaller bool) Metric {
+	return Metric{
+		Value:        duration,
+		DisplayValue: helpers.ConvertMsToHour(duration),
+		Threshold:    helpers.ConvertMsToHour(goalValue),
+		Name:         name,
+		Success:      helpers.IsMetricSuccessful(duration, goalValue, shouldThresholdBeSmaller),
+	}
 }
