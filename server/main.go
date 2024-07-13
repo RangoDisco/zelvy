@@ -7,6 +7,7 @@ import (
 	"github.com/rangodisco/zelby/server/middlewares"
 	"github.com/rangodisco/zelby/server/routes"
 	"log"
+	"os"
 )
 
 func main() {
@@ -18,6 +19,10 @@ func main() {
 
 	// Setup database
 	database.SetupDatabase()
+
+	if os.Getenv("GIN_MODE") == "release" {
+		gin.SetMode(gin.ReleaseMode)
+	}
 
 	// Start gin server
 	r := gin.Default()
