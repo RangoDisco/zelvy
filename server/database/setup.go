@@ -1,10 +1,10 @@
 package database
 
 import (
+	"github.com/rangodisco/zelby/server/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"log"
-	"rangodisco.eu/zelby-server/models"
 )
 
 var DB *gorm.DB

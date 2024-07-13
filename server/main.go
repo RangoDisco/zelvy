@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"rangodisco.eu/zelby-server/database"
-	"rangodisco.eu/zelby-server/routes"
+	"github.com/rangodisco/zelby/server/database"
+	"github.com/rangodisco/zelby/server/routes"
 )
 
 func main() {

@@ -3,9 +3,9 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/rangodisco/zelby/server/database"
+	"github.com/rangodisco/zelby/server/models"
 	"net/http"
-	"rangodisco.eu/zelby-server/database"
-	"rangodisco.eu/zelby-server/models"
 	"time"
 )
 
