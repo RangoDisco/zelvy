@@ -142,8 +142,7 @@ func sendScheduleMessage(s *discordgo.Session) {
 	winner := helpers.PickWinner(s)
 
 	// Calculate results
-	//isSuccess := helpers.IsSuccess(metrics.Metrics)
-	isSuccess := true
+	isSuccess := helpers.IsSuccess(metrics.Metrics)
 
 	// Create thread
 	thread := message.CreateThread(s, ChannelID, isSuccess)
