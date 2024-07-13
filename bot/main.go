@@ -122,7 +122,7 @@ func main() {
 }
 
 func sendScheduleMessage(s *discordgo.Session, channelID string) {
-	// First fetch today's metrics
+	// First fetch today's routes
 	res, err := http.Get("http://localhost:8080/api/metrics/today")
 	checkErr(err)
 
@@ -134,7 +134,7 @@ func sendScheduleMessage(s *discordgo.Session, channelID string) {
 	}(res.Body)
 
 	if res.StatusCode != http.StatusOK {
-		log.Fatal("Failed to get metrics")
+		log.Fatal("Failed to get routes")
 	}
 
 	body, err := io.ReadAll(res.Body)
@@ -155,6 +155,10 @@ func sendScheduleMessage(s *discordgo.Session, channelID string) {
 	checkErr(err)
 
 }
+
+//func compareMetricsWithGoals(routes Metrics, goals []Goal) {
+//
+//}
 
 func createEmbedMessage(metrics Metrics) *discordgo.MessageEmbed {
 

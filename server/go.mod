@@ -1,4 +1,4 @@
-module rangodisco.eu/zelby-server
+module github.com/rangodisco/zelby/server
 
 go 1.21.5
 

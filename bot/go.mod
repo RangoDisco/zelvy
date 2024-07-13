@@ -1,4 +1,4 @@
-module rangodisco.eu/zelby
+module github.com/rangodisco/zelby/bot
 
 go 1.21.5
 
