@@ -1,16 +1,13 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
 	"github.com/rangodisco/zelby/bot/helpers"
 	"github.com/rangodisco/zelby/bot/helpers/message"
-	"io"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
 )
@@ -112,31 +109,8 @@ func main() {
 }
 
 func sendScheduleMessage(s *discordgo.Session) {
-	// First fetch today's routes
-	res, err := http.Get("http://localhost:8080/api/metrics/today")
-	checkErr(err)
-
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-
-		}
-	}(res.Body)
-
-	if res.StatusCode != http.StatusOK {
-		log.Fatal("Failed to get routes")
-	}
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		log.Fatalf("error reading response body: %v", err)
-	}
-
-	// Unmarshal response body to Metrics struct
-	var metrics message.Metrics
-	if err := json.Unmarshal(body, &metrics); err != nil {
-		log.Fatalf("error unmarshalling response body: %v", err)
-	}
+	// Fetch metrics
+	metrics := helpers.FetchMetrics()
 
 	// Pick a winner
 	winner := helpers.PickWinner(s)
