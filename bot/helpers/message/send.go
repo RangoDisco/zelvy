@@ -3,38 +3,21 @@ package message
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"github.com/rangodisco/zelby/bot/helpers"
 	"log"
-	"strconv"
+	"os"
 )
 
-type WorkoutData struct {
-	KcalBurned   int    `json:"kcalBurned"`
-	ActivityType string `json:"activityType"`
-	Name         string `json:"name"`
-	Duration     int    `json:"duration"`
-}
-
-type Metric struct {
-	Name         string `json:"name"`
-	Type         string `json:"type"`
-	Value        int    `json:"value"`
-	DisplayValue string `json:"displayValue"`
-	Threshold    string `json:"threshold"`
-	Success      bool   `json:"success"`
-}
-
-type Metrics struct {
-	ID       string        `json:"id"`
-	Date     string        `json:"date"`
-	Steps    int           `json:"steps"`
-	Metrics  []Metric      `json:"metrics"`
-	Workouts []WorkoutData `json:"workouts"`
-}
-
-func SendRecap(s *discordgo.Session, channelID string, metrics Metrics) {
+func SendRecap(s *discordgo.Session, channelID string, metrics helpers.Metrics) {
 	// Create new embed
 	embed := NewEmbed().
 		SetTitle("Stats du jour")
+
+	if helpers.IsSuccess(metrics.Metrics) {
+		embed.SetThumbnail(os.Getenv("SUCCESS_PICTURE"))
+	} else {
+		embed.SetThumbnail(os.Getenv("FAILURE_PICTURE"))
+	}
 
 	// Add metrics Fields
 	for _, metric := range metrics.Metrics {
@@ -47,14 +30,17 @@ func SendRecap(s *discordgo.Session, channelID string, metrics Metrics) {
 
 }
 
-func SendWorkoutsDetails(s *discordgo.Session, channelID string, metrics Metrics) {
+func SendWorkoutsDetails(s *discordgo.Session, channelID string, metrics helpers.Metrics) {
 	embed := NewEmbed().
-		SetTitle("Séances")
+		SetTitle("Séances").
+		SetThumbnail(os.Getenv("WORKOUTS_PICTURE"))
 
 	// Add workouts Fields
 	for _, workout := range metrics.Workouts {
-		embed.AddField(workout.Name, strconv.Itoa(workout.Duration)+" min")
+		embed.AddField(workout.Name, workout.Duration)
 	}
+
+	embed.InlineAllFields()
 
 	sendEmbedMessage(s, channelID, embed.MessageEmbed)
 }
@@ -64,7 +50,7 @@ func SendResults(s *discordgo.Session, channelID string, success bool, winner *d
 	if success {
 		message = "Pas de gagnant aujourd'hui, mais ça aurait dû être " + winner.Username
 	} else {
-		message = "Gagnant du jour: " + fmt.Sprintf("<@%s>", winner.ID) + ", bien joué chacal"
+		message = "Gagnant du jour: " + fmt.Sprintf("<@%s>", winner.ID) + ", bien joué pour tes chacal"
 	}
 
 	_, err := s.ChannelMessageSend(channelID, message)
