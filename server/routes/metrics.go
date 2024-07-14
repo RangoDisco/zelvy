@@ -20,10 +20,11 @@ type WorkoutData struct {
 }
 
 type RequestBody struct {
-	KcalBurned   int           `json:"kcalBurned"`
-	Steps        int           `json:"steps"`
-	Workouts     []WorkoutData `json:"workouts"`
-	KcalConsumed int           `json:"kcalConsumed"`
+	KcalBurned      int           `json:"kcalBurned"`
+	Steps           int           `json:"steps"`
+	Workouts        []WorkoutData `json:"workouts"`
+	KcalConsumed    int           `json:"kcalConsumed"`
+	MilliliterDrank int           `json:"milliliterDrank"`
 }
 
 type Metric struct {
@@ -110,11 +111,12 @@ func addMetrics(c *gin.Context) {
 
 	// Convert to models
 	metrics := models.Metrics{
-		ID:           uuid.New(),
-		Date:         time.Now(),
-		Steps:        body.Steps,
-		KcalBurned:   body.KcalBurned,
-		KcalConsumed: body.KcalConsumed,
+		ID:              uuid.New(),
+		Date:            time.Now(),
+		Steps:           body.Steps,
+		KcalBurned:      body.KcalBurned,
+		KcalConsumed:    body.KcalConsumed,
+		MilliliterDrank: body.MilliliterDrank,
 	}
 
 	for _, w := range body.Workouts {
@@ -173,8 +175,8 @@ func compareMetricsWithGoals(metrics models.Metrics, goals []models.Goal) []Metr
 		case "kcalConsumed":
 			metric = populateMetric(metrics.KcalConsumed, g.Value, "Calories consommées", false)
 
-		case "millilitersDrank":
-			metric = populateMetric(metrics.CentiliterDrank, g.Value, "Eau", true)
+		case "milliliterDrank":
+			metric = populateMetric(metrics.MilliliterDrank, g.Value, "Eau", true)
 
 		case "mainWorkoutDuration":
 			duration := helpers.CalculateMainWorkoutDuration(metrics.Workouts)

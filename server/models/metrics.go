@@ -12,7 +12,7 @@ type Metrics struct {
 	Steps           int       `json:"steps"`
 	KcalBurned      int       `json:"kcalBurned"`
 	KcalConsumed    int       `json:"kcalConsumed"`
-	CentiliterDrank int       `json:"centiliterDrank"`
+	MilliliterDrank int       `json:"milliliterDrank"`
 	Workouts        []Workout `gorm:"foreignKey:MetricsRefer"`
 }
 
