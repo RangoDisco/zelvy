@@ -173,8 +173,8 @@ func compareMetricsWithGoals(metrics models.Metrics, goals []models.Goal) []Metr
 		case "kcalConsumed":
 			metric = populateMetric(metrics.KcalConsumed, g.Value, "Calories consommées", false)
 
-		case "centiliterDrank":
-			metric = populateMetric(metrics.CentiliterDrank, g.Value, "CL d'eau", true)
+		case "millilitersDrank":
+			metric = populateMetric(metrics.CentiliterDrank, g.Value, "Eau", true)
 
 		case "mainWorkoutDuration":
 			duration := helpers.CalculateMainWorkoutDuration(metrics.Workouts)
