@@ -88,24 +88,14 @@ func main() {
 		checkErr(err)
 	}(dg)
 
-	// Start a ticket to send a message every minute
-	//ticket := time.NewTicker(1 * time.Minute)
-	//go func() {
-	//	for range ticket.C {
-	//		sendScheduleMessage(dg, ChannelID)
-	//	}
-	//}()
-	//
-	//defer ticket.Stop()
-
 	sendScheduleMessage(dg)
 
 	// Keep the bot running
 	fmt.Println("Running...")
 
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	<-c
+	sc := make(chan os.Signal, 1)
+	signal.Notify(sc, os.Interrupt)
+	<-sc
 }
 
 func sendScheduleMessage(s *discordgo.Session) {
