@@ -35,11 +35,19 @@ type Metric struct {
 }
 
 type MetricsResponse struct {
-	ID       string           `json:"id"`
-	Date     string           `json:"date"`
-	Steps    int              `json:"steps"`
-	Metrics  []Metric         `json:"metrics"`
-	Workouts []models.Workout `json:"workouts"`
+	ID       string            `json:"id"`
+	Date     string            `json:"date"`
+	Steps    int               `json:"steps"`
+	Metrics  []Metric          `json:"metrics"`
+	Workouts []WorkoutResponse `json:"workouts"`
+}
+
+type WorkoutResponse struct {
+	ID           string `json:"id"`
+	KcalBurned   int    `json:"kcalBurned"`
+	ActivityType string `json:"activityType"`
+	Name         string `json:"name"`
+	Duration     string `json:"duration"`
 }
 
 func RegisterMetricsRoutes(r *gin.Engine) {
@@ -74,8 +82,20 @@ func getTodayMetrics(c *gin.Context) {
 	metricsResponse.ID = metrics.ID.String()
 	metricsResponse.Date = metrics.Date.Format(time.RFC3339)
 	metricsResponse.Steps = metrics.Steps
-	metricsResponse.Workouts = metrics.Workouts
 	metricsResponse.Metrics = compareMetricsWithGoals(metrics, goals)
+
+	// Add workouts to metrics object
+	for _, w := range metrics.Workouts {
+		workout := WorkoutResponse{
+			ID:           w.ID.String(),
+			KcalBurned:   w.KcalBurned,
+			ActivityType: w.ActivityType,
+			Name:         w.Name,
+			Duration:     helpers.ConvertMsToHour(w.Duration),
+		}
+		metricsResponse.Workouts = append(metricsResponse.Workouts, workout)
+
+	}
 
 	c.JSON(http.StatusOK, metricsResponse)
 }
@@ -153,8 +173,8 @@ func compareMetricsWithGoals(metrics models.Metrics, goals []models.Goal) []Metr
 		case "kcalConsumed":
 			metric = populateMetric(metrics.KcalConsumed, g.Value, "Calories consommées", false)
 
-		case "litterDrank":
-			metric = populateMetric(metrics.CentiliterDrank, g.Value, "Litres bus", true)
+		case "centiliterDrank":
+			metric = populateMetric(metrics.CentiliterDrank, g.Value, "CL d'eau", true)
 
 		case "mainWorkoutDuration":
 			duration := helpers.CalculateMainWorkoutDuration(metrics.Workouts)
