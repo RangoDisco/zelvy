@@ -170,13 +170,13 @@ func compareMetricsWithGoals(metrics models.Metrics, goals []models.Goal) []Metr
 
 		switch g.Type {
 		case "kcalBurned":
-			metric = populateMetric(metrics.KcalBurned, g.Value, "Calories brulées", true)
+			metric = populateMetric(metrics.KcalBurned, g.Value, "Calories brulées", true, "")
 
 		case "kcalConsumed":
-			metric = populateMetric(metrics.KcalConsumed, g.Value, "Calories consommées", false)
+			metric = populateMetric(metrics.KcalConsumed, g.Value, "Calories consommées", false, "")
 
 		case "milliliterDrank":
-			metric = populateMetric(metrics.MilliliterDrank, g.Value, "Eau", true)
+			metric = populateMetric(metrics.MilliliterDrank, g.Value, "Eau", true, "ml")
 
 		case "mainWorkoutDuration":
 			duration := helpers.CalculateMainWorkoutDuration(metrics.Workouts)
@@ -195,11 +195,11 @@ func compareMetricsWithGoals(metrics models.Metrics, goals []models.Goal) []Metr
 }
 
 // Helper function to populate metric
-func populateMetric(value int, threshold int, name string, shouldThresholdBeSmaller bool) Metric {
+func populateMetric(value int, threshold int, name string, shouldThresholdBeSmaller bool, unit string) Metric {
 	return Metric{
 		Value:        value,
-		DisplayValue: strconv.Itoa(value),
-		Threshold:    strconv.Itoa(threshold),
+		DisplayValue: strconv.Itoa(value) + unit,
+		Threshold:    strconv.Itoa(threshold) + unit,
 		Name:         name,
 		Success:      helpers.IsMetricSuccessful(value, threshold, shouldThresholdBeSmaller),
 	}
