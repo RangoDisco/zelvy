@@ -50,7 +50,7 @@ func SendResults(s *discordgo.Session, channelID string, success bool, winner *d
 	if success {
 		message = "Pas de gagnant aujourd'hui, mais ça aurait dû être " + winner.Username
 	} else {
-		message = "Gagnant du jour: " + fmt.Sprintf("<@%s>", winner.ID) + ", bien joué pour tes chacal"
+		message = "Gagnant du jour: " + fmt.Sprintf("<@%s>", winner.ID) + ", bien joué pour tes 5€ chacal"
 	}
 
 	_, err := s.ChannelMessageSend(channelID, message)
