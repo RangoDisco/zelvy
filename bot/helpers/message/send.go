@@ -20,10 +20,8 @@ func SendRecap(s *discordgo.Session, channelID string, metrics helpers.Metrics) 
 
 	// Add metrics Fields
 	for _, metric := range metrics.Metrics {
-		embed.AddField(metric.Name, formatField(metric.Success, metric.DisplayValue, metric.Threshold))
+		embed.AddField(formatFieldTitle(metric.Name, metric.Success), metric.DisplayValue+"/"+metric.Threshold)
 	}
-
-	embed.InlineAllFields()
 
 	sendEmbedMessage(s, channelID, embed.MessageEmbed)
 
@@ -58,12 +56,12 @@ func SendResults(s *discordgo.Session, channelID string, success bool, winner *d
 	}
 }
 
-func formatField(success bool, value string, threshold string) string {
+func formatFieldTitle(name string, success bool) string {
 
 	if success {
-		return value + "/" + threshold + " :white_check_mark:"
+		return name + " :white_check_mark:"
 	}
-	return value + "/" + threshold + " :x:"
+	return name + " :x:"
 }
 
 func sendEmbedMessage(s *discordgo.Session, channelID string, embed *discordgo.MessageEmbed) {
