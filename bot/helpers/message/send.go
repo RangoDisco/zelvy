@@ -1,7 +1,6 @@
 package message
 
 import (
-	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/rangodisco/zelby/bot/helpers"
 	"log"
@@ -48,9 +47,9 @@ func SendWorkoutsDetails(s *discordgo.Session, channelID string, metrics helpers
 func SendResults(s *discordgo.Session, channelID string, success bool, winner *discordgo.User) {
 	var message string
 	if success {
-		message = "Pas de gagnant aujourd'hui, mais ça aurait dû être " + winner.Username
+		message = "Pas de gagnant aujourd'hui, mais ça aurait dû être " + winner.GlobalName
 	} else {
-		message = "Gagnant du jour: " + fmt.Sprintf("<@%s>", winner.ID) + ", bien joué pour tes 5€ chacal"
+		message = "Gagnant du jour: " + winner.Mention() + ", bien joué pour tes 5€ chacal"
 	}
 
 	_, err := s.ChannelMessageSend(channelID, message)
