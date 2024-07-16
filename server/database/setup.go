@@ -29,7 +29,7 @@ func SetupDatabase() {
 	}
 
 	// Auto-migrate your models
-	err = DB.AutoMigrate(&models.Metrics{}, &models.Workout{}, &models.Goal{})
+	err = DB.AutoMigrate(&models.Metrics{}, &models.Workout{}, &models.Goal{}, &models.Offday{})
 	if err != nil {
 		log.Fatal("Failed to migrate models")
 	}
