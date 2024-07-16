@@ -1,7 +1,9 @@
 package helpers
 
 import (
+	"github.com/rangodisco/zelby/server/enums"
 	"github.com/rangodisco/zelby/server/models"
+	"github.com/rangodisco/zelby/server/types"
 	"strconv"
 	"time"
 )
@@ -42,4 +44,48 @@ func IsMetricSuccessful(value int, goalValue int, shouldBeSmaller bool) bool {
 		return value >= goalValue
 	}
 	return value <= goalValue
+}
+
+func PopulateMetric(value int, threshold int, name string, shouldThresholdBeSmaller bool, unit string) types.Metric {
+	return types.Metric{
+		Value:        value,
+		DisplayValue: strconv.Itoa(value) + unit,
+		Threshold:    strconv.Itoa(threshold) + unit,
+		Name:         name,
+		Success:      IsMetricSuccessful(value, threshold, shouldThresholdBeSmaller),
+	}
+}
+
+func CompareMetricsWithGoals(metrics models.Metrics, goals []models.Goal) []types.Metric {
+	var comparedMetrics []types.Metric
+
+	for _, g := range goals {
+		var metric types.Metric
+
+		// Add threshold to metric
+		metric.Threshold = strconv.Itoa(g.Value)
+
+		switch g.Type {
+		case enums.KcalBurned:
+			metric = PopulateMetric(metrics.KcalBurned, g.Value, "Calories brulées", true, "")
+
+		case enums.KcalConsumed:
+			metric = PopulateMetric(metrics.KcalConsumed, g.Value, "Calories consommées", false, "")
+
+		case enums.MilliliterDrank:
+			metric = PopulateMetric(metrics.MilliliterDrank, g.Value, "Eau", true, "ml")
+
+		case enums.MainWorkoutDuration:
+			duration := CalculateMainWorkoutDuration(metrics.Workouts)
+			metric = PopulateWorkoutMetric(duration, g.Value, "Durée séance", true)
+
+		case enums.ExtraWorkoutDuration:
+			duration := CalculateExtraWorkoutDuration(metrics.Workouts)
+			metric = PopulateWorkoutMetric(duration, g.Value, "Durée supplémentaire", true)
+		}
+
+		comparedMetrics = append(comparedMetrics, metric)
+	}
+
+	return comparedMetrics
 }
