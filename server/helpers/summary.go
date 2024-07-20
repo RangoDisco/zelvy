@@ -56,11 +56,6 @@ func PopulateMetric(value float64, threshold float64, name string, comparison st
 		displayThreshold = strconv.FormatFloat(threshold, 'f', 2, 64) + "L"
 		break
 
-	case "mn":
-		displayValue = ConvertMsToHour(value)
-		displayThreshold = ConvertMsToHour(threshold)
-		break
-
 	default:
 		displayValue = strconv.Itoa(int(value))
 		displayThreshold = strconv.Itoa(int(threshold))
@@ -91,10 +86,10 @@ func CompareMetricsWithGoals(summary models.Summary, goals []models.Goal) []type
 		// Populate metric based on goal type
 		if g.Type == enums.MainWorkoutDuration {
 			duration := CalculateMainWorkoutDuration(summary.Workouts)
-			result = PopulateMetric(duration, g.Value, "Durée séance", g.Comparison, g.Unit)
+			result = PopulateWorkoutMetric(duration, g.Value, "Durée séance", g.Comparison)
 		} else if g.Type == enums.ExtraWorkoutDuration {
 			duration := CalculateExtraWorkoutDuration(summary.Workouts)
-			result = PopulateMetric(duration, g.Value, "Durée supplémentaire", g.Comparison, g.Unit)
+			result = PopulateWorkoutMetric(duration, g.Value, "Durée supplémentaire", g.Comparison)
 		} else {
 			result = PopulateMetric(value, g.Value, g.Name, g.Comparison, g.Unit)
 		}

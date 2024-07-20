@@ -5,5 +5,5 @@ const (
 	KcalConsumed         = "KCAL_CONSUMED"
 	MilliliterDrank      = "LITTER_DRANK"
 	MainWorkoutDuration  = "MAIN_WORKOUT_DURATION"
-	ExtraWorkoutDuration = "EXTRA_WOKROUT_DURATION"
+	ExtraWorkoutDuration = "EXTRA_WORKOUT_DURATION"
 )
