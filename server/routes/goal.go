@@ -7,8 +7,11 @@ import (
 )
 
 type CreateGoalBody struct {
-	Type  string `json:"type"`
-	Value int    `json:"value"`
+	Type       string  `json:"type"`
+	Name       string  `json:"name"`
+	Value      float64 `json:"value"`
+	Unit       string  `json:"unit"`
+	Comparison string  `json:"comparison"`
 }
 
 func RegisterGoalRoutes(r *gin.Engine) {
@@ -38,8 +41,11 @@ func addGoal(c *gin.Context) {
 
 	// Convert to model
 	goal := models.Goal{
-		Type:  body.Type,
-		Value: body.Value,
+		Type:       body.Type,
+		Value:      body.Value,
+		Name:       body.Name,
+		Unit:       body.Unit,
+		Comparison: body.Comparison,
 	}
 
 	if err := database.DB.Create(&goal).Error; err != nil {

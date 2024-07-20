@@ -6,9 +6,12 @@ import (
 )
 
 type Goal struct {
-	ID    uuid.UUID `gorm:"type:uuid;primary_key;"`
-	Type  string    `json:"type"`
-	Value int       `json:"value"`
+	ID         uuid.UUID `gorm:"type:uuid;primary_key;"`
+	Type       string    `json:"type"`
+	Value      float64   `json:"value"`
+	Name       string    `json:"name"`
+	Unit       string    `json:"unit"`
+	Comparison string    `json:"comparison"`
 }
 
 func (g *Goal) BeforeCreate(tx *gorm.DB) (err error) {

@@ -31,8 +31,9 @@ func main() {
 	r.Use(middlewares.CheckKey())
 
 	// Register routes from routes package
-	routes.RegisterMetricsRoutes(r)
+	routes.RegisterSummaryRoutes(r)
 	routes.RegisterGoalRoutes(r)
+	routes.RegisterOffDayRoutes(r)
 
 	// Run server
 	err = r.Run()

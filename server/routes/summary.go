@@ -11,22 +11,22 @@ import (
 	"time"
 )
 
-func RegisterMetricsRoutes(r *gin.Engine) {
-	r.GET("/api/metrics/today", getTodayMetrics)
-	r.POST("/api/metrics", addMetrics)
+func RegisterSummaryRoutes(r *gin.Engine) {
+	r.GET("/api/summary/today", getTodaySummary)
+	r.POST("/api/summary", addMetrics)
 }
 
 // ROUTES
-func getTodayMetrics(c *gin.Context) {
+func getTodaySummary(c *gin.Context) {
 
-	var metrics models.Metrics
+	var summary models.Summary
 
 	// Get today's date
 	sod := time.Now().Truncate(24 * time.Hour)
 	eod := sod.Add(24 * time.Hour)
 
 	// Query routes from today
-	if err := database.DB.Where("date >= ? AND date < ?", sod, eod).Preload("Workouts").Find(&metrics).Error; err != nil {
+	if err := database.DB.Where("date >= ? AND date < ?", sod, eod).Preload("Workouts").Preload("Metrics").Find(&summary).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -39,14 +39,13 @@ func getTodayMetrics(c *gin.Context) {
 	}
 
 	// Build metrics response
-	var metricsResponse types.MetricsResponse
-	metricsResponse.ID = metrics.ID.String()
-	metricsResponse.Date = metrics.Date.Format(time.RFC3339)
-	metricsResponse.Steps = metrics.Steps
-	metricsResponse.Metrics = helpers.CompareMetricsWithGoals(metrics, goals)
+	var metricsResponse types.SummaryResponse
+	metricsResponse.ID = summary.ID.String()
+	metricsResponse.Date = summary.Date.Format(time.RFC3339)
+	metricsResponse.Metrics = helpers.CompareMetricsWithGoals(summary, goals)
 
 	// Add workouts to metrics object
-	for _, w := range metrics.Workouts {
+	for _, w := range summary.Workouts {
 		workout := helpers.ConvertToWorkoutResponse(w)
 		metricsResponse.Workouts = append(metricsResponse.Workouts, workout)
 	}
@@ -63,23 +62,24 @@ func addMetrics(c *gin.Context) {
 	}
 
 	// Convert to models
-	metrics := models.Metrics{
-		ID:              uuid.New(),
-		Date:            time.Now(),
-		Steps:           body.Steps,
-		KcalBurned:      body.KcalBurned,
-		KcalConsumed:    body.KcalConsumed,
-		MilliliterDrank: body.MilliliterDrank,
+	summary := models.Summary{
+		ID:   uuid.New(),
+		Date: time.Now(),
+	}
+
+	// Build and add metrics to the summary object
+	for _, m := range body.Metrics {
+		summary.Metrics = append(summary.Metrics, helpers.ConvertToMetricModel(m, summary.ID))
 	}
 
 	// Build and add workouts to the metrics object
 	for _, w := range body.Workouts {
-		workout := helpers.ConvertToWorkoutModel(w, metrics.ID)
-		metrics.Workouts = append(metrics.Workouts, workout)
+		workout := helpers.ConvertToWorkoutModel(w, summary.ID)
+		summary.Workouts = append(summary.Workouts, workout)
 	}
 
 	// Save routes and workouts
-	if err := database.DB.Create(&metrics).Error; err != nil {
+	if err := database.DB.Create(&summary).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

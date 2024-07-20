@@ -10,8 +10,8 @@ type Workout struct {
 	Name         string    `json:"name"`
 	KcalBurned   int       `json:"kcalBurned"`
 	ActivityType string    `json:"activityType"`
-	Duration     int       `json:"duration"`
-	MetricsRefer uuid.UUID
+	Duration     float64   `json:"duration"`
+	SummaryID    uuid.UUID
 }
 
 // Generates UUID before persist

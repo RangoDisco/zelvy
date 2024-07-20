@@ -1,9 +1,9 @@
 package enums
 
 const (
-	KcalBurned           = "kcalBurned"
-	KcalConsumed         = "kcalConsumed"
-	MilliliterDrank      = "milliliterDrank"
-	MainWorkoutDuration  = "mainWorkoutDuration"
-	ExtraWorkoutDuration = "extraWorkoutDuration"
+	KcalBurned           = "KCAL_BURNED"
+	KcalConsumed         = "KCAL_CONSUMED"
+	MilliliterDrank      = "LITTER_DRANK"
+	MainWorkoutDuration  = "MAIN_WORKOUT_DURATION"
+	ExtraWorkoutDuration = "EXTRA_WOKROUT_DURATION"
 )

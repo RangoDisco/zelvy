@@ -99,25 +99,33 @@ func main() {
 }
 
 func sendScheduleMessage(s *discordgo.Session) {
+	fmt.Println("Main function")
 	// Fetch metrics
 	metrics := helpers.FetchMetrics()
+	fmt.Println("metrics")
 
 	// Pick a winner
 	winner := helpers.PickWinner(s)
+	fmt.Println("winner")
 
 	// Calculate results
 	isSuccess := helpers.IsSuccess(metrics.Metrics)
+	fmt.Println("isSuccess")
 
 	// Create thread
 	thread := message.CreateThread(s, ChannelID, isSuccess)
+	fmt.Println("thread")
 
 	// Send first stats message
 	message.SendRecap(s, thread.ID, metrics)
+	fmt.Println("recap")
 
 	// Send workout details
 	message.SendWorkoutsDetails(s, thread.ID, metrics)
+	fmt.Println("workouts")
 
 	// Send results
 	message.SendResults(s, thread.ID, isSuccess, winner)
+	fmt.Println("results")
 
 }
