@@ -15,7 +15,7 @@ type Workout struct {
 }
 
 // Generates UUID before persist
-func (w *Workout) BeforeCreate(tx *gorm.DB) (err error) {
+func (w *Workout) BeforeCreate(_ *gorm.DB) (err error) {
 	w.ID = uuid.New()
 	return
 }

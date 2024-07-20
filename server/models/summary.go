@@ -14,7 +14,7 @@ type Summary struct {
 }
 
 // Generates UUID before persist
-func (s *Summary) BeforeCreate(tx *gorm.DB) (err error) {
+func (s *Summary) BeforeCreate(_ *gorm.DB) (err error) {
 	s.ID = uuid.New()
 	return
 }

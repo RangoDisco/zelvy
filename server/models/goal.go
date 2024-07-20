@@ -14,7 +14,7 @@ type Goal struct {
 	Comparison string    `json:"comparison"`
 }
 
-func (g *Goal) BeforeCreate(tx *gorm.DB) (err error) {
+func (g *Goal) BeforeCreate(_ *gorm.DB) (err error) {
 	g.ID = uuid.New()
 	return
 }
