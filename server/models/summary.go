@@ -7,12 +7,8 @@ import (
 )
 
 type Summary struct {
-	ID   uuid.UUID `gorm:"type:uuid;primary_key"`
-	Date time.Time `json:"date"`
-	//Steps           int       `json:"steps"`
-	//KcalBurned      int       `json:"kcalBurned"`
-	//KcalConsumed    int       `json:"kcalConsumed"`
-	//MilliliterDrank int       `json:"milliliterDrank"`
+	ID       uuid.UUID `gorm:"type:uuid;primary_key"`
+	Date     time.Time `json:"date"`
 	Metrics  []Metric  `gorm:"foreignKey:SummaryID"`
 	Workouts []Workout `gorm:"foreignKey:SummaryID"`
 }
