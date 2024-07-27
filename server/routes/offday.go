@@ -2,18 +2,17 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/models"
 	"time"
 )
 
 type CreateOffDayBody struct {
-	Goals []uuid.UUID `json:"goals"`
+	Goals []string `json:"goals"`
 }
 
 func RegisterOffDayRoutes(r *gin.Engine) {
-
+	r.POST("/api/offdays", setOffDay)
 }
 
 func setOffDay(c *gin.Context) {
@@ -24,15 +23,17 @@ func setOffDay(c *gin.Context) {
 		return
 	}
 
-	for _, goal := range body.Goals {
+	for _, og := range body.Goals {
+		var goal models.Goal
+
 		// Ensure that goal exists
-		if err := database.DB.First(&models.Goal{}, "id = ?", goal).Error; err != nil {
+		if err := database.DB.First(&goal, "type = ?", og).Error; err != nil {
 			continue
 		}
 
 		// Create off day for this specific goal
 		offday := models.Offday{
-			GoalID: goal,
+			GoalID: goal.ID,
 			Day:    time.Now(),
 		}
 
@@ -41,5 +42,6 @@ func setOffDay(c *gin.Context) {
 			return
 		}
 
+		c.JSON(200, gin.H{"message": "Offday created"})
 	}
 }
