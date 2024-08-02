@@ -39,14 +39,14 @@ func CalculateExtraWorkoutDuration(workouts []models.Workout) float64 {
 }
 
 // Determine if the metric is successful based on the threshold
-func IsMetricSuccessful(value float64, goalValue float64, comparison string) bool {
+func IsMetricSuccessful(value float64, goalValue float64, comparison string, isOffDay bool) bool {
 	if comparison == "greater" {
-		return value >= goalValue
+		return value >= goalValue && !isOffDay
 	}
-	return value <= goalValue
+	return value <= goalValue && !isOffDay
 }
 
-func PopulateMetric(value float64, threshold float64, name string, comparison string, unit string) types.MetricResponse {
+func PopulateMetric(value float64, threshold float64, name string, comparison string, unit string, isOffDay bool) types.MetricResponse {
 	var displayValue string
 	var displayThreshold string
 	// Handle weird float/int diff between goals
@@ -65,7 +65,7 @@ func PopulateMetric(value float64, threshold float64, name string, comparison st
 		DisplayValue: displayValue,
 		Threshold:    displayThreshold,
 		Name:         name,
-		Success:      IsMetricSuccessful(value, threshold, comparison),
+		Success:      IsMetricSuccessful(value, threshold, comparison, isOffDay),
 	}
 }
 
@@ -80,18 +80,26 @@ func CompareMetricsWithGoals(summary models.Summary, goals []models.Goal) []type
 
 	for _, g := range goals {
 		var result types.MetricResponse
+		var isOffDay bool
 		// Find metric by goal type
 		value := metricMap[g.Type]
+
+		// Search if goal is off for today
+		offDay, _ := FetchByGoalAndDate(g.Type)
+
+		if offDay != nil {
+			isOffDay = true
+		}
 
 		// Populate metric based on goal type
 		if g.Type == enums.MainWorkoutDuration {
 			duration := CalculateMainWorkoutDuration(summary.Workouts)
-			result = PopulateWorkoutMetric(duration, g.Value, "Durée séance", g.Comparison)
+			result = PopulateWorkoutMetric(duration, g.Value, "Durée séance", g.Comparison, isOffDay)
 		} else if g.Type == enums.ExtraWorkoutDuration {
 			duration := CalculateExtraWorkoutDuration(summary.Workouts)
-			result = PopulateWorkoutMetric(duration, g.Value, "Durée supplémentaire", g.Comparison)
+			result = PopulateWorkoutMetric(duration, g.Value, "Durée supplémentaire", g.Comparison, isOffDay)
 		} else {
-			result = PopulateMetric(value, g.Value, g.Name, g.Comparison, g.Unit)
+			result = PopulateMetric(value, g.Value, g.Name, g.Comparison, g.Unit, isOffDay)
 		}
 
 		// Add threshold to metric

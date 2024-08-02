@@ -5,6 +5,7 @@ type MetricResponse struct {
 	DisplayValue string `json:"displayValue"`
 	Threshold    string `json:"threshold"`
 	Success      bool   `json:"success"`
+	IsOff        bool   `json:"isOff"`
 }
 
 type MetricData struct {

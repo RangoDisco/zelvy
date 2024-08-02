@@ -7,12 +7,13 @@ import (
 	"github.com/rangodisco/zelby/server/types"
 )
 
-func PopulateWorkoutMetric(duration float64, goalValue float64, name string, comparison string) types.MetricResponse {
+func PopulateWorkoutMetric(duration float64, goalValue float64, name string, comparison string, isOffDay bool) types.MetricResponse {
 	return types.MetricResponse{
 		DisplayValue: ConvertMsToHour(duration),
 		Threshold:    ConvertMsToHour(goalValue),
 		Name:         name,
-		Success:      IsMetricSuccessful(duration, goalValue, comparison),
+		Success:      IsMetricSuccessful(duration, goalValue, comparison, isOffDay),
+		IsOff:        isOffDay,
 	}
 }
 
