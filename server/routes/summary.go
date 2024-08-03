@@ -13,7 +13,7 @@ import (
 
 func RegisterSummaryRoutes(r *gin.Engine) {
 	r.GET("/api/summaries/today", getTodaySummary)
-	r.POST("/api/summaries", addMetrics)
+	r.POST("/api/summaries", addSummary)
 }
 
 // ROUTES
@@ -38,22 +38,22 @@ func getTodaySummary(c *gin.Context) {
 		return
 	}
 
-	// Build metrics response
-	var metricsResponse types.SummaryResponse
-	metricsResponse.ID = summary.ID.String()
-	metricsResponse.Date = summary.Date.Format(time.RFC3339)
-	metricsResponse.Metrics = helpers.CompareMetricsWithGoals(summary, goals)
+	// Build summary response
+	var res types.SummaryResponse
+	res.ID = summary.ID.String()
+	res.Date = summary.Date.Format(time.RFC3339)
+	res.Metrics = helpers.CompareMetricsWithGoals(summary, goals)
 
 	// Add workouts to metrics object
 	for _, w := range summary.Workouts {
 		workout := helpers.ConvertToWorkoutResponse(w)
-		metricsResponse.Workouts = append(metricsResponse.Workouts, workout)
+		res.Workouts = append(res.Workouts, workout)
 	}
 
-	c.JSON(http.StatusOK, metricsResponse)
+	c.JSON(http.StatusOK, res)
 }
 
-func addMetrics(c *gin.Context) {
+func addSummary(c *gin.Context) {
 	// Parse body
 	var body types.RequestBody
 	if err := c.ShouldBindJSON(&body); err != nil {
@@ -72,7 +72,7 @@ func addMetrics(c *gin.Context) {
 		summary.Metrics = append(summary.Metrics, helpers.ConvertToMetricModel(m, summary.ID))
 	}
 
-	// Build and add workouts to the metrics object
+	// Build and add workouts to the summary object
 	for _, w := range body.Workouts {
 		workout := helpers.ConvertToWorkoutModel(w, summary.ID)
 		summary.Workouts = append(summary.Workouts, workout)
@@ -84,6 +84,6 @@ func addMetrics(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Metrics saved successfully!"})
+	c.JSON(http.StatusOK, gin.H{"message": "Summary saved successfully!"})
 
 }
