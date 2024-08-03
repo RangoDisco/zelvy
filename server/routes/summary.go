@@ -12,8 +12,8 @@ import (
 )
 
 func RegisterSummaryRoutes(r *gin.Engine) {
-	r.GET("/api/summary/today", getTodaySummary)
-	r.POST("/api/summary", addMetrics)
+	r.GET("/api/summaries/today", getTodaySummary)
+	r.POST("/api/summaries", addMetrics)
 }
 
 // ROUTES
