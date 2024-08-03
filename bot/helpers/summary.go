@@ -29,7 +29,7 @@ type Metric struct {
 	Success      bool   `json:"success"`
 }
 
-type Metrics struct {
+type Summary struct {
 	ID       string        `json:"id"`
 	Date     string        `json:"date"`
 	Steps    int           `json:"steps"`
@@ -44,13 +44,13 @@ func checkErr(e error) {
 }
 
 /**
- * Fetch metrics from the API
+ * Fetch today's  summary from the API
  */
-func FetchMetrics() Metrics {
+func FetchSummary() Summary {
 	baseUrl := os.Getenv("BASE_URL")
 	apiKey := os.Getenv("API_KEY")
 
-	req, err := http.NewRequest("GET", baseUrl+"/api/metrics/today", nil)
+	req, err := http.NewRequest("GET", baseUrl+"/api/summaries/today", nil)
 	checkErr(err)
 
 	// Add api key to headers
@@ -74,13 +74,13 @@ func FetchMetrics() Metrics {
 		log.Fatalf("error reading response body: %v", err)
 	}
 
-	// Unmarshal response body to Metrics struct
-	var metrics Metrics
-	if err := json.Unmarshal(body, &metrics); err != nil {
+	// Unmarshal response body to Summary struct
+	var summary Summary
+	if err := json.Unmarshal(body, &summary); err != nil {
 		log.Fatalf("error unmarshalling response body: %v", err)
 	}
 
-	return metrics
+	return summary
 
 }
 

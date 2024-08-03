@@ -7,19 +7,19 @@ import (
 	"os"
 )
 
-func SendRecap(s *discordgo.Session, channelID string, metrics helpers.Metrics) {
+func SendRecap(s *discordgo.Session, channelID string, summary helpers.Summary) {
 	// Create new embed
 	embed := NewEmbed().
 		SetTitle("Stats du jour")
 
-	if helpers.IsSuccess(metrics.Metrics) {
+	if helpers.IsSuccess(summary.Metrics) {
 		embed.SetThumbnail(os.Getenv("SUCCESS_PICTURE"))
 	} else {
 		embed.SetThumbnail(os.Getenv("FAILURE_PICTURE"))
 	}
 
 	// Add metrics Fields
-	for _, metric := range metrics.Metrics {
+	for _, metric := range summary.Metrics {
 		embed.AddField(formatFieldTitle(metric.Name, metric.Success), metric.DisplayValue+"/"+metric.Threshold)
 	}
 
@@ -27,13 +27,13 @@ func SendRecap(s *discordgo.Session, channelID string, metrics helpers.Metrics) 
 
 }
 
-func SendWorkoutsDetails(s *discordgo.Session, channelID string, metrics helpers.Metrics) {
+func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary helpers.Summary) {
 	embed := NewEmbed().
 		SetTitle("Séances").
 		SetThumbnail(os.Getenv("WORKOUTS_PICTURE"))
 
 	// Add workouts Fields
-	for _, workout := range metrics.Workouts {
+	for _, workout := range summary.Workouts {
 		embed.AddField(workout.Name, workout.Duration)
 	}
 
