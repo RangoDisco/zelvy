@@ -41,9 +41,9 @@ func CalculateExtraWorkoutDuration(workouts []models.Workout) float64 {
 // Determine if the metric is successful based on the threshold
 func IsMetricSuccessful(value float64, goalValue float64, comparison string, isOffDay bool) bool {
 	if comparison == "greater" {
-		return value >= goalValue && !isOffDay
+		return value >= goalValue || isOffDay
 	}
-	return value <= goalValue && !isOffDay
+	return value <= goalValue || isOffDay
 }
 
 func PopulateMetric(value float64, threshold float64, name string, comparison string, unit string, isOffDay bool) types.MetricResponse {
