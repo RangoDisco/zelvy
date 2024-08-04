@@ -7,6 +7,9 @@ import (
 	"os"
 )
 
+/**
+ * Send the metrics recap on the previously created thread (by CreateThread)
+ */
 func SendRecap(s *discordgo.Session, channelID string, summary helpers.Summary) {
 	// Create new embed
 	embed := NewEmbed().
@@ -27,6 +30,9 @@ func SendRecap(s *discordgo.Session, channelID string, summary helpers.Summary) 
 
 }
 
+/**
+ * Send the workouts on the previously created thread (by CreateThread)
+ */
 func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary helpers.Summary) {
 	embed := NewEmbed().
 		SetTitle("Séances").
@@ -42,15 +48,18 @@ func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary helpers
 	sendEmbedMessage(s, channelID, embed.MessageEmbed)
 }
 
+/**
+ * Send the winner on the previously created thread (by CreateThread)
+ * In case I failed, mentioned the winner, otherwise only send its name
+ */
 func SendResults(s *discordgo.Session, channelID string, success bool, winner *discordgo.User) {
-	var message string
-	if success {
-		message = "Pas de gagnant aujourd'hui, mais ça aurait dû être " + winner.GlobalName
-	} else {
-		message = "Gagnant du jour: " + winner.Mention() + ", bien joué pour tes 5€ chacal"
-	}
+	var err error
 
-	_, err := s.ChannelMessageSend(channelID, message)
+	if success {
+		_, err = s.ChannelMessageSend(channelID, "Pas de gagnant aujourd'hui, mais ça aurait dû être "+winner.GlobalName)
+	} else {
+		_, err = s.ChannelMessageSend(channelID, "Gagnant du jour: "+winner.Mention()+", bien joué pour tes 5€ chacal")
+	}
 	if err != nil {
 		log.Fatal(err)
 	}

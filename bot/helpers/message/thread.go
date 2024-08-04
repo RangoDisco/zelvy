@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+/**
+ * Start the thread on the given channel with, as a title: whether the day was a success & the current date
+ * Thread is later used by SendRecap to send the daily recap
+ */
 func CreateThread(s *discordgo.Session, channelID string, isSuccess bool) *discordgo.Channel {
 
 	// Get current day

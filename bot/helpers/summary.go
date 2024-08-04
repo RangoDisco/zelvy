@@ -81,11 +81,10 @@ func FetchSummary() Summary {
 	}
 
 	return summary
-
 }
 
 /**
- * Determine if the metric is successful based on the threshold
+ * Determine if the summary is successful based on each metric success
  */
 func IsSuccess(metrics []Metric) bool {
 	// For each metric, check if it's a success
@@ -117,5 +116,4 @@ func PickWinner(s *discordgo.Session) *discordgo.User {
 	}
 
 	return winner
-
 }
