@@ -54,29 +54,35 @@ func main() {
 	checkErr(err)
 
 	// Register commands
-	_, err = dg.ApplicationCommandBulkOverwrite(AppID, GuildID, []*discordgo.ApplicationCommand{
-		{
-			Name:        "test-1",
-			Description: "Just a test",
-		},
-	})
-	checkErr(err)
-
-	// Add event handler
 	dg.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		data := i.ApplicationCommandData()
+		switch i.Type {
+		case discordgo.InteractionApplicationCommand:
+			if h, ok := commandsHandlers[i.ApplicationCommandData().Name]; ok {
+				h(s, i)
+			}
+		case discordgo.InteractionMessageComponent:
 
-		switch data.Name {
-		case "test-1":
-			err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-				Type: discordgo.InteractionResponseChannelMessageWithSource,
-				Data: &discordgo.InteractionResponseData{
-					Content: "Bien joué",
-				},
-			})
-			checkErr(err)
+			if h, ok := componentsHandlers[i.MessageComponentData().CustomID]; ok {
+				h(s, i)
+			}
 		}
 	})
+
+	_, err = dg.ApplicationCommandCreate(AppID, GuildID, &discordgo.ApplicationCommand{
+		Name: "set",
+		Options: []*discordgo.ApplicationCommandOption{
+			{
+				Type:        discordgo.ApplicationCommandOptionSubCommand,
+				Name:        "offday",
+				Description: "Désactive un ou plusieurs objectifs pour aujourd'hui",
+			},
+		},
+		Description: "Lo and behold: dropdowns are coming",
+	})
+
+	if err != nil {
+		log.Fatalf("Cannot create slash command: %v", err)
+	}
 
 	// Open session
 	err = dg.Open()
@@ -88,7 +94,7 @@ func main() {
 		checkErr(err)
 	}(dg)
 
-	sendScheduleMessage(dg)
+	//sendScheduleMessage(dg)
 
 	// Keep the bot running
 	fmt.Println("Running...")
