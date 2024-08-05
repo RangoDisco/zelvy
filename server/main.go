@@ -34,6 +34,7 @@ func main() {
 	routes.RegisterSummaryRoutes(r)
 	routes.RegisterGoalRoutes(r)
 	routes.RegisterOffDayRoutes(r)
+	routes.RegisterUserRoutes(r)
 
 	// Run server
 	err = r.Run()
