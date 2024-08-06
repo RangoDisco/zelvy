@@ -58,8 +58,8 @@ var (
 
 			switch i.ApplicationCommandData().Options[0].Name {
 			case "offday":
-				// Prevent other users to use the command TODO: change placeholder user id
-				if i.Member.User.ID != "YOUR_USER_ID" {
+				// Prevent other users to use the command
+				if i.Member.User.ID != os.Getenv("MAIN_USER_ID") {
 					var response *discordgo.InteractionResponse
 					response = &discordgo.InteractionResponse{
 						Type: discordgo.InteractionResponseChannelMessageWithSource,
