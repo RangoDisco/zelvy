@@ -40,7 +40,25 @@ var (
 					},
 				},
 			},
-			Description: "All commands",
+			Description: "All set commands",
+		},
+		{
+			Name: "get",
+			Options: []*discordgo.ApplicationCommandOption{
+				{
+					Type:        discordgo.ApplicationCommandOptionSubCommand,
+					Name:        "summary",
+					Description: "Récupère les stats d'une journée",
+					Options: []*discordgo.ApplicationCommandOption{
+						{
+							Type:        discordgo.ApplicationCommandOptionString,
+							Name:        "date",
+							Description: "La date de la journée que tu veux voir sous format YYYY-MM-DD (e.g 2023-07-31)",
+						},
+					},
+				},
+			},
+			Description: "All get commands",
 		},
 	}
 	componentsHandlers = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){
@@ -50,6 +68,16 @@ var (
 
 			// Send the values to the backend
 			helpers.SetOffDay(data.Values)
+
+			// Send a message to the user
+			response := &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseChannelMessageWithSource,
+				Data: &discordgo.InteractionResponseData{
+					Content: "C'est bon, objectifs désactivés",
+				},
+			}
+			err := s.InteractionRespond(i.Interaction, response)
+			checkErr(err)
 		},
 	}
 	commandsHandlers = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){
@@ -60,7 +88,6 @@ var (
 			case "offday":
 				// Prevent other users to use the command
 				if i.Member.User.ID != os.Getenv("MAIN_USER_ID") {
-					var response *discordgo.InteractionResponse
 					response = &discordgo.InteractionResponse{
 						Type: discordgo.InteractionResponseChannelMessageWithSource,
 						Data: &discordgo.InteractionResponseData{
@@ -144,6 +171,38 @@ var (
 				response = handlePaypalCommand(i)
 				err := s.InteractionRespond(i.Interaction, response)
 				checkErr(err)
+			}
+		},
+		"get": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
+			var response *discordgo.InteractionResponse
+			switch i.ApplicationCommandData().Options[0].Name {
+			case "summary":
+				// Prevent other users to use the command
+				if i.Member.User.ID != os.Getenv("MAIN_USER_ID") {
+					response = &discordgo.InteractionResponse{
+						Type: discordgo.InteractionResponseChannelMessageWithSource,
+						Data: &discordgo.InteractionResponseData{
+							Content: "Bah oui mais non du coup",
+							Flags:   discordgo.MessageFlagsEphemeral,
+						},
+					}
+					err := s.InteractionRespond(i.Interaction, response)
+					checkErr(err)
+					return
+				}
+				// TODO check len
+				// FOR NOW ONLY TODAYS SUMMARY CAN BE FETCHED
+				sendScheduleMessage(s)
+				response = &discordgo.InteractionResponse{
+					Type: discordgo.InteractionResponseChannelMessageWithSource,
+					Data: &discordgo.InteractionResponseData{
+						Content: "C'est bon",
+						Flags:   discordgo.MessageFlagsEphemeral,
+					},
+				}
+				err := s.InteractionRespond(i.Interaction, response)
+				checkErr(err)
+				return
 			}
 		},
 	}
