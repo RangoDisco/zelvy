@@ -22,6 +22,18 @@ func addUser(c *gin.Context) {
 		return
 	}
 
+	// Update PaypalEmail in case user already exists
+	var existingUser models.User
+	if database.DB.Where("discord_id = ?", body.DiscordID).First(&existingUser).Error == nil {
+		existingUser.PaypalEmail = body.PaypalEmail
+		if err := database.DB.Save(&existingUser).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(http.StatusOK, "User updated")
+		return
+	}
+
 	// Convert to model
 	u := models.User{
 		ID:          uuid.New(),
@@ -37,5 +49,5 @@ func addUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, "User created")
+	c.JSON(http.StatusCreated, "User created")
 }
