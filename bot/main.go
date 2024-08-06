@@ -37,7 +37,7 @@ func init() {
 
 func checkErr(e error) {
 	if e != nil {
-		log.Fatal(e)
+		panic(e)
 	}
 }
 
@@ -68,17 +68,13 @@ func main() {
 		}
 	})
 
-	_, err = dg.ApplicationCommandCreate(AppID, GuildID, &discordgo.ApplicationCommand{
-		Name: "set",
-		Options: []*discordgo.ApplicationCommandOption{
-			{
-				Type:        discordgo.ApplicationCommandOptionSubCommand,
-				Name:        "offday",
-				Description: "Désactive un ou plusieurs objectifs pour aujourd'hui",
-			},
-		},
-		Description: "Lo and behold: dropdowns are coming",
-	})
+	cmdIds := make(map[string]string, len(Commands))
+
+	for _, cmd := range Commands {
+		rcmd, err := dg.ApplicationCommandCreate(AppID, GuildID, cmd)
+		checkErr(err)
+		cmdIds[rcmd.Name] = rcmd.ID
+	}
 
 	if err != nil {
 		log.Fatalf("Cannot create slash command: %v", err)
