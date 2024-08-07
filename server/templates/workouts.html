@@ -1,0 +1,15 @@
+<section class="flex flex-col gap-2 p-6">
+    {{ range . }}
+    <div class="flex items-center justify-between w-full bg-base-200 rounded-lg h-[70px] px-4">
+        <div class="w-full flex gap-4 items-center">
+            <img src="https://images.unsplash.com/photo-1719937206098-236a481a2b6d?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                 alt="workout" class="w-10 h-10 rounded-md"/>
+            <div class="">
+                <p class="text-lg text-base-content">{{.Name}}</p>
+                <p class="text-xl text-base-content">{{.Duration}}</p>
+            </div>
+        </div>
+        <div class="self-end pb-2 text-sm">{{.ActivityType}}</div>
+    </div>
+    {{end}}
+</section>
