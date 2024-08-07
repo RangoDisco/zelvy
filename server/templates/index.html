@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zelby web dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" type="text/css"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#085CA7",
+                        "primary-content": "#d0deef",
+                        secondary: "#BFAE71",
+                        "secondary-content": "#0d0b04",
+                        accent: "#DC8850",
+                        "accent-content": "#110602",
+                        neutral: "#1C1C1C",
+                        "neutral-content": "#cccccc",
+                        "base-100": "#000000",
+                        "base-200": "#1C1C1C",
+                        "base-300": "#000000",
+                        "base-content": "#bebebe",
+                        info: "#2563EB",
+                        "info-content": "#d2e2ff",
+                        success: "#52B45C",
+                        "success-content": "#020c03",
+                        warning: "#FFCA11",
+                        "warning-content": "#160f00",
+                        error: "#F35248",
+                        "error-content": "#140202",
+                    },
+                },
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="container mx-auto py-4 bg-base-100 min-h-screen">
+    <!--    <h1 class="text-3xl font-bold mb-4 text-primary">Zelby</h1>-->
+    <section class="pl-6">
+        <div class="flex w-full justify-between pb-4">
+            <div>
+                <h6 class="text-xs">
+                    Mercredi 31 Juillet
+                </h6>
+                <h5 class="text-base-content">
+                    Résumé
+                </h5>
+            </div>
+            <div class="flex">
+                <button class="btn btn-ghost btn-sm"><i class="text-xl text-base-content ri-calendar-fill"></i></button>
+            </div>
+        </div>
+        {{template "summary.html" .summary }}
+    </section>
+
+    {{template "workouts.html" .summary.Workouts }}
+</div>
+
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+</body>
+</html>

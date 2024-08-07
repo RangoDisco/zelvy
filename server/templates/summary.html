@@ -1,0 +1,30 @@
+    <div class="carousel gap-2 w-full">
+        {{range .Metrics}}
+        <div class="carousel-item flex-col rounded-lg w-[45%] aspect-square bg-base-200">
+            <div class="pb-4">
+                <h2 class="text-sm px-2 pt-4 pb-2">{{.Name}}</h2>
+                <hr class="opacity-10"/>
+            </div>
+            <div class="flex gap-2 items-center h-18 p-2">
+                <p class="text-3xl">🔥</p>
+                <h3 class="text-3xl">{{.DisplayValue}}</h3>
+            </div>
+            <div class="pt-2 pb-4 px-2">
+                <p class="opacity-60 text-sm mb-1 ml-2">Objectif: {{.Threshold}}</p>
+                <div class="bg-primary h-2 w-full rounded-full"></div>
+            </div>
+        </div>
+        {{end}}
+    </div>
+<style>
+    /* Hide default scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+
+</style>
