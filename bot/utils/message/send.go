@@ -2,7 +2,7 @@ package message
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/rangodisco/zelby/bot/helpers"
+	"github.com/rangodisco/zelby/bot/utils"
 	"log"
 	"os"
 )
@@ -10,12 +10,12 @@ import (
 /**
  * Send the metrics recap on the previously created thread (by CreateThread)
  */
-func SendRecap(s *discordgo.Session, channelID string, summary helpers.Summary) {
+func SendRecap(s *discordgo.Session, channelID string, summary utils.Summary) {
 	// Create new embed
 	embed := NewEmbed().
 		SetTitle("Stats du jour")
 
-	if helpers.IsSuccess(summary.Metrics) {
+	if utils.IsSuccess(summary.Metrics) {
 		embed.SetThumbnail(os.Getenv("SUCCESS_PICTURE"))
 	} else {
 		embed.SetThumbnail(os.Getenv("FAILURE_PICTURE"))
@@ -33,7 +33,7 @@ func SendRecap(s *discordgo.Session, channelID string, summary helpers.Summary) 
 /**
  * Send the workouts on the previously created thread (by CreateThread)
  */
-func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary helpers.Summary) {
+func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary utils.Summary) {
 	embed := NewEmbed().
 		SetTitle("Séances").
 		SetThumbnail(os.Getenv("WORKOUTS_PICTURE"))
