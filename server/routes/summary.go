@@ -26,7 +26,7 @@ func getTodaySummary(c *gin.Context) {
 	eod := sod.Add(24 * time.Hour)
 
 	// Query routes from today
-	if err := database.DB.Where("date >= ? AND date < ?", sod, eod).Preload("Workouts").Preload("Metrics").Find(&summary).Error; err != nil {
+	if err := database.DB.Where("date >= ? AND date < ?", sod, eod).Preload("Workouts").Preload("Metrics").Preload("Winner").Find(&summary).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -43,6 +43,7 @@ func getTodaySummary(c *gin.Context) {
 	res.ID = summary.ID.String()
 	res.Date = summary.Date.Format(time.RFC3339)
 	res.Metrics = utils.CompareMetricsWithGoals(summary, goals)
+	res.Winner = summary.Winner
 
 	// Add workouts to metrics object
 	for _, w := range summary.Workouts {
@@ -78,7 +79,10 @@ func addSummary(c *gin.Context) {
 		summary.Workouts = append(summary.Workouts, workout)
 	}
 
-	// Save routes and workouts
+	// Pick winner
+	summary.WinnerID = utils.PickWinner()
+
+	// Save summary
 	if err := database.DB.Create(&summary).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

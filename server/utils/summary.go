@@ -2,6 +2,7 @@ package utils
 
 import (
 	"github.com/google/uuid"
+	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/enums"
 	"github.com/rangodisco/zelby/server/models"
 	"github.com/rangodisco/zelby/server/types"
@@ -107,4 +108,13 @@ func CompareMetricsWithGoals(summary models.Summary, goals []models.Goal) []type
 	}
 
 	return comparedMetrics
+}
+
+func PickWinner() uuid.UUID {
+	var u models.User
+
+	// Get user from db randomly
+	database.DB.Order("RANDOM()").First(&u)
+
+	return u.ID
 }
