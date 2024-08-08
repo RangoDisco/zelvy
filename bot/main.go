@@ -102,7 +102,10 @@ func main() {
 
 func sendScheduleMessage(s *discordgo.Session) {
 	// Fetch Summary
-	summary := utils.FetchSummary()
+	summary, err := utils.FetchSummary()
+	if err != nil {
+		log.Fatalf("Error fetching summary: %v", err)
+	}
 
 	// Calculate results
 	isSuccess := utils.IsSuccess(summary.Metrics)
