@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
-	"github.com/rangodisco/zelby/bot/helpers"
-	"github.com/rangodisco/zelby/bot/helpers/message"
+	"github.com/rangodisco/zelby/bot/utils"
+	"github.com/rangodisco/zelby/bot/utils/message"
 	"log"
 	"os"
 	"os/signal"
@@ -102,13 +102,10 @@ func main() {
 
 func sendScheduleMessage(s *discordgo.Session) {
 	// Fetch Summary
-	summary := helpers.FetchSummary()
-
-	// Pick a winner
-	winner := helpers.PickWinner(s)
+	summary := utils.FetchSummary()
 
 	// Calculate results
-	isSuccess := helpers.IsSuccess(summary.Metrics)
+	isSuccess := utils.IsSuccess(summary.Metrics)
 
 	// Create thread
 	thread := message.CreateThread(s, ChannelID, isSuccess)
@@ -118,6 +115,9 @@ func sendScheduleMessage(s *discordgo.Session) {
 
 	// Send workout details
 	message.SendWorkoutsDetails(s, thread.ID, summary)
+
+	// Get Discord profile of winner
+	winner, _ := s.User(summary.Winner.DiscordID)
 
 	// Send results
 	message.SendResults(s, thread.ID, isSuccess, winner)
