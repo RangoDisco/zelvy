@@ -1,4 +1,4 @@
-package helpers
+package utils
 
 import (
 	"github.com/google/uuid"
@@ -85,7 +85,7 @@ func CompareMetricsWithGoals(summary models.Summary, goals []models.Goal) []type
 		value := metricMap[g.Type]
 
 		// Search if goal is off for today
-		offDay, _ := FetchByGoalAndDate(g.Type)
+		offDay, _ := FetchByGoalAndDate(g.ID)
 
 		if offDay != nil {
 			isOffDay = true

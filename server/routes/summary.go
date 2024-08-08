@@ -4,9 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/rangodisco/zelby/server/database"
-	"github.com/rangodisco/zelby/server/helpers"
 	"github.com/rangodisco/zelby/server/models"
 	"github.com/rangodisco/zelby/server/types"
+	"github.com/rangodisco/zelby/server/utils"
 	"net/http"
 	"time"
 )
@@ -42,11 +42,11 @@ func getTodaySummary(c *gin.Context) {
 	var res types.SummaryResponse
 	res.ID = summary.ID.String()
 	res.Date = summary.Date.Format(time.RFC3339)
-	res.Metrics = helpers.CompareMetricsWithGoals(summary, goals)
+	res.Metrics = utils.CompareMetricsWithGoals(summary, goals)
 
 	// Add workouts to metrics object
 	for _, w := range summary.Workouts {
-		workout := helpers.ConvertToWorkoutResponse(w)
+		workout := utils.ConvertToWorkoutResponse(w)
 		res.Workouts = append(res.Workouts, workout)
 	}
 
@@ -69,12 +69,12 @@ func addSummary(c *gin.Context) {
 
 	// Build and add metrics to the summary object
 	for _, m := range body.Metrics {
-		summary.Metrics = append(summary.Metrics, helpers.ConvertToMetricModel(m, summary.ID))
+		summary.Metrics = append(summary.Metrics, utils.ConvertToMetricModel(m, summary.ID))
 	}
 
 	// Build and add workouts to the summary object
 	for _, w := range body.Workouts {
-		workout := helpers.ConvertToWorkoutModel(w, summary.ID)
+		workout := utils.ConvertToWorkoutModel(w, summary.ID)
 		summary.Workouts = append(summary.Workouts, workout)
 	}
 
