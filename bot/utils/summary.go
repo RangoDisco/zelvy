@@ -28,11 +28,10 @@ type Summary struct {
 	Steps    int           `json:"steps"`
 	Metrics  []Metric      `json:"metrics"`
 	Workouts []WorkoutData `json:"workouts"`
-	Winner   User          `json:"winner"`
+	Winner   Winner        `json:"winner"`
 }
 
-type User struct {
-	ID        string `json:"id"`
+type Winner struct {
 	DiscordID string `json:"discordID"`
 }
 
