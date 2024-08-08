@@ -12,7 +12,6 @@ import (
 
 func RegisterUserRoutes(r *gin.Engine) {
 	r.POST("/api/users", addUser)
-	r.POST("/api/users/pick-winner", pickWinner)
 }
 
 // ROUTES
@@ -51,26 +50,4 @@ func addUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, "User created")
-}
-
-func pickWinner(c *gin.Context) {
-	var u models.User
-	var body struct {
-		SummaryID uuid.UUID `json:"summaryId"`
-	}
-
-	if err := c.ShouldBindJSON(&body); err != nil {
-		c.JSON(400, gin.H{"error": err.Error()})
-		return
-	}
-	// Get user from context
-	database.DB.Order("RANDOM()").First(&u)
-
-	// Update won summary
-	var summary models.Summary
-	database.DB.First(&summary, "id = ?", body.SummaryID)
-	summary.WinnerID = u.ID
-	database.DB.Save(&summary)
-
-	c.JSON(http.StatusOK, gin.H{"winner": u})
 }
