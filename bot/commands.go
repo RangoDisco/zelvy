@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/bwmarrin/discordgo"
-	"github.com/rangodisco/zelby/bot/helpers"
+	"github.com/rangodisco/zelby/bot/utils"
 	"io"
 	"log"
 	"net/http"
@@ -67,7 +67,7 @@ var (
 			data := i.MessageComponentData()
 
 			// Send the values to the backend
-			helpers.SetOffDay(data.Values)
+			utils.SetOffDay(data.Values)
 
 			// Send a message to the user
 			response := &discordgo.InteractionResponse{
@@ -192,7 +192,6 @@ var (
 				}
 				// TODO check len
 				// FOR NOW ONLY TODAYS SUMMARY CAN BE FETCHED
-				sendScheduleMessage(s)
 				response = &discordgo.InteractionResponse{
 					Type: discordgo.InteractionResponseChannelMessageWithSource,
 					Data: &discordgo.InteractionResponseData{
@@ -202,6 +201,7 @@ var (
 				}
 				err := s.InteractionRespond(i.Interaction, response)
 				checkErr(err)
+				sendScheduleMessage(s)
 				return
 			}
 		},
