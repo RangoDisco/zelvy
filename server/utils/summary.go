@@ -86,10 +86,7 @@ func CompareMetricsWithGoals(summary models.Summary, goals []models.Goal) ([]typ
 		value := metricMap[g.Type]
 
 		// Search if goal is off for today
-		offDay, err := FetchByGoalAndDate(g.ID)
-		if err != nil {
-			return nil, err
-		}
+		offDay := FetchByGoalAndDate(g.ID)
 		if offDay != nil {
 			isOffDay = true
 		}
