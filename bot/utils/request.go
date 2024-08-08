@@ -14,17 +14,17 @@ func Request(m string, e string, b interface{}) (*resty.Response, error) {
 	var err error
 
 	client := resty.New()
-	client.R().SetHeader("X-API-KEY", apiKey)
+	req := client.R().SetHeader("X-API-KEY", apiKey)
 
 	if b != nil {
-		client.R().SetBody(b)
+		req.SetBody(b)
 	}
 
 	switch m {
 	case "GET":
-		resp, err = client.R().Get(baseUrl + e)
+		resp, err = req.Get(baseUrl + e)
 	case "POST":
-		resp, err = client.R().Post(baseUrl + e)
+		resp, err = req.Post(baseUrl + e)
 	default:
 		return nil, fmt.Errorf("invalid method")
 	}

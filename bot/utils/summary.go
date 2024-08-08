@@ -41,8 +41,8 @@ type Winner struct {
 func FetchSummary() (Summary, error) {
 
 	resp, err := Request("GET", "/api/summaries/today", nil)
-	if err != nil {
-		return Summary{}, fmt.Errorf("error fetching summary: %v", err)
+	if err != nil || resp.StatusCode() != 200 {
+		return Summary{}, fmt.Errorf("error fetching summary: %d %v", resp.StatusCode(), err)
 	}
 
 	// Unmarshal response body to Summary struct
