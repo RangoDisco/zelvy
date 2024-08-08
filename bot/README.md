@@ -1,14 +1,25 @@
-# Zelby
+# Bot
+![](https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white)
 
-Discord bot created in order to keep me accountable for my daily fitness related tasks.
+Source code for the bot itself. See [here](../README.md) for more general information.
 
-Works as follows, every I should:
+## Commands
 
-1. Go to the gym for at least 1h.
-2. Exercise at least another hour (walking, cycling etc...)
-3. Burn at least 1000kcal.
-4. Eat at most 2100kcal.
-5. Drink at least 2L of water.
+### `/get summary {date}`
 
-If one of these tasks is not completed, the bot will @ a random person on my discord server and I will have to pay him
-5€.
+*admin only*
+
+> Returns a summary of the day's transactions.
+
+### `/set offday`
+
+*admin only*
+
+> Disable goals for the goals selected.
+
+### `/set paypal {email}`
+
+*everyone*
+
+> Create User in the database with their paypal email in order facilitate transactions in case they win. <br>
+> If the user already exist, it simply updates the email.
