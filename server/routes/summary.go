@@ -57,7 +57,9 @@ func getTodaySummary(c *gin.Context) {
 		res.Workouts = append(res.Workouts, workout)
 	}
 
-	c.JSON(http.StatusOK, res)
+	c.HTML(http.StatusOK, "index.html", gin.H{"summary": res})
+
+	//c.JSON(http.StatusOK, res)
 }
 
 func addSummary(c *gin.Context) {
