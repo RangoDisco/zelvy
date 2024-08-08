@@ -11,8 +11,8 @@ type Summary struct {
 	Date     time.Time `json:"date"`
 	Metrics  []Metric  `gorm:"foreignKey:SummaryID"`
 	Workouts []Workout `gorm:"foreignKey:SummaryID"`
-	WinnerID uuid.UUID `gorm:"type:uuid"`
-	Winner   User      `gorm:"foreignKey:WinnerID"`
+	WinnerID uuid.UUID `gorm:"type:uuid; default:null"`
+	Winner   User      `gorm:"foreignKey:WinnerID;references:ID; default:null"`
 }
 
 // Generates UUID before persist
