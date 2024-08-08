@@ -2,10 +2,7 @@ package utils
 
 import (
 	"encoding/json"
-	"io"
-	"log"
-	"net/http"
-	"os"
+	"fmt"
 )
 
 // TYPES
@@ -39,50 +36,23 @@ type User struct {
 	DiscordID string `json:"discordID"`
 }
 
-func checkErr(e error) {
-	if e != nil {
-		log.Fatal(e)
-	}
-}
-
 /**
  * Fetch today's  summary from the API
  */
-func FetchSummary() Summary {
-	baseUrl := os.Getenv("BASE_URL")
-	apiKey := os.Getenv("API_KEY")
+func FetchSummary() (Summary, error) {
 
-	req, err := http.NewRequest("GET", baseUrl+"/api/summaries/today", nil)
-	checkErr(err)
-
-	// Add api key to headers
-	req.Header.Add("X-API-KEY", apiKey)
-
-	// Create client & send request
-	client := &http.Client{}
-	res, err := client.Do(req)
-	checkErr(err)
-
-	// Ensure the response body is closed after reading
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}(res.Body)
-
-	body, err := io.ReadAll(res.Body)
+	resp, err := Request("GET", "/api/summaries/today", nil)
 	if err != nil {
-		log.Fatalf("error reading response body: %v", err)
+		return Summary{}, fmt.Errorf("error fetching summary: %v", err)
 	}
 
 	// Unmarshal response body to Summary struct
 	var summary Summary
-	if err := json.Unmarshal(body, &summary); err != nil {
-		log.Fatalf("error unmarshalling response body: %v", err)
+	if err := json.Unmarshal(resp.Body(), &summary); err != nil {
+		return Summary{}, fmt.Errorf("error unmarshalling response body: %v", err)
 	}
 
-	return summary
+	return summary, nil
 }
 
 /**

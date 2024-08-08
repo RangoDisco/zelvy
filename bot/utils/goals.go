@@ -1,12 +1,7 @@
 package utils
 
 import (
-	"bytes"
-	"encoding/json"
-	"io"
-	"log"
-	"net/http"
-	"os"
+	"fmt"
 )
 
 type RequestBody struct {
@@ -16,34 +11,20 @@ type RequestBody struct {
 /**
  * Send an array of goal type to be disabled for today
  */
-func SetOffDay(goals []string) {
-	baseUrl := os.Getenv("BASE_URL")
-	apiKey := os.Getenv("API_KEY")
-
+func SetOffDay(goals []string) (bool, error) {
 	var b = RequestBody{
 		goals,
 	}
 
-	j, err := json.Marshal(b)
-	checkErr(err)
+	resp, err := Request("POST", "/api/offdays", b)
 
-	r, err := http.NewRequest("POST", baseUrl+"/api/offdays", bytes.NewBuffer(j))
-	checkErr(err)
-
-	r.Header.Add("X-API-KEY", apiKey)
-
-	client := &http.Client{}
-	resp, err := client.Do(r)
-	checkErr(err)
-
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}(resp.Body)
-
-	if resp.StatusCode != 200 {
-		log.Fatalf("error sending goals to disable: %v", resp.Status)
+	if err != nil {
+		return false, fmt.Errorf("error sending goals to disable: %v", err)
 	}
+
+	if resp.StatusCode() != 200 {
+		return false, fmt.Errorf("error disabling goals: %v", resp.Status)
+	}
+
+	return true, nil
 }
