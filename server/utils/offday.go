@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/models"
@@ -12,7 +13,7 @@ func FetchByGoalAndDate(goalId uuid.UUID) (*models.Offday, error) {
 	sod := time.Now().Truncate(24 * time.Hour)
 	eod := sod.Add(24 * time.Hour)
 	if err := database.DB.First(&offDay, "goal_id = ? AND day >= ? AND day < ?", goalId, sod, eod).Error; err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error fetching offday: %w", err)
 	}
 
 	return &offDay, nil

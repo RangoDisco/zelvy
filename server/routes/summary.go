@@ -42,8 +42,14 @@ func getTodaySummary(c *gin.Context) {
 	var res types.SummaryResponse
 	res.ID = summary.ID.String()
 	res.Date = summary.Date.Format(time.RFC3339)
-	res.Metrics = utils.CompareMetricsWithGoals(summary, goals)
 	res.Winner = summary.Winner
+	metrics, err := utils.CompareMetricsWithGoals(summary, goals)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	res.Metrics = metrics
 
 	// Add workouts to metrics object
 	for _, w := range summary.Workouts {

@@ -70,7 +70,7 @@ func PopulateMetric(value float64, threshold float64, name string, comparison st
 	}
 }
 
-func CompareMetricsWithGoals(summary models.Summary, goals []models.Goal) []types.MetricResponse {
+func CompareMetricsWithGoals(summary models.Summary, goals []models.Goal) ([]types.MetricResponse, error) {
 	var comparedMetrics []types.MetricResponse
 
 	// Create a map of metrics to values and then iterate over the goals
@@ -86,8 +86,10 @@ func CompareMetricsWithGoals(summary models.Summary, goals []models.Goal) []type
 		value := metricMap[g.Type]
 
 		// Search if goal is off for today
-		offDay, _ := FetchByGoalAndDate(g.ID)
-
+		offDay, err := FetchByGoalAndDate(g.ID)
+		if err != nil {
+			return nil, err
+		}
 		if offDay != nil {
 			isOffDay = true
 		}
@@ -107,7 +109,7 @@ func CompareMetricsWithGoals(summary models.Summary, goals []models.Goal) []type
 		comparedMetrics = append(comparedMetrics, result)
 	}
 
-	return comparedMetrics
+	return comparedMetrics, nil
 }
 
 func PickWinner() uuid.UUID {
