@@ -1,21 +1,20 @@
-package routes
+package handlers
 
 import (
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/render"
 	"github.com/google/uuid"
+	"github.com/rangodisco/zelby/server/components"
 	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/gintemplrenderer"
 	"github.com/rangodisco/zelby/server/models"
-	"github.com/rangodisco/zelby/server/templates"
+	"github.com/rangodisco/zelby/server/services"
 	"github.com/rangodisco/zelby/server/types"
-	"github.com/rangodisco/zelby/server/utils"
 )
 
-func RegisterSummaryRoutes(r *gin.Engine, ginHtmlRenderer render.HTMLRender) {
+func RegisterSummaryRoutes(r *gin.Engine) {
 	r.GET("/summaries", getTodaySummary)
 	r.POST("/api/summaries", addSummary)
 }
@@ -34,7 +33,7 @@ func getTodaySummary(c *gin.Context) {
 
 	// In case a date is provided, we want to fetch the summary for that date
 	if date != "" {
-		sod, eod, err := utils.FormatDate(date)
+		sod, eod, err := services.FormatDate(date)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -44,7 +43,7 @@ func getTodaySummary(c *gin.Context) {
 		q.Where("date >= ? AND date < ?", sod, eod)
 	}
 
-	// Query routes from today
+	// Query handlers from today
 	if err := q.First(&summary).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -64,7 +63,7 @@ func getTodaySummary(c *gin.Context) {
 	res.Winner.DiscordID = summary.Winner.DiscordID
 
 	// Compare metrics with goals to see wheter they are successful or not
-	metrics, err := utils.CompareMetricsWithGoals(summary, goals)
+	metrics, err := services.CompareMetricsWithGoals(summary, goals)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -74,11 +73,11 @@ func getTodaySummary(c *gin.Context) {
 
 	// Add workouts to metrics object
 	for _, w := range summary.Workouts {
-		workout := utils.ConvertToWorkoutResponse(w)
+		workout := services.ConvertToWorkoutResponse(w)
 		res.Workouts = append(res.Workouts, workout)
 	}
 
-	r := gintemplrenderer.New(c.Request.Context(), http.StatusOK, templates.Home(res))
+	r := gintemplrenderer.New(c.Request.Context(), http.StatusOK, components.Home(res))
 
 	c.Render(http.StatusOK, r)
 
@@ -101,17 +100,17 @@ func addSummary(c *gin.Context) {
 
 	// Build and add metrics to the summary object
 	for _, m := range body.Metrics {
-		summary.Metrics = append(summary.Metrics, utils.ConvertToMetricModel(m, summary.ID))
+		summary.Metrics = append(summary.Metrics, services.ConvertToMetricModel(m, summary.ID))
 	}
 
 	// Build and add workouts to the summary object
 	for _, w := range body.Workouts {
-		workout := utils.ConvertToWorkoutModel(w, summary.ID)
+		workout := services.ConvertToWorkoutModel(w, summary.ID)
 		summary.Workouts = append(summary.Workouts, workout)
 	}
 
 	// Pick winner
-	summary.WinnerID = utils.PickWinner()
+	summary.WinnerID = services.PickWinner()
 
 	// Save summary
 	if err := database.DB.Create(&summary).Error; err != nil {
