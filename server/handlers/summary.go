@@ -21,60 +21,14 @@ func RegisterSummaryRoutes(r *gin.Engine) {
 
 // ROUTES
 func getTodaySummary(c *gin.Context) {
-
-	var summary models.Summary
-
-	// Start building query
-	q := database.DB.Preload("Workouts").Preload("Metrics").Preload("Winner").
-		Order("date desc")
-
 	// Get date from params
 	date := c.Param("date")
 
-	// In case a date is provided, we want to fetch the summary for that date
-	if date != "" {
-		sod, eod, err := services.FormatDate(date)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-			return
-		}
-
-		// Add clause with the date provided
-		q.Where("date >= ? AND date < ?", sod, eod)
-	}
-
-	// Query handlers from today
-	if err := q.First(&summary).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	// Fetch current goals
-	var goals []models.Goal
-	if err := database.DB.Find(&goals).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	// Build summary response
-	var res types.SummaryResponse
-	res.ID = summary.ID.String()
-	res.Date = summary.Date.Format(time.RFC3339)
-	res.Winner.DiscordID = summary.Winner.DiscordID
-
-	// Compare metrics with goals to see wheter they are successful or not
-	metrics, err := services.CompareMetricsWithGoals(summary, goals)
+	// Fetch summary
+	res, err := services.FetchSummaryByDate(date)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
-	}
-
-	res.Metrics = metrics
-
-	// Add workouts to metrics object
-	for _, w := range summary.Workouts {
-		workout := services.ConvertToWorkoutResponse(w)
-		res.Workouts = append(res.Workouts, workout)
 	}
 
 	r := gintemplrenderer.New(c.Request.Context(), http.StatusOK, components.Home(res))
