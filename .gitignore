@@ -23,9 +23,13 @@ zelby
 go.work
 go.work.sum
 .idea
+.vscode
 
 # env file
 .env
 
 # OS X
 .DS_Store
+
+# Test db files
+*.db

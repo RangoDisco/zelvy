@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/gintemplrenderer"
-	"github.com/rangodisco/zelby/server/routes"
+	"github.com/rangodisco/zelby/server/handlers"
 )
 
 func main() {
@@ -28,7 +28,7 @@ func main() {
 	// Start gin server
 	r := gin.Default()
 
-	r.LoadHTMLFiles("./templates/index.html")
+	r.LoadHTMLFiles("./components/index.html")
 
 	ginHtmlRenderer := r.HTMLRender
 	r.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
@@ -36,11 +36,11 @@ func main() {
 	// Middleware to check API key in header
 	//r.Use(middlewares.CheckKey())
 
-	// Register routes from routes package
-	routes.RegisterSummaryRoutes(r, ginHtmlRenderer)
-	routes.RegisterGoalRoutes(r)
-	routes.RegisterOffDayRoutes(r)
-	routes.RegisterUserRoutes(r)
+	// Register handlers from handlers package
+	handlers.RegisterSummaryRoutes(r)
+	handlers.RegisterGoalRoutes(r)
+	handlers.RegisterOffDayRoutes(r)
+	handlers.RegisterUserRoutes(r)
 
 	// Serve static files
 	r.Static("/assets", "./assets")

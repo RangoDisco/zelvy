@@ -1,4 +1,4 @@
-package templates
+package components
 
 import "github.com/rangodisco/zelby/server/types"
 
@@ -43,7 +43,8 @@ templ Home(summary types.SummaryResponse) {
     </script>
 		</head>
 		<body>
-			<div class="container mx-auto py-4 bg-base-100 min-h-screen">
+			@Navbar()
+			<div class="container mx-auto py-4 bg-base-100 min-h-screen flex flex-col gap-6">
 				<!--    <h1 class="text-3xl font-bold mb-4 text-primary">Zelby</h1>-->
 				<section class="pl-6">
 					<div class="flex w-full justify-between pb-4">
@@ -61,6 +62,7 @@ templ Home(summary types.SummaryResponse) {
 					</div>
 					@Summary(summary)
 				</section>
+				@Graphs()
 				@Workouts(summary.Workouts)
 			</div>
 			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
