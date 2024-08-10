@@ -1,0 +1,48 @@
+package templates
+
+import (
+	"fmt"
+	"github.com/rangodisco/zelby/server/types"
+)
+
+css progress(percent int) {
+	width: { fmt.Sprintf("%d%%", percent) };
+}
+
+templ Summary(summary types.SummaryResponse) {
+	<div class="carousel gap-2 w-full">
+		for _, metric := range summary.Metrics {
+			<div class="carousel-item flex-col rounded-lg justify-evenly w-[45%] aspect-square bg-base-200">
+				<div class="pb-4">
+					<h2 class="text-sm px-2 pt-4 pb-2">{ metric.Name }</h2>
+					<hr class="opacity-10"/>
+				</div>
+				<div class="flex gap-2 items-center h-18 p-2">
+					<p class="text-3xl">🔥</p>
+					<h3 class="text-3xl">{ metric.DisplayValue }</h3>
+				</div>
+				<div class="pt-2 pb-4 px-2">
+					<p class="opacity-60 text-sm mb-1 ml-2">Objectif: { metric.DisplayThreshold }</p>
+					<div class="relative h-2 w-full">
+						<div
+							class={ "bg-primary h-2 rounded-l-full absolute top-0 left-0", progress(metric.Progression), templ.KV("rounded-r-full", metric.Progression == 100) }
+						></div>
+						<div class="bg-primary-content h-2 w-full rounded-full"></div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+	<style>
+    /* Hide default scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+
+</style>
+}
