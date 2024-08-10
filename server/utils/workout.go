@@ -7,18 +7,61 @@ import (
 	"github.com/rangodisco/zelby/server/types"
 )
 
-func PopulateWorkoutMetric(duration float64, goalValue float64, name string, comparison string, isOffDay bool) types.MetricResponse {
-	return types.MetricResponse{
-		DisplayValue: ConvertMsToHour(duration),
-		Threshold:    ConvertMsToHour(goalValue),
-		Name:         name,
-		Success:      IsMetricSuccessful(duration, goalValue, comparison, isOffDay),
-		IsOff:        isOffDay,
+func ConvertToWorkoutModel(w types.WorkoutData, summaryId uuid.UUID) models.Workout {
+	return models.Workout{
+		ID:           uuid.New(),
+		SummaryID:    summaryId,
+		KcalBurned:   w.KcalBurned,
+		ActivityType: w.ActivityType,
+		Name:         getWorkoutName(w),
+		Duration:     w.Duration,
+	}
+}
+
+func ConvertToWorkoutResponse(w models.Workout) types.WorkoutResponse {
+	return types.WorkoutResponse{
+		ID:           w.ID.String(),
+		KcalBurned:   w.KcalBurned,
+		ActivityType: w.ActivityType,
+		Name:         w.Name,
+		Duration:     ConvertMsToHour(w.Duration),
+		Picto:        getWorkoutPicto(w.ActivityType),
+	}
+}
+
+// Calculate main workout duration
+func CalculateMainWorkoutDuration(workouts []models.Workout) float64 {
+	var duration float64
+	for _, w := range workouts {
+		if w.ActivityType == "strength" {
+			duration = duration + w.Duration
+		}
+	}
+	return duration
+}
+
+// Calculate extra workout duration
+func CalculateExtraWorkoutDuration(workouts []models.Workout) float64 {
+	var duration float64
+	for _, w := range workouts {
+		if w.ActivityType != "strength" {
+			duration = duration + w.Duration
+		}
+	}
+	return duration
+}
+
+func getWorkoutPicto(activityType string) string {
+	switch activityType {
+	case enums.WorkoutTypeStrength:
+		return "/assets/img/strength.png"
+	default:
+		return "/assets/img/strength.png"
 	}
 }
 
 // Handles name based on activity type in case null
-func GetWorkoutName(w types.WorkoutData) string {
+func getWorkoutName(w types.WorkoutData) string {
 	if w.Name != "" {
 		return w.Name
 	}
@@ -35,36 +78,4 @@ func GetWorkoutName(w types.WorkoutData) string {
 	default:
 		return "Séance de sport"
 	}
-}
-
-func ConvertToWorkoutModel(w types.WorkoutData, summaryId uuid.UUID) models.Workout {
-	return models.Workout{
-		ID:           uuid.New(),
-		SummaryID:    summaryId,
-		KcalBurned:   w.KcalBurned,
-		ActivityType: w.ActivityType,
-		Name:         GetWorkoutName(w),
-		Duration:     w.Duration,
-	}
-}
-
-func ConvertToWorkoutResponse(w models.Workout) types.WorkoutResponse {
-	return types.WorkoutResponse{
-		ID:           w.ID.String(),
-		KcalBurned:   w.KcalBurned,
-		ActivityType: w.ActivityType,
-		Name:         w.Name,
-		Duration:     ConvertMsToHour(w.Duration),
-	}
-}
-
-// Calculate main workout duration
-func CalculateMainWorkoutDuration(workouts []models.Workout) float64 {
-	var duration float64
-	for _, w := range workouts {
-		if w.ActivityType == "strength" {
-			duration = duration + w.Duration
-		}
-	}
-	return duration
 }
