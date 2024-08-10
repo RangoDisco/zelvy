@@ -6,6 +6,7 @@ type WorkoutResponse struct {
 	ActivityType string `json:"activityType"`
 	Name         string `json:"name"`
 	Duration     string `json:"duration"`
+	Picto        string `json:"picto"`
 }
 
 type WorkoutData struct {
