@@ -7,7 +7,59 @@ import (
 	"github.com/google/uuid"
 	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/models"
+	"github.com/rangodisco/zelby/server/types"
 )
+
+func FetchSummaryByDate(date string) (types.SummaryResponse, error) {
+	var summary models.Summary
+	// Start building query
+	q := database.DB.Preload("Workouts").Preload("Metrics").Preload("Winner").
+		Order("date desc")
+
+	// In case a date is provided, we want to fetch the summary for that date
+	if date != "" {
+		sod, eod, err := FormatDate(date)
+		if err != nil {
+			return types.SummaryResponse{}, err
+		}
+
+		// Add clause with the date provided
+		q.Where("date >= ? AND date < ?", sod, eod)
+	}
+
+	// Query handlers from today
+	if err := q.First(&summary).Error; err != nil {
+		return types.SummaryResponse{}, err
+	}
+
+	// Fetch current goals
+	var goals []models.Goal
+	if err := database.DB.Find(&goals).Error; err != nil {
+		return types.SummaryResponse{}, err
+	}
+
+	// Build summary response
+	var res types.SummaryResponse
+	res.ID = summary.ID.String()
+	res.Date = summary.Date.Format(time.RFC3339)
+	res.Winner.DiscordID = summary.Winner.DiscordID
+
+	// Compare metrics with goals to see wheter they are successful or not
+	metrics, err := CompareMetricsWithGoals(summary, goals)
+	if err != nil {
+		return types.SummaryResponse{}, err
+	}
+
+	res.Metrics = metrics
+
+	// Add workouts to metrics object
+	for _, w := range summary.Workouts {
+		workout := ConvertToWorkoutResponse(w)
+		res.Workouts = append(res.Workouts, workout)
+	}
+
+	return res, nil
+}
 
 // Convert ms to hour and minute format
 func ConvertMsToHour(ms float64) string {
