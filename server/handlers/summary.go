@@ -31,11 +31,18 @@ func getTodaySummary(c *gin.Context) {
 		return
 	}
 
+	// Temp fix to handle both HTML and JSON responses
+	accept := c.GetHeader("Accept")
+
+	if accept == "application/json" {
+		c.JSON(http.StatusOK, res)
+		return
+	}
+
 	r := gintemplrenderer.New(c.Request.Context(), http.StatusOK, components.Home(res))
 
 	c.Render(http.StatusOK, r)
 
-	//c.JSON(http.StatusOK, res)
 }
 
 func addSummary(c *gin.Context) {
