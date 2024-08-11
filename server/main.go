@@ -28,8 +28,6 @@ func main() {
 	// Start gin server
 	r := gin.Default()
 
-	r.LoadHTMLFiles("./components/index.html")
-
 	ginHtmlRenderer := r.HTMLRender
 	r.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
 
