@@ -12,6 +12,9 @@ templ Home(summary types.SummaryResponse) {
 			<link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" type="text/css"/>
 			<script src="https://cdn.tailwindcss.com"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.2/chart.js" integrity="sha512-n8DscwKN6+Yjr7rI6mL+m9nS4uCEgIrKRFcP0EOkIvzOLUyQgOjWK15hRfoCJQZe0s6XrARyXjpvGFo1w9N3xg==" crossorigin="anonymous"></script>
+			// <script src="http://localhost:8080/assets/js/charts/charts.js"></script>
+			// <script src="http://localhost:8080/assets/js/charts/radar.js"></script>
+			// <script src="http://localhost:8080/assets/js/charts/line.js"></script>
 			<script>
         tailwind.config = {
             theme: {
@@ -50,11 +53,8 @@ templ Home(summary types.SummaryResponse) {
 				<section class="pl-6">
 					<div class="flex w-full justify-between pb-4">
 						<div>
-							<h6 class="text-xs">
-								Mercredi 31 Juillet
-							</h6>
 							<h5 class="text-base-content">
-								Résumé
+								Aujourd'hui
 							</h5>
 						</div>
 						<div class="flex">
@@ -63,7 +63,17 @@ templ Home(summary types.SummaryResponse) {
 					</div>
 					@Summary(summary)
 				</section>
-				@Charts()
+				// @Charts()
+				// Lazy lo
+				// <section
+				// 	class="px-6"
+				// 	id="chart-container"
+				// 	hx-get="/charts"
+				// 	hx-trigger="load"
+				// 	hx-swap="innerHTML"
+				// >
+				// 	<span class="loading loading-spinner loading-lg m-auto"></span>
+				// </section>
 				@Workouts(summary.Workouts)
 			</div>
 			<script src="https://unpkg.com/htmx.org@1.9.10"></script>

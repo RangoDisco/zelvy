@@ -1,23 +1,25 @@
 package components
 
-templ Charts() {
-	<section class="px-6">
-		<div class="carousel w-full bg-base-200 rounded-lg">
-			<div id="item1" class="carousel-item w-full flex justify-center items-center">
-				<canvas id="polar"></canvas>
-			</div>
-			<div id="item2" class="carousel-item w-full flex justify-center items-center">
-				<canvas id="bar"></canvas>
-			</div>
-		</div>
-		<div class="flex w-full justify-center gap-2 mt-2">
-			<span href="#item1" class="h-3 w-3 rounded-full bg-base-content"></span>
-			<span href="#item2" class="h-3 w-3 rounded-full bg-base-content"></span>
-		</div>
-	</section>
-	<script>
-	const polarCtx = document.getElementById('polar');
-	const barCtx = document.getElementById('bar');
+import (
+	"fmt"
+	"github.com/rangodisco/zelby/server/types"
+)
 
+templ Charts(charts []types.Chart) {
+	@templ.JSONScript("charts", charts)
+	<div id="chart-container" class="carousel w-full bg-base-200 rounded-lg flex items-center justify-center">
+		for i := range charts {
+			<div class="carousel-item w-full flex justify-center items-center">
+				<canvas id={ fmt.Sprintf("chart-%d", i) }></canvas>
+			</div>
+		}
+	</div>
+	<div class="flex w-full justify-center gap-2 mt-2">
+		<span href="#item1" class="h-3 w-3 rounded-full bg-base-content"></span>
+		<span href="#item2" class="h-3 w-3 rounded-full bg-base-content"></span>
+	</div>
+	<script>
+	const data = JSON.parse(document.getElementById("charts").textContent);
+	renderCharts(data, document);
 	</script>
 }
