@@ -1,28 +1,30 @@
-const createRadar = (ctx, radar) => {
+const createLine = (line, ctx) => {
   return new Chart(ctx, {
-    type: "radar",
+    type: "line",
     data: {
-      labels: radar.labels,
-      datasets: buildDataSet(radar.datasets),
+      labels: line.labels,
+      datasets: buildDataSet(line.datasets),
     },
     options: {
       layout: {
         padding: 10,
       },
       scales: {
-        r: {
-          ticks: {
-            display: false,
-          },
-          angleLines: {
-            display: false,
-            color: "rgba(255, 255, 255, 0.2)",
-          },
+        x: {
           grid: {
-            color: "rgba(255, 255, 255, 0.2)",
+            color: "rgba(255, 255, 255, 0.3)",
           },
-          pointLabels: {
-            font: 12,
+
+          ticks: {
+            color: "rgba(255, 255, 255, 0.5)",
+          },
+        },
+        y: {
+          grid: {
+            color: "rgba(255, 255, 255, 0.3)",
+          },
+
+          ticks: {
             color: "rgba(255, 255, 255, 0.5)",
           },
         },
