@@ -26,7 +26,7 @@ func IsMetricSuccessful(value float64, goalValue float64, comparison string, isO
 	return value <= goalValue || isOffDay
 }
 
-func ConvertToMetricViewModel(value float64, threshold float64, name string, comparison string, unit string, isOffDay bool) types.MetricViewModel {
+func ConvertToMetricViewModel(goalType string, value float64, threshold float64, name string, comparison string, unit string, isOffDay bool) types.MetricViewModel {
 	var displayValue string
 	var displayThreshold string
 	// Handle weird float/int diff between goals
@@ -49,10 +49,11 @@ func ConvertToMetricViewModel(value float64, threshold float64, name string, com
 		Success:          IsMetricSuccessful(value, threshold, comparison, isOffDay),
 		IsOff:            isOffDay,
 		Progression:      getProgression(value, threshold),
+		Picto:            getMetricPicto(goalType),
 	}
 }
 
-func ConvertToWorkoutMetricViewModel(duration float64, goalValue float64, name string, comparison string, isOffDay bool) types.MetricViewModel {
+func ConvertToWorkoutMetricViewModel(goalType string, duration float64, goalValue float64, name string, comparison string, isOffDay bool) types.MetricViewModel {
 	return types.MetricViewModel{
 		Value:            duration,
 		DisplayValue:     ConvertMsToHour(duration),
@@ -62,6 +63,24 @@ func ConvertToWorkoutMetricViewModel(duration float64, goalValue float64, name s
 		Success:          IsMetricSuccessful(duration, goalValue, comparison, isOffDay),
 		IsOff:            isOffDay,
 		Progression:      getProgression(duration, goalValue),
+		Picto:            getMetricPicto(goalType),
+	}
+}
+
+func getMetricPicto(goalType string) string {
+	switch goalType {
+	case enums.MainWorkoutDuration:
+		return "🏋️"
+	case enums.ExtraWorkoutDuration:
+		return "👟"
+	case enums.KcalBurned:
+		return "🔥"
+	case enums.KcalConsumed:
+		return "🍛"
+	case enums.MilliliterDrank:
+		return "💧"
+	default:
+		return "📊"
 	}
 }
 
@@ -106,12 +125,12 @@ func CompareMetricsWithGoals(metrics []models.Metric, workouts []models.Workout)
 		switch g.Type {
 		case enums.MainWorkoutDuration:
 			duration := CalculateMainWorkoutDuration(workouts)
-			result = ConvertToWorkoutMetricViewModel(duration, g.Value, "Durée séance", g.Comparison, isOffDay)
+			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée séance", g.Comparison, isOffDay)
 		case enums.ExtraWorkoutDuration:
 			duration := CalculateExtraWorkoutDuration(workouts)
-			result = ConvertToWorkoutMetricViewModel(duration, g.Value, "Durée supplémentaire", g.Comparison, isOffDay)
+			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée supplémentaire", g.Comparison, isOffDay)
 		default:
-			result = ConvertToMetricViewModel(value, g.Value, g.Name, g.Comparison, g.Unit, isOffDay)
+			result = ConvertToMetricViewModel(g.Type, value, g.Value, g.Name, g.Comparison, g.Unit, isOffDay)
 		}
 
 		// Add threshold to metric
