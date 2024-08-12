@@ -9,6 +9,7 @@ type MetricViewModel struct {
 	Success          bool    `json:"success"`
 	IsOff            bool    `json:"isOff"`
 	Progression      int     `json:"difference"`
+	Picto            string  `json:"picto"`
 }
 
 type MetricData struct {
