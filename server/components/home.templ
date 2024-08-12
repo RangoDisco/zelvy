@@ -2,48 +2,28 @@ package components
 
 import "github.com/rangodisco/zelby/server/types"
 
-templ Home(summary types.SummaryResponse) {
+templ Home(summary types.SummaryViewModel) {
 	<html lang="en">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta name="description" content="Web dashboard to follow my fitness activity"/>
 			<title>Zelby web dashboard</title>
-			<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
-			<link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet" type="text/css"/>
-			<script src="https://cdn.tailwindcss.com"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.2/chart.js" integrity="sha512-n8DscwKN6+Yjr7rI6mL+m9nS4uCEgIrKRFcP0EOkIvzOLUyQgOjWK15hRfoCJQZe0s6XrARyXjpvGFo1w9N3xg==" crossorigin="anonymous"></script>
-			// <script src="http://localhost:8080/assets/js/charts/charts.js"></script>
-			// <script src="http://localhost:8080/assets/js/charts/radar.js"></script>
-			// <script src="http://localhost:8080/assets/js/charts/line.js"></script>
+			// Tailwind CSS
+			<link href="/assets/css/tailwind.css" rel="stylesheet"/>
+			// Remix icons
+			<link href="/assets/css/remixicon.css" rel="stylesheet"/>
+			/** 
+			 * External JS
+			 */
+			// HTMX
+			<script src="/assets/js/min/htmx.min.js"></script>
+			// Chart.js
+			<script src="/assets/js/charts/chart.umd.js"></script>
+			// <script src="/assets/js/charts/charts.js"></script>
+			// <script src="/assets/js/charts/radar.js"></script>
+			// <script src="/assets/js/charts/line.js"></script>
 			<script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#085CA7",
-                        "primary-content": "#FFFFFFD8",
-                        secondary: "#BFAE71",
-                        "secondary-content": "#0d0b04",
-                        accent: "#DC8850",
-                        "accent-content": "#110602",
-                        neutral: "#1C1C1C",
-                        "neutral-content": "#cccccc",
-                        "base-100": "#000000",
-                        "base-200": "#1C1C1C",
-                        "base-300": "#000000",
-                        "base-content": "#bebebe",
-                        info: "#2563EB",
-                        "info-content": "#d2e2ff",
-                        success: "#52B45C",
-                        "success-content": "#020c03",
-                        warning: "#FFCA11",
-                        "warning-content": "#160f00",
-                        error: "#F35248",
-                        "error-content": "#140202",
-                    },
-                },
-            }
-        }
     </script>
 		</head>
 		<body>
@@ -58,7 +38,7 @@ templ Home(summary types.SummaryResponse) {
 							</h5>
 						</div>
 						<div class="flex">
-							<button class="btn btn-ghost btn-sm"><i class="text-xl text-base-content ri-calendar-fill"></i></button>
+							<button class="btn btn-ghost btn-sm" name="calendar-button"><i class="text-xl text-base-content ri-calendar-fill"></i></button>
 						</div>
 					</div>
 					@Summary(summary)
@@ -76,8 +56,6 @@ templ Home(summary types.SummaryResponse) {
 				// </section>
 				@Workouts(summary.Workouts)
 			</div>
-			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
-			<script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
 		</body>
 	</html>
 }
