@@ -10,9 +10,10 @@ templ Home(summary types.SummaryViewModel) {
 			<meta name="description" content="Web dashboard to follow my fitness activity"/>
 			<title>Zelby web dashboard</title>
 			// Tailwind CSS
-			<link href="/assets/css/tailwind.css" rel="stylesheet"/>
+			<script src="https://cdn.tailwindcss.com"></script>
+			// <link href="/assets/css/tailwind.css" rel="stylesheet"/>
 			// Remix icons
-			<link href="/assets/css/remixicon.css" rel="stylesheet"/>
+			<link href="/assets/css/remix/remixicon.css" rel="stylesheet"/>
 			/** 
 			 * External JS
 			 */
@@ -20,25 +21,58 @@ templ Home(summary types.SummaryViewModel) {
 			<script src="/assets/js/min/htmx.min.js"></script>
 			// Chart.js
 			<script src="/assets/js/charts/chart.umd.js"></script>
+			<link
+				href="https://cdn.jsdelivr.net/npm/daisyui@2.6.0/dist/full.css"
+				rel="stylesheet"
+				type="text/css"
+			/>
 			// <script src="/assets/js/charts/charts.js"></script>
 			// <script src="/assets/js/charts/radar.js"></script>
 			// <script src="/assets/js/charts/line.js"></script>
 			<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#085CA7",
+                        "primary-content": "#FFFFFFD8",
+                        secondary: "#BFAE71",
+                        "secondary-content": "#0d0b04",
+                        accent: "#DC8850",
+                        "accent-content": "#110602",
+                        neutral: "#1C1C1C",
+                        "neutral-content": "#757575",
+                        "base-100": "#161616",
+                        "base-200": "#282828",
+                        "base-300": "#000000",
+                        "base-content": "#bebebe",
+                        info: "#2563EB",
+                        "info-content": "#d2e2ff",
+                        success: "#52B45C",
+                        "success-content": "#020c03",
+                        warning: "#FFCA11",
+                        "warning-content": "#160f00",
+                        error: "#F35248",
+                        "error-content": "#140202",
+                    },
+                },
+            }
+        }
     </script>
 		</head>
-		<body>
-			@Navbar()
+		<body class="bg-base-100">
+			// @Navbar()
 			<div class="container mx-auto py-4 bg-base-100 min-h-screen flex flex-col gap-6">
 				<!--    <h1 class="text-3xl font-bold mb-4 text-primary">Zelby</h1>-->
 				<section class="pl-6">
-					<div class="flex w-full justify-between pb-4">
+					<div class="flex w-full justify-between pb-4 pr-6">
 						<div>
-							<h5 class="text-base-content">
-								Aujourd'hui
+							<h5 class="text-lg text-base-content md:text-2xl">
+								Aujourd'hui { summary.Date }
 							</h5>
 						</div>
 						<div class="flex">
-							<button class="btn btn-ghost btn-sm" name="calendar-button"><i class="text-xl text-base-content ri-calendar-fill"></i></button>
+							// <button class="btn btn-ghost btn-sm" name="calendar-button"><i class="text-xl text-base-content ri-calendar-fill"></i></button>
 						</div>
 					</div>
 					@Summary(summary)

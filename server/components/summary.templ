@@ -14,10 +14,10 @@ templ Summary(summary types.SummaryViewModel) {
 		for _, metric := range summary.Metrics {
 			<div class="carousel-item bg-base-200 flex-col justify-evenly rounded-lg aspect-square w-[45%] md:rounded-none md:aspect-auto md:h-56 md:w-2/5 lg:w-1/5">
 				<div class="pb-4">
-					<h2 class="text-sm px-2 pt-4 pb-2 md:text-lg">{ metric.Name }</h2>
+					<h2 class="text-sm text-primary-content px-2 pt-4 pb-2 md:text-lg">{ metric.Name }</h2>
 					<hr class="opacity-10"/>
 				</div>
-				<div class="flex gap-4 items-center justify-center h-18 p-2 md:border-r md:border-accent-neutral-content">
+				<div class="flex gap-4 items-center justify-center h-18 p-2 text-secondary md:border-r md:border-accent-neutral-content">
 					<p class="text-3xl">{ metric.Picto }</p>
 					<h3 class="text-3xl">{ metric.DisplayValue }</h3>
 				</div>
