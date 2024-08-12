@@ -1,3 +1,9 @@
 # Templ build files
 *_templ.txt
 *_templ.go*
+
+# Deps
+node_modules
+
+# Build file
+server
