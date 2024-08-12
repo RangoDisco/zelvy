@@ -1,6 +1,6 @@
 package types
 
-type MetricResponse struct {
+type MetricViewModel struct {
 	Name             string  `json:"name"`
 	Value            float64 `json:"value"`
 	DisplayValue     string  `json:"displayValue"`

@@ -10,7 +10,7 @@ import (
 	"github.com/rangodisco/zelby/server/types"
 )
 
-func FetchSummaryByDate(date string) (types.SummaryResponse, error) {
+func FetchSummaryByDate(date string) (models.Summary, error) {
 	var summary models.Summary
 	// Start building query
 	q := database.DB.Preload("Workouts").Preload("Metrics").Preload("Winner").
@@ -20,7 +20,7 @@ func FetchSummaryByDate(date string) (types.SummaryResponse, error) {
 	if date != "" {
 		sod, eod, err := FormatDate(date)
 		if err != nil {
-			return types.SummaryResponse{}, err
+			return models.Summary{}, err
 		}
 
 		// Add clause with the date provided
@@ -29,32 +29,31 @@ func FetchSummaryByDate(date string) (types.SummaryResponse, error) {
 
 	// Query handlers from today
 	if err := q.First(&summary).Error; err != nil {
-		return types.SummaryResponse{}, err
+		return models.Summary{}, err
 	}
 
-	// Fetch current goals
-	var goals []models.Goal
-	if err := database.DB.Find(&goals).Error; err != nil {
-		return types.SummaryResponse{}, err
-	}
+	return summary, nil
+}
+
+func CreateSummaryViewModel(summary models.Summary) (types.SummaryViewModel, error) {
 
 	// Build summary response
-	var res types.SummaryResponse
+	var res types.SummaryViewModel
 	res.ID = summary.ID.String()
 	res.Date = summary.Date.Format(time.RFC3339)
 	res.Winner.DiscordID = summary.Winner.DiscordID
 
 	// Compare metrics with goals to see wheter they are successful or not
-	metrics, err := CompareMetricsWithGoals(summary, goals)
+	metrics, err := CompareMetricsWithGoals(summary.Metrics, summary.Workouts)
 	if err != nil {
-		return types.SummaryResponse{}, err
+		return types.SummaryViewModel{}, err
 	}
 
 	res.Metrics = metrics
 
 	// Add workouts to metrics object
 	for _, w := range summary.Workouts {
-		workout := ConvertToWorkoutResponse(w)
+		workout := ConvertToWorkoutViewModel(w)
 		res.Workouts = append(res.Workouts, workout)
 	}
 

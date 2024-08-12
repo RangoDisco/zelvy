@@ -9,7 +9,7 @@ css progress(percent int) {
 	width: { fmt.Sprintf("%d%%", percent) };
 }
 
-templ Summary(summary types.SummaryResponse) {
+templ Summary(summary types.SummaryViewModel) {
 	<div class="carousel gap-2 w-full">
 		for _, metric := range summary.Metrics {
 			<div class="carousel-item flex-col rounded-lg justify-evenly w-[45%] aspect-square bg-base-200">

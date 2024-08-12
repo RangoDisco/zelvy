@@ -18,8 +18,8 @@ func ConvertToWorkoutModel(w types.WorkoutData, summaryId uuid.UUID) models.Work
 	}
 }
 
-func ConvertToWorkoutResponse(w models.Workout) types.WorkoutResponse {
-	return types.WorkoutResponse{
+func ConvertToWorkoutViewModel(w models.Workout) types.WorkoutViewModel {
+	return types.WorkoutViewModel{
 		ID:           w.ID.String(),
 		KcalBurned:   w.KcalBurned,
 		ActivityType: w.ActivityType,
