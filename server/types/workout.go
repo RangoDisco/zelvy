@@ -1,6 +1,6 @@
 package types
 
-type WorkoutResponse struct {
+type WorkoutViewModel struct {
 	ID           string `json:"id"`
 	KcalBurned   int    `json:"kcalBurned"`
 	ActivityType string `json:"activityType"`

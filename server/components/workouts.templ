@@ -2,7 +2,7 @@ package components
 
 import "github.com/rangodisco/zelby/server/types"
 
-templ Workouts(workouts []types.WorkoutResponse) {
+templ Workouts(workouts []types.WorkoutViewModel) {
 	<section class="flex flex-col gap-2 px-6">
 		for _, workout := range workouts {
 			<div class="flex items-center justify-between w-full bg-base-200 rounded-lg h-[70px] px-4">

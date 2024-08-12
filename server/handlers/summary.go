@@ -25,7 +25,14 @@ func getTodaySummary(c *gin.Context) {
 	date := c.Param("date")
 
 	// Fetch summary
-	res, err := services.FetchSummaryByDate(date)
+	summary, err := services.FetchSummaryByDate(date)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Format data to fit fields in the view
+	res, err := services.CreateSummaryViewModel(summary)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

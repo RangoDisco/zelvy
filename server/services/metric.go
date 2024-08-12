@@ -26,7 +26,7 @@ func IsMetricSuccessful(value float64, goalValue float64, comparison string, isO
 	return value <= goalValue || isOffDay
 }
 
-func PopulateMetric(value float64, threshold float64, name string, comparison string, unit string, isOffDay bool) types.MetricResponse {
+func ConvertToMetricViewModel(value float64, threshold float64, name string, comparison string, unit string, isOffDay bool) types.MetricViewModel {
 	var displayValue string
 	var displayThreshold string
 	// Handle weird float/int diff between goals
@@ -40,7 +40,7 @@ func PopulateMetric(value float64, threshold float64, name string, comparison st
 		displayThreshold = strconv.Itoa(int(threshold))
 	}
 
-	return types.MetricResponse{
+	return types.MetricViewModel{
 		Value:            value,
 		DisplayValue:     displayValue,
 		Threshold:        threshold,
@@ -52,8 +52,8 @@ func PopulateMetric(value float64, threshold float64, name string, comparison st
 	}
 }
 
-func PopulateWorkoutMetric(duration float64, goalValue float64, name string, comparison string, isOffDay bool) types.MetricResponse {
-	return types.MetricResponse{
+func ConvertToWorkoutMetricViewModel(duration float64, goalValue float64, name string, comparison string, isOffDay bool) types.MetricViewModel {
+	return types.MetricViewModel{
 		Value:            duration,
 		DisplayValue:     ConvertMsToHour(duration),
 		Threshold:        goalValue,
@@ -78,36 +78,40 @@ func getProgression(value float64, threshold float64) int {
 	return progression
 }
 
-func CompareMetricsWithGoals(summary models.Summary, goals []models.Goal) ([]types.MetricResponse, error) {
-	var comparedMetrics []types.MetricResponse
+func CompareMetricsWithGoals(metrics []models.Metric, workouts []models.Workout) ([]types.MetricViewModel, error) {
+
+	// Firt fetch all goals
+	goals, err := FetchGoals()
+	if err != nil {
+		return []types.MetricViewModel{}, err
+	}
+
+	var comparedMetrics []types.MetricViewModel
 
 	// Create a map of metrics to values and then iterate over the goals
 	metricMap := make(map[string]float64)
-	for _, m := range summary.Metrics {
+	for _, m := range metrics {
 		metricMap[m.Type] = m.Value
 	}
 
 	for _, g := range goals {
-		var result types.MetricResponse
-		var isOffDay bool
+		var result types.MetricViewModel
 		// Find metric by goal type
 		value := metricMap[g.Type]
 
 		// Search if goal is off for today
-		offDay := FetchByGoalAndDate(g.ID)
-		if offDay != nil {
-			isOffDay = true
-		}
+		isOffDay := IsOff(g.ID)
 
 		// Populate metric based on goal type
-		if g.Type == enums.MainWorkoutDuration {
-			duration := CalculateMainWorkoutDuration(summary.Workouts)
-			result = PopulateWorkoutMetric(duration, g.Value, "Durée séance", g.Comparison, isOffDay)
-		} else if g.Type == enums.ExtraWorkoutDuration {
-			duration := CalculateExtraWorkoutDuration(summary.Workouts)
-			result = PopulateWorkoutMetric(duration, g.Value, "Durée supplémentaire", g.Comparison, isOffDay)
-		} else {
-			result = PopulateMetric(value, g.Value, g.Name, g.Comparison, g.Unit, isOffDay)
+		switch g.Type {
+		case enums.MainWorkoutDuration:
+			duration := CalculateMainWorkoutDuration(workouts)
+			result = ConvertToWorkoutMetricViewModel(duration, g.Value, "Durée séance", g.Comparison, isOffDay)
+		case enums.ExtraWorkoutDuration:
+			duration := CalculateExtraWorkoutDuration(workouts)
+			result = ConvertToWorkoutMetricViewModel(duration, g.Value, "Durée supplémentaire", g.Comparison, isOffDay)
+		default:
+			result = ConvertToMetricViewModel(value, g.Value, g.Name, g.Comparison, g.Unit, isOffDay)
 		}
 
 		// Add threshold to metric
