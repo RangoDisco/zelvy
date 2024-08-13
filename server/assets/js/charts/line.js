@@ -3,7 +3,7 @@ const createLine = (line, ctx) => {
     type: "line",
     data: {
       labels: line.labels,
-      datasets: buildDataSet(line.datasets),
+      datasets: buildLineSet(line.datasets),
     },
     options: {
       layout: {
@@ -41,7 +41,7 @@ const createLine = (line, ctx) => {
   });
 };
 
-const buildDataSet = (rawDatasets) => {
+const buildLineSet = (rawDatasets) => {
   const sets = [];
   rawDatasets.forEach((set) => {
     sets.push({
