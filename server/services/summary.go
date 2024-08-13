@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -40,7 +41,7 @@ func CreateSummaryViewModel(summary models.Summary) (types.SummaryViewModel, err
 	// Build summary response
 	var res types.SummaryViewModel
 	res.ID = summary.ID.String()
-	res.Date = summary.Date.Format(time.RFC3339)
+	res.Date = fmt.Sprintf("%d %s %d", summary.Date.Day(), summary.Date.Month(), summary.Date.Year())
 	res.Winner.DiscordID = summary.Winner.DiscordID
 
 	// Compare metrics with goals to see wheter they are successful or not
