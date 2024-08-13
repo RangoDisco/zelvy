@@ -1,11 +1,41 @@
 package services
 
 import (
+	"time"
+
 	"github.com/google/uuid"
+	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/enums"
 	"github.com/rangodisco/zelby/server/models"
 	"github.com/rangodisco/zelby/server/types"
 )
+
+func FetchChartWorkouts() ([]models.Workout, []models.Workout, error) {
+	// Get dates of the current week
+	sow := time.Now().Add(-168 * time.Hour)
+	eow := time.Now()
+
+	// Get the number of workouts between 7 days ago and now
+	thisWeek, err := FetchWorkoutsByDateRange(sow, eow)
+	if err != nil {
+		return []models.Workout{}, []models.Workout{}, err
+	}
+
+	// Get the number of workouts between 14 days ago and 7 days ago
+	lastWeek, err := FetchWorkoutsByDateRange(sow.Add(-168*time.Hour), sow)
+	if err != nil {
+		return []models.Workout{}, []models.Workout{}, err
+	}
+
+	return thisWeek, lastWeek, nil
+
+}
+
+func FetchWorkoutsByDateRange(startDate time.Time, endDate time.Time) ([]models.Workout, error) {
+	var workouts []models.Workout
+	err := database.DB.Raw("SELECT * FROM workouts w INNER JOIN summaries s ON w.summary_id = s.id WHERE s.date >= ? AND s.date < ?", startDate, endDate).Scan(&workouts).Error
+	return workouts, err
+}
 
 func ConvertToWorkoutModel(w types.WorkoutData, summaryId uuid.UUID) models.Workout {
 	return models.Workout{

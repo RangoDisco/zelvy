@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/rangodisco/zelby/server/components"
+	"github.com/rangodisco/zelby/server/services"
 	"github.com/rangodisco/zelby/server/types"
 )
 
@@ -11,22 +12,16 @@ func RegisterChartRoutes(r *gin.Engine) {
 }
 
 func getCharts(c *gin.Context) {
-	data := []types.Chart{
-		{
-			Type:   "radar",
-			Labels: []string{"Salle", "Marche", "Footing"},
-			Datasets: []types.Dataset{
-				{
-					Label: "Cette semaine",
-					Data:  []int{6, 7, 2},
-				},
-				{
-					Label: "La semaine dernière",
-					Data:  []int{3, 4, 5},
-				},
-			},
-		},
+	var charts []types.Chart
+	// Fetch radar chart (workout type)
+	radar, err := services.GetWorkoutTypeChart()
+
+	charts = append(charts, radar)
+
+	if err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
 	}
 
-	components.Charts(data).Render(c.Request.Context(), c.Writer)
+	components.Charts(charts).Render(c.Request.Context(), c.Writer)
 }

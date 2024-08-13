@@ -39,7 +39,7 @@ func main() {
 	handlers.RegisterGoalRoutes(r)
 	handlers.RegisterOffDayRoutes(r)
 	handlers.RegisterUserRoutes(r)
-	// handlers.RegisterChartRoutes(r)
+	handlers.RegisterChartRoutes(r)
 
 	// Serve static files
 	r.Static("/assets", "./assets")
