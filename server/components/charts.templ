@@ -16,8 +16,9 @@ templ Charts(charts []types.Chart) {
 			}
 		</div>
 		<div class="flex w-full justify-center gap-2 mt-2">
-			<span href="#item1" class="h-3 w-3 rounded-full bg-base-content"></span>
-			<span href="#item2" class="h-3 w-3 rounded-full bg-base-content"></span>
+			for i := range charts {
+				<span href={ fmt.Sprintf("chart-%d", i) } class="h-3 w-3 rounded-full bg-base-content"></span>
+			}
 		</div>
 	</div>
 	<script>
