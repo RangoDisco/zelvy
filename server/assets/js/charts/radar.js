@@ -3,7 +3,7 @@ const createRadar = (radar, ctx) => {
     type: "radar",
     data: {
       labels: radar.labels,
-      datasets: buildDataSet(radar.datasets),
+      datasets: buildRadarSet(radar.datasets),
     },
     options: {
       layout: {
@@ -39,7 +39,7 @@ const createRadar = (radar, ctx) => {
   });
 };
 
-const buildDataSet = (rawDatasets) => {
+const buildRadarSet = (rawDatasets) => {
   const sets = [];
   rawDatasets.forEach((set) => {
     sets.push({
