@@ -1,8 +1,6 @@
 const renderCharts = (charts, document) => {
-  console.log(charts, document);
   charts.forEach((chartData, index) => {
     const ctx = document.getElementById(`chart-${index}`);
-    console.log(ctx);
     renderIndividualChart(chartData, ctx);
   });
 };
