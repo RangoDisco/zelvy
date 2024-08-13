@@ -10,13 +10,9 @@ templ Home(summary types.SummaryViewModel) {
 			<meta name="description" content="Web dashboard to follow my fitness activity"/>
 			<title>Zelby web dashboard</title>
 			// Tailwind CSS
-			<script src="https://cdn.tailwindcss.com"></script>
-			// <link href="/assets/css/tailwind.css" rel="stylesheet"/>
+			<link href="/assets/css/tailwind.css" rel="stylesheet"/>
 			// Remix icons
 			<link href="/assets/css/remix/remixicon.css" rel="stylesheet"/>
-			/** 
-			 * External JS
-			 */
 			// HTMX
 			<script src="/assets/js/min/htmx.min.js"></script>
 			// Chart.js
@@ -26,39 +22,9 @@ templ Home(summary types.SummaryViewModel) {
 				rel="stylesheet"
 				type="text/css"
 			/>
-			// <script src="/assets/js/charts/charts.js"></script>
-			// <script src="/assets/js/charts/radar.js"></script>
-			// <script src="/assets/js/charts/line.js"></script>
-			<script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: "#085CA7",
-                        "primary-content": "#FFFFFFD8",
-                        secondary: "#BFAE71",
-                        "secondary-content": "#0d0b04",
-                        accent: "#DC8850",
-                        "accent-content": "#110602",
-                        neutral: "#1C1C1C",
-                        "neutral-content": "#757575",
-                        "base-100": "#161616",
-                        "base-200": "#282828",
-                        "base-300": "#000000",
-                        "base-content": "#bebebe",
-                        info: "#2563EB",
-                        "info-content": "#d2e2ff",
-                        success: "#52B45C",
-                        "success-content": "#020c03",
-                        warning: "#FFCA11",
-                        "warning-content": "#160f00",
-                        error: "#F35248",
-                        "error-content": "#140202",
-                    },
-                },
-            }
-        }
-    </script>
+			<script src="/assets/js/charts/charts.js"></script>
+			<script src="/assets/js/charts/radar.js"></script>
+			<script src="/assets/js/charts/line.js"></script>
 		</head>
 		<body class="bg-base-100">
 			// @Navbar()
@@ -77,18 +43,18 @@ templ Home(summary types.SummaryViewModel) {
 					</div>
 					@Summary(summary)
 				</section>
-				// @Charts()
-				// Lazy lo
-				// <section
-				// 	class="px-6"
-				// 	id="chart-container"
-				// 	hx-get="/charts"
-				// 	hx-trigger="load"
-				// 	hx-swap="innerHTML"
-				// >
-				// 	<span class="loading loading-spinner loading-lg m-auto"></span>
-				// </section>
-				@Workouts(summary.Workouts)
+				<section class="grid grid-cols-1 lg:grid-cols-2 px-6 gap-2">
+					<div
+						class="m-auto"
+						id="chart-container"
+						hx-get="/charts"
+						hx-trigger="load"
+						hx-swap="outerHTML"
+					>
+						<span class="loading loading-spinner loading-lg m-auto"></span>
+					</div>
+					@Workouts(summary.Workouts)
+				</section>
 			</div>
 		</body>
 	</html>

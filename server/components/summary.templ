@@ -10,7 +10,7 @@ css progress(percent int) {
 }
 
 templ Summary(summary types.SummaryViewModel) {
-	<div class="carousel bg-base-900 gap-2 lg:gap-0 md:rounded-lg md:mr-6">
+	<div class="carousel bg-base-900 gap-2 md:gap-0 md:rounded-lg md:mr-6">
 		for _, metric := range summary.Metrics {
 			<div class="carousel-item bg-base-200 flex-col justify-evenly rounded-lg aspect-square w-[45%] md:rounded-none md:aspect-auto md:h-56 md:w-2/5 lg:w-1/5">
 				<div class="pb-4">
