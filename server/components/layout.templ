@@ -8,11 +8,8 @@ templ Layout() {
 			<meta name="description" content="Web dashboard to follow my fitness activity"/>
 			<title>Zelby web dashboard</title>
 			<link rel="icon" href="/assets/favicon.ico"/>
-			<link
-				href="https://cdn.jsdelivr.net/npm/daisyui@2.6.0/dist/full.css"
-				rel="stylesheet"
-				type="text/css"
-			/>
+			// DaisyUI
+			<link href="/assets/css/daisyui.css" rel="stylesheet"/>
 			// Tailwind CSS
 			<link href="/assets/css/tailwind.css" rel="stylesheet"/>
 			// Remix icons
@@ -20,10 +17,10 @@ templ Layout() {
 			// HTMX
 			<script src="/assets/js/min/htmx.min.js"></script>
 			// Chart.js
-			<script src="/assets/js/charts/chart.umd.js"></script>
-			<script src="/assets/js/charts/charts.js"></script>
-			<script src="/assets/js/charts/radar.js"></script>
-			<script src="/assets/js/charts/line.js"></script>
+			<script src="/assets/js/charts/chart.umd.js" defer></script>
+			<script src="/assets/js/charts/charts.js" defer></script>
+			<script src="/assets/js/charts/radar.js" defer></script>
+			<script src="/assets/js/charts/line.js" defer></script>
 		</head>
 		<body class="bg-base-100 min-h-screen">
 			<main>
