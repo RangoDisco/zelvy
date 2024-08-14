@@ -2,10 +2,12 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/rangodisco/zelby/server/components"
 	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/gintemplrenderer"
 	"github.com/rangodisco/zelby/server/handlers"
@@ -43,6 +45,12 @@ func main() {
 
 	// Serve static files
 	r.Static("/assets", "./assets")
+
+	// Handle 404
+	r.NoRoute(func(c *gin.Context) {
+		r := gintemplrenderer.New(c.Request.Context(), http.StatusNotFound, components.NotFound())
+		c.Render(404, r)
+	})
 
 	// Run server
 	err = r.Run()
