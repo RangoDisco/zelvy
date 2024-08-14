@@ -12,6 +12,6 @@ const renderIndividualChart = (chartData, ctx) => {
     // case "line":
     //   createLine(chartData, ctx);
     default:
-      throw new Error("Invalid chart type");
+    // throw new Error("Invalid chart type");
   }
 };
