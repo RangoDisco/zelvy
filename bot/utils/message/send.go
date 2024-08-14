@@ -1,10 +1,11 @@
 package message
 
 import (
-	"github.com/bwmarrin/discordgo"
-	"github.com/rangodisco/zelby/bot/utils"
 	"log"
 	"os"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/rangodisco/zelby/bot/utils"
 )
 
 /**
@@ -23,7 +24,7 @@ func SendRecap(s *discordgo.Session, channelID string, summary utils.Summary) {
 
 	// Add metrics Fields
 	for _, metric := range summary.Metrics {
-		embed.AddField(formatFieldTitle(metric.Name, metric.Success), metric.DisplayValue+"/"+metric.Threshold)
+		embed.AddField(formatFieldTitle(metric.Name, metric.Success), metric.DisplayValue+"/"+metric.DisplayThreshold)
 	}
 
 	sendEmbedMessage(s, channelID, embed.MessageEmbed)

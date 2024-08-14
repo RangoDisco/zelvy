@@ -14,12 +14,15 @@ type WorkoutData struct {
 }
 
 type Metric struct {
-	Name         string `json:"name"`
-	Type         string `json:"type"`
-	Value        int    `json:"value"`
-	DisplayValue string `json:"displayValue"`
-	Threshold    string `json:"threshold"`
-	Success      bool   `json:"success"`
+	Name             string  `json:"name"`
+	Value            float64 `json:"value"`
+	DisplayValue     string  `json:"displayValue"`
+	Threshold        float64 `json:"threshold"`
+	DisplayThreshold string  `json:"displayThreshold"`
+	Success          bool    `json:"success"`
+	IsOff            bool    `json:"isOff"`
+	Progression      int     `json:"difference"`
+	Picto            string  `json:"picto"`
 }
 
 type Summary struct {
@@ -40,7 +43,7 @@ type Winner struct {
  */
 func FetchSummary() (Summary, error) {
 
-	resp, err := Request("GET", "/api/summaries/today", nil)
+	resp, err := Request("GET", "/summaries", nil)
 	if err != nil || resp.StatusCode() != 200 {
 		return Summary{}, fmt.Errorf("error fetching summary: %d %v", resp.StatusCode(), err)
 	}

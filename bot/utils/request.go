@@ -2,8 +2,9 @@ package utils
 
 import (
 	"fmt"
-	"github.com/go-resty/resty/v2"
 	"os"
+
+	"github.com/go-resty/resty/v2"
 )
 
 func Request(m string, e string, b interface{}) (*resty.Response, error) {
@@ -14,7 +15,9 @@ func Request(m string, e string, b interface{}) (*resty.Response, error) {
 	var err error
 
 	client := resty.New()
-	req := client.R().SetHeader("X-API-KEY", apiKey)
+	req := client.R().
+		SetHeader("X-API-KEY", apiKey).
+		SetHeader("Accept", "application/json")
 
 	if b != nil {
 		req.SetBody(b)
