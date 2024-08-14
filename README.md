@@ -4,6 +4,8 @@
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/rangodisco/zelvy/latest)
 ![GitHub last commit](https://img.shields.io/github/last-commit/rangodisco/zelvy)
 
+<img src="assets/preview.png" height="520" alt="preview">
+
 # What it is
 
 Discord bot created in order to keep me accountable for my daily fitness related tasks. \
