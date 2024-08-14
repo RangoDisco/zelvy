@@ -3,6 +3,9 @@ module.exports = {
   content: ["./components/**/*.templ"],
   theme: {
     extend: {
+      fontFamily: {
+        basier: ["Basier", "sans-serif"],
+      },
       colors: {
         primary: "#085CA7",
         "primary-content": "#FFFFFFD8",

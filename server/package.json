@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tailwindcss build -o assets/css/tailwind.css --minify",
-    "watch": "tailwindcss build -o assets/css/tailwind.css --watch"
+    "build": "tailwindcss build assets/css/main.css -o assets/css/tailwind.css --minify",
+    "watch": "tailwindcss build assets/css/main.css -o assets/css/tailwind.css --watch"
   },
   "keywords": [],
   "author": "",
