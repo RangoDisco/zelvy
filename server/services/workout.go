@@ -86,7 +86,7 @@ func getWorkoutPicto(activityType string) string {
 	case enums.WorkoutTypeStrength:
 		return "/assets/img/strength.png"
 	default:
-		return "/assets/img/strength.png"
+		return "/assets/img/cardio.png"
 	}
 }
 
