@@ -8,6 +8,7 @@ import (
 	"github.com/rangodisco/zelby/server/types"
 )
 
+// TODO: rework whole system
 func GetWorkoutTypeChart() (types.Chart, error) {
 	var chart types.Chart
 	chart.Type = "radar"
@@ -46,6 +47,7 @@ func BuildWorkoutTypeDataset(workouts []models.Workout, chart types.Chart, i int
 		count := 0
 		// Iterate over workouts and add data to the corresponding index
 		for _, w := range workouts {
+			// TODO: absolutely find a fix to this monstrosity
 			switch w.ActivityType {
 			case enums.WorkoutTypeStrength:
 				if l == "Salle" {
