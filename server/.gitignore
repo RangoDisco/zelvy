@@ -7,3 +7,6 @@ node_modules
 
 # Build file
 server
+
+# Local css
+assets/css
