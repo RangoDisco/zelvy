@@ -11,6 +11,7 @@ import (
 	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/gintemplrenderer"
 	"github.com/rangodisco/zelby/server/handlers"
+	"github.com/rangodisco/zelby/server/middlewares"
 )
 
 func main() {
@@ -34,7 +35,7 @@ func main() {
 	r.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
 
 	// Middleware to check API key in header
-	//r.Use(middlewares.CheckKey())
+	r.Use(middlewares.CheckKey([]string{"/", "/summaries", "/charts", "/assets"}))
 
 	// Register handlers from handlers package
 	handlers.RegisterSummaryRoutes(r)
