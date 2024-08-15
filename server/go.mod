@@ -3,6 +3,7 @@ module github.com/rangodisco/zelby/server
 go 1.21.5
 
 require (
+	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/a-h/templ v0.2.747
 	github.com/gin-gonic/gin v1.10.0
 	github.com/google/uuid v1.6.0
@@ -13,6 +14,7 @@ require (
 )
 
 require (
+	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/bytedance/sonic v1.11.6 // indirect
 	github.com/bytedance/sonic/loader v0.1.1 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
