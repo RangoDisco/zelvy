@@ -2,12 +2,13 @@ package database
 
 import (
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/rangodisco/zelby/server/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"log"
-	"os"
 )
 
 var DB *gorm.DB
