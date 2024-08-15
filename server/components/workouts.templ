@@ -3,21 +3,21 @@ package components
 import "github.com/rangodisco/zelby/server/types"
 
 templ Workouts(workouts []types.WorkoutViewModel) {
-	<section class="flex flex-col gap-2 w-full md:mx-auto">
+	<section data-testid="workoutsTemplate" class="flex flex-col gap-2 w-full md:mx-auto">
 		for _, workout := range workouts {
-			<div class="flex items-center justify-between w-full bg-base-200 rounded-lg h-[70px] px-4">
+			<div data-testid="workoutsTemplateWorkout" class="flex items-center justify-between w-full bg-base-200 rounded-lg h-[70px] px-4">
 				<div class="w-full flex gap-4 items-center">
 					<img
 						src={ workout.Picto }
 						alt="workout"
 						class="w-10 h-10 rounded-md"
 					/>
-					<div class="">
-						<p class="text-lg text-primary-content">{ workout.Name }</p>
-						<p class="text-xl text-base-content">{ workout.Duration }</p>
+					<div>
+						<p data-testid="workoutsTemplateWorkoutName" class="text-lg text-primary-content">{ workout.Name }</p>
+						<p data-testid="workoutsTemplateWorkoutDuration" class="text-xl text-base-content">{ workout.Duration }</p>
 					</div>
 				</div>
-				<div class="self-end pb-2 text-sm">{ workout.ActivityType }</div>
+				<div data-testid="workoutsTemplateWorkoutActivityType" class="self-end pb-2 text-sm">{ workout.ActivityType }</div>
 			</div>
 		}
 	</section>
