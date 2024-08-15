@@ -1,42 +1,35 @@
 package components
 
-import (
-	"fmt"
-	"github.com/rangodisco/zelby/server/types"
-)
-
-css progress(percent int) {
-	width: { fmt.Sprintf("%d%%", percent) };
-}
+import "github.com/rangodisco/zelby/server/types"
 
 templ Summary(summary types.SummaryViewModel) {
-	<div class="carousel w-full bg-base-900 gap-2 md:gap-0 md:rounded-lg">
-		for _, metric := range summary.Metrics {
-			<div class="carousel-item bg-base-200 flex-col justify-evenly rounded-lg aspect-square w-[45%] md:rounded-none md:px-2 md:aspect-auto md:h-56 md:w-1/5">
-				<div class="pb-4">
-					<h2 class="text-sm text-primary-content px-2 pt-4 pb-2 md:text-lg">{ metric.Name }</h2>
-					<hr class="opacity-10"/>
-				</div>
-				<div class="flex gap-4 items-center justify-center h-18 p-2 text-secondary md:border-r md:border-accent-neutral-content">
-					<p class="text-3xl">{ metric.Picto }</p>
-					<h3 class="text-3xl">{ metric.DisplayValue }</h3>
-				</div>
-				<div class="pt-2 pb-4 px-2">
-					<p class="opacity-80 text-sm mb-1 ml-2 md:text-lg">Objectif: { metric.DisplayThreshold }</p>
-					<div class="relative h-2 w-full">
-						<div
-							class={ "bg-primary h-2 rounded-l-full absolute top-0 left-0", progress(metric.Progression), templ.KV("rounded-r-full", metric.Progression == 100) }
-						></div>
-						<div class="bg-primary-content h-2 w-full rounded-full"></div>
+	@Layout() {
+		<section data-testid="summaryTemplate" class="container mx-auto p-6 bg-base-100 md:mx-none flex flex-col gap-6">
+			<div class="-mr-6 lg:mr-0">
+				<div class="flex w-full justify-between pb-4">
+					<div>
+						<h5 data-testid="summaryTemplateDate" class="text-lg text-base-content md:text-2xl">
+							{ summary.Date }
+						</h5>
+					</div>
+					<div class="flex">
+						// <button class="btn btn-ghost btn-sm" name="calendar-button"><i class="text-xl text-base-content ri-calendar-fill"></i></button>
 					</div>
 				</div>
+				@SummaryDetails(summary)
 			</div>
-		}
-	</div>
-	<style>
-    /* Hide default scrollbar */
-    .no-scrollbar::-webkit-scrollbar {
-        display: none;
-    }
-</style>
+			<section class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+				<div
+					class="m-auto"
+					id="chart-container"
+					hx-get="/charts"
+					hx-trigger="load"
+					hx-swap="outerHTML"
+				>
+					<span class="loading loading-spinner loading-lg m-auto"></span>
+				</div>
+				@Workouts(summary.Workouts)
+			</section>
+		</section>
+	}
 }
