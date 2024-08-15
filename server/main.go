@@ -35,7 +35,7 @@ func main() {
 	r.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
 
 	// Middleware to check API key in header
-	r.Use(middlewares.CheckKey([]string{"/", "/summaries", "/charts", "/assets"}))
+	r.Use(middlewares.CheckKey([]string{"/", "/summaries", "/charts"}))
 
 	// Register handlers from handlers package
 	handlers.RegisterSummaryRoutes(r)
