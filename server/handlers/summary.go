@@ -46,7 +46,7 @@ func getTodaySummary(c *gin.Context) {
 		return
 	}
 
-	r := gintemplrenderer.New(c.Request.Context(), http.StatusOK, components.Home(res))
+	r := gintemplrenderer.New(c.Request.Context(), http.StatusOK, components.Summary(res))
 
 	c.Render(http.StatusOK, r)
 
