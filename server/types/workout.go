@@ -9,7 +9,7 @@ type WorkoutViewModel struct {
 	Picto        string `json:"picto"`
 }
 
-type WorkoutData struct {
+type WorkoutInputModel struct {
 	KcalBurned   int     `json:"kcalBurned"`
 	ActivityType string  `json:"activityType"`
 	Name         string  `json:"name"`

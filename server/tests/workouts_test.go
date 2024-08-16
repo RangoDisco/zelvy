@@ -12,7 +12,7 @@ import (
 
 func TestWorkoutTemplate(t *testing.T) {
 
-	testWorkouts := factories.CreateWorkout()
+	testWorkouts := factories.CreateWorkoutViewModels()
 
 	r, w := io.Pipe()
 

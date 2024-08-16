@@ -9,7 +9,7 @@ type SummaryViewModel struct {
 	Winner   Winner             `json:"winner"`
 }
 
-type RequestBody struct {
-	Metrics  []MetricData  `json:"metrics"`
-	Workouts []WorkoutData `json:"workouts"`
+type SummaryInputModel struct {
+	Metrics  []MetricInputModel  `json:"metrics"`
+	Workouts []WorkoutInputModel `json:"workouts"`
 }

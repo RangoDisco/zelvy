@@ -9,7 +9,7 @@ import (
 	"github.com/rangodisco/zelby/server/types"
 )
 
-func ConvertToMetricModel(m types.MetricData, summaryId uuid.UUID) models.Metric {
+func ConvertToMetricModel(m types.MetricInputModel, summaryId uuid.UUID) models.Metric {
 	return models.Metric{
 		ID:        uuid.New(),
 		SummaryID: summaryId,

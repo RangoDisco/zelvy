@@ -16,7 +16,7 @@ import (
 
 func RegisterSummaryRoutes(r *gin.Engine) {
 	r.GET("/summaries", getTodaySummary)
-	r.POST("/api/summaries", addSummary)
+	r.POST("/api/summaries", AddSummary)
 }
 
 // ROUTES
@@ -52,9 +52,9 @@ func getTodaySummary(c *gin.Context) {
 
 }
 
-func addSummary(c *gin.Context) {
+func AddSummary(c *gin.Context) {
 	// Parse body
-	var body types.RequestBody
+	var body types.SummaryInputModel
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -86,6 +86,6 @@ func addSummary(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Summary saved successfully!"})
+	c.JSON(http.StatusCreated, gin.H{"message": "Summary saved successfully!"})
 
 }

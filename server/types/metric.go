@@ -12,7 +12,7 @@ type MetricViewModel struct {
 	Picto            string  `json:"picto"`
 }
 
-type MetricData struct {
+type MetricInputModel struct {
 	Value float64 `json:"value"`
 	Type  string  `json:"type"`
 }

@@ -23,7 +23,7 @@ func SetupDatabase() {
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 
-	// Use psql in production, sqlite in development
+	// Use psql in production, sqlite for tests
 	if os.Getenv("GIN_MODE") == "release" {
 		dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 			host, user, password, name, port)
