@@ -1,41 +1,37 @@
-package main
+package tests
 
 import (
-	"log"
+	"encoding/json"
 	"net/http"
-	"os"
+	"net/http/httptest"
+	"strings"
+	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/rangodisco/zelby/server/components"
-	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/gintemplrenderer"
 	"github.com/rangodisco/zelby/server/handlers"
-	"github.com/rangodisco/zelby/server/middlewares"
+	"github.com/rangodisco/zelby/server/tests/factories"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func main() {
-
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Error loading .env file")
-	}
-
-	// Setup database
-	database.SetupDatabase()
-
-	if os.Getenv("GIN_MODE") == "release" {
-		gin.SetMode(gin.ReleaseMode)
-	}
-
+func TestAddSummary(t *testing.T) {
 	// Setup router
 	r := SetupRouter()
 
-	// Run server
-	err = r.Run()
-	if err != nil {
-		return
-	}
+	// Create example input model
+	summaryToCreate := factories.CreateSummaryInputModel()
+
+	w := httptest.NewRecorder()
+
+	userJson, _ := json.Marshal(summaryToCreate)
+	req, _ := http.NewRequest("POST", "/api/summaries", strings.NewReader(string(userJson)))
+
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusCreated, w.Code)
+
 }
 
 func SetupRouter() *gin.Engine {
@@ -46,7 +42,7 @@ func SetupRouter() *gin.Engine {
 	r.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
 
 	// Middleware to check API key in header
-	r.Use(middlewares.CheckKey([]string{"/", "/summaries", "/charts"}))
+	//r.Use(middlewares.CheckKey())
 
 	// Register handlers from handlers package
 	handlers.RegisterSummaryRoutes(r)

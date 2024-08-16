@@ -37,7 +37,7 @@ func FetchWorkoutsByDateRange(startDate time.Time, endDate time.Time) ([]models.
 	return workouts, err
 }
 
-func ConvertToWorkoutModel(w types.WorkoutData, summaryId uuid.UUID) models.Workout {
+func ConvertToWorkoutModel(w types.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
 	return models.Workout{
 		ID:           uuid.New(),
 		SummaryID:    summaryId,
@@ -91,7 +91,7 @@ func getWorkoutPicto(activityType string) string {
 }
 
 // Handles name based on activity type in case null
-func getWorkoutName(w types.WorkoutData) string {
+func getWorkoutName(w types.WorkoutInputModel) string {
 	if w.Name != "" {
 		return w.Name
 	}
