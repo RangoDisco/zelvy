@@ -1,13 +1,14 @@
 package handlers
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/models"
 	"github.com/rangodisco/zelby/server/types"
-	"net/http"
-	"time"
 )
 
 func RegisterUserRoutes(r *gin.Engine) {
@@ -24,9 +25,9 @@ func addUser(c *gin.Context) {
 
 	// Update PaypalEmail in case user already exists
 	var existingUser models.User
-	if database.DB.Where("discord_id = ?", body.DiscordID).First(&existingUser).Error == nil {
+	if database.GetDB().Where("discord_id = ?", body.DiscordID).First(&existingUser).Error == nil {
 		existingUser.PaypalEmail = body.PaypalEmail
-		if err := database.DB.Save(&existingUser).Error; err != nil {
+		if err := database.GetDB().Save(&existingUser).Error; err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
@@ -44,7 +45,7 @@ func addUser(c *gin.Context) {
 	}
 
 	// Persist
-	if err := database.DB.Create(&u).Error; err != nil {
+	if err := database.GetDB().Create(&u).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

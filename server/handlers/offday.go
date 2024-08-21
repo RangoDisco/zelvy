@@ -1,10 +1,11 @@
 package handlers
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/rangodisco/zelby/server/database"
 	"github.com/rangodisco/zelby/server/models"
-	"time"
 )
 
 type CreateOffDayBody struct {
@@ -27,7 +28,7 @@ func setOffDay(c *gin.Context) {
 		var goal models.Goal
 
 		// Ensure that goal exists
-		if err := database.DB.First(&goal, "type = ?", og).Error; err != nil {
+		if err := database.GetDB().First(&goal, "type = ?", og).Error; err != nil {
 			continue
 		}
 
@@ -37,7 +38,7 @@ func setOffDay(c *gin.Context) {
 			Day:    time.Now(),
 		}
 
-		if err := database.DB.Create(&offday).Error; err != nil {
+		if err := database.GetDB().Create(&offday).Error; err != nil {
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
 		}
