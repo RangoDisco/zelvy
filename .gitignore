@@ -25,8 +25,10 @@ go.work.sum
 .idea
 .vscode
 
-# env file
+# env
 .env
+.env.prod
+.env.test
 
 # OS X
 .DS_Store
