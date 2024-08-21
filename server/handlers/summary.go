@@ -81,7 +81,7 @@ func AddSummary(c *gin.Context) {
 	summary.WinnerID = services.PickWinner()
 
 	// Save summary
-	if err := database.DB.Create(&summary).Error; err != nil {
+	if err := database.GetDB().Create(&summary).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

@@ -22,7 +22,7 @@ func RegisterGoalRoutes(r *gin.Engine) {
 func getGoals(c *gin.Context) {
 	var goals []models.Goal
 
-	if err := database.DB.Find(&goals).Error; err != nil {
+	if err := database.GetDB().Find(&goals).Error; err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
@@ -48,7 +48,7 @@ func addGoal(c *gin.Context) {
 		Comparison: body.Comparison,
 	}
 
-	if err := database.DB.Create(&goal).Error; err != nil {
+	if err := database.GetDB().Create(&goal).Error; err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
