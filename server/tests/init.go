@@ -2,38 +2,27 @@ package tests
 
 import (
 	"os"
-	"time"
 
-	"github.com/google/uuid"
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/rangodisco/zelby/server/config"
 	"github.com/rangodisco/zelby/server/database"
-	"github.com/rangodisco/zelby/server/models"
 )
 
-func init() {
-	// Load test environment variables
-	godotenv.Load("../.env.test")
+var Router *gin.Engine
 
-	// Set test environment
+func init() {
+	// Load main environment variables
+	godotenv.Load("../.env")
+
+	// Ensure that the environment is set to test
 	os.Setenv("GIN_MODE", "test")
+
+	// Load environment variables
+	config.LoadEnv()
 
 	database.SetupDatabase()
 
-	seedDatabase()
-}
-
-func seedDatabase() {
-	// Seed database
-	testUser := models.User{
-		ID:          uuid.New(),
-		Username:    "test123",
-		DiscordID:   "123456789",
-		PaypalEmail: "testEmail@gmail.com",
-		CreatedAt:   time.Now(),
-	}
-	res := database.DB.Create(&testUser)
-
-	if res.Error != nil {
-		panic(res.Error)
-	}
+	// Setup router
+	Router = config.SetupRouter()
 }
