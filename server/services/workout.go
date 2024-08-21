@@ -33,7 +33,7 @@ func FetchChartWorkouts() ([]models.Workout, []models.Workout, error) {
 
 func FetchWorkoutsByDateRange(startDate time.Time, endDate time.Time) ([]models.Workout, error) {
 	var workouts []models.Workout
-	err := database.DB.Raw("SELECT * FROM workouts w INNER JOIN summaries s ON w.summary_id = s.id WHERE s.date >= ? AND s.date < ?", startDate, endDate).Scan(&workouts).Error
+	err := database.GetDB().Raw("SELECT * FROM workouts w INNER JOIN summaries s ON w.summary_id = s.id WHERE s.date >= ? AND s.date < ?", startDate, endDate).Scan(&workouts).Error
 	return workouts, err
 }
 

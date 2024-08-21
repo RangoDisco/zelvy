@@ -7,7 +7,7 @@ import (
 
 func FetchGoals() ([]*models.Goal, error) {
 	var goals []*models.Goal
-	if err := database.DB.Find(&goals).Error; err != nil {
+	if err := database.GetDB().Find(&goals).Error; err != nil {
 		return nil, err
 	}
 	return goals, nil

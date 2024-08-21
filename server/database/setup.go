@@ -4,18 +4,32 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/rangodisco/zelby/server/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-var DB *gorm.DB
+var (
+	db  *gorm.DB
+	err error
+)
 
 func SetupDatabase() {
-	var err error
 
+	var ginMode = os.Getenv("GIN_MODE")
+	switch ginMode {
+	case "test":
+		InitTestDatabase()
+	default:
+		InitDatabase()
+	}
+}
+
+func InitDatabase() {
 	// Open a database connection
 	name := os.Getenv("DB_NAME")
 	user := os.Getenv("DB_USER")
@@ -23,22 +37,24 @@ func SetupDatabase() {
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 
-	// Use psql in production, sqlite for tests
-	if os.Getenv("GIN_MODE") == "release" {
-		dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-			host, user, password, name, port)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
+		host, user, password, name, port)
 
-		DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	} else {
-		DB, err = gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+
+	if err != nil {
+		log.Fatal("Failed to connect to the database:", err)
 	}
+}
 
+func InitTestDatabase() {
+	db, err = gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to the database:", err)
 	}
 
 	// Auto-migrate your models
-	err = DB.AutoMigrate(
+	err = db.AutoMigrate(
 		&models.Summary{},
 		&models.Metric{},
 		&models.Workout{},
@@ -50,4 +66,22 @@ func SetupDatabase() {
 	if err != nil {
 		log.Fatal("Failed to migrate models")
 	}
+
+	// Seed database
+	testUser := models.User{
+		ID:          uuid.New(),
+		Username:    "test123",
+		DiscordID:   "123456789",
+		PaypalEmail: "testEmail@gmail.com",
+		CreatedAt:   time.Now(),
+	}
+	res := db.Create(&testUser)
+
+	if res.Error != nil {
+		panic(res.Error)
+	}
+}
+
+func GetDB() *gorm.DB {
+	return db
 }

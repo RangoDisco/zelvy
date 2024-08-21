@@ -14,7 +14,7 @@ import (
 func FetchSummaryByDate(date string) (models.Summary, error) {
 	var summary models.Summary
 	// Start building query
-	q := database.DB.Preload("Workouts").Preload("Metrics").Preload("Winner").
+	q := database.GetDB().Preload("Workouts").Preload("Metrics").Preload("Winner").
 		Order("date desc")
 
 	// In case a date is provided, we want to fetch the summary for that date
@@ -84,7 +84,7 @@ func PickWinner() uuid.UUID {
 	var u models.User
 
 	// Get user from db randomly
-	database.DB.Order("RANDOM()").First(&u)
+	database.GetDB().Order("RANDOM()").First(&u)
 
 	return u.ID
 }
