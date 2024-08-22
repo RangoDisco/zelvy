@@ -3,11 +3,12 @@ package services
 import (
 	"time"
 
+	"server/database"
+	"server/enums"
+	"server/models"
+	"server/types"
+
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelvy/server/database"
-	"github.com/rangodisco/zelvy/server/enums"
-	"github.com/rangodisco/zelvy/server/models"
-	"github.com/rangodisco/zelvy/server/types"
 )
 
 func FetchChartWorkouts() ([]models.Workout, []models.Workout, error) {

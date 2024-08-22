@@ -5,8 +5,9 @@ import (
 	"io"
 	"testing"
 
+	"server/components"
+
 	"github.com/PuerkitoBio/goquery"
-	"github.com/rangodisco/zelvy/server/components"
 )
 
 func TestNav(t *testing.T) {

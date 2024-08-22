@@ -3,9 +3,10 @@ package main
 import (
 	"os"
 
+	"server/config"
+	"server/database"
+
 	"github.com/gin-gonic/gin"
-	"github.com/rangodisco/zelvy/server/config"
-	"github.com/rangodisco/zelvy/server/database"
 )
 
 func main() {

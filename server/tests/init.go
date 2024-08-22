@@ -3,10 +3,11 @@ package tests
 import (
 	"os"
 
+	"server/config"
+	"server/database"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/rangodisco/zelvy/server/config"
-	"github.com/rangodisco/zelvy/server/database"
 )
 
 var Router *gin.Engine

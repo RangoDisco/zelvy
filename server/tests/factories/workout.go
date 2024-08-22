@@ -1,11 +1,12 @@
 package factories
 
 import (
+	"server/enums"
+	"server/models"
+	"server/services"
+	"server/types"
+
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelvy/server/enums"
-	"github.com/rangodisco/zelvy/server/models"
-	"github.com/rangodisco/zelvy/server/services"
-	"github.com/rangodisco/zelvy/server/types"
 )
 
 func CreateWorkoutModels(summaryId uuid.UUID) []models.Workout {

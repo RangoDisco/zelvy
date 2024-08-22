@@ -4,14 +4,15 @@ import (
 	"net/http"
 	"time"
 
+	"server/components"
+	"server/database"
+	"server/gintemplrenderer"
+	"server/models"
+	"server/services"
+	"server/types"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelvy/server/components"
-	"github.com/rangodisco/zelvy/server/database"
-	"github.com/rangodisco/zelvy/server/gintemplrenderer"
-	"github.com/rangodisco/zelvy/server/models"
-	"github.com/rangodisco/zelvy/server/services"
-	"github.com/rangodisco/zelvy/server/types"
 )
 
 func RegisterSummaryRoutes(r *gin.Engine) {

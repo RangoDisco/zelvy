@@ -3,9 +3,10 @@ package handlers
 import (
 	"time"
 
+	"server/database"
+	"server/models"
+
 	"github.com/gin-gonic/gin"
-	"github.com/rangodisco/zelvy/server/database"
-	"github.com/rangodisco/zelvy/server/models"
 )
 
 type CreateOffDayBody struct {

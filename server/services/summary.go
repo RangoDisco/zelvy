@@ -5,10 +5,11 @@ import (
 	"strconv"
 	"time"
 
+	"server/database"
+	"server/models"
+	"server/types"
+
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelvy/server/database"
-	"github.com/rangodisco/zelvy/server/models"
-	"github.com/rangodisco/zelvy/server/types"
 )
 
 func FetchSummaryByDate(date string) (models.Summary, error) {

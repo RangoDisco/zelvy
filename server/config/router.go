@@ -3,11 +3,12 @@ package config
 import (
 	"net/http"
 
+	"server/components"
+	"server/gintemplrenderer"
+	"server/handlers"
+	"server/middlewares"
+
 	"github.com/gin-gonic/gin"
-	"github.com/rangodisco/zelvy/server/components"
-	"github.com/rangodisco/zelvy/server/gintemplrenderer"
-	"github.com/rangodisco/zelvy/server/handlers"
-	"github.com/rangodisco/zelvy/server/middlewares"
 )
 
 func SetupRouter() *gin.Engine {

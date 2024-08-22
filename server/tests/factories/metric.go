@@ -1,10 +1,11 @@
 package factories
 
 import (
+	"server/enums"
+	"server/models"
+	"server/types"
+
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelvy/server/enums"
-	"github.com/rangodisco/zelvy/server/models"
-	"github.com/rangodisco/zelvy/server/types"
 )
 
 func CreateMetricModels(surmmaryId uuid.UUID) []models.Metric {

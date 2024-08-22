@@ -6,8 +6,9 @@ import (
 	"os"
 	"time"
 
+	"server/models"
+
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelvy/server/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"

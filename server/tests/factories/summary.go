@@ -3,9 +3,10 @@ package factories
 import (
 	"time"
 
+	"server/models"
+	"server/types"
+
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelvy/server/models"
-	"github.com/rangodisco/zelvy/server/types"
 )
 
 func CreateSummaryModel() models.Summary {

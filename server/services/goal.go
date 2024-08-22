@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/rangodisco/zelvy/server/database"
-	"github.com/rangodisco/zelvy/server/models"
+	"server/database"
+	"server/models"
 )
 
 func FetchGoals() ([]*models.Goal, error) {

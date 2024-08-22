@@ -1,4 +1,4 @@
-module github.com/rangodisco/zelvy/server
+module server
 
 go 1.21.5
 

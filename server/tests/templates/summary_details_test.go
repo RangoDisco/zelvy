@@ -5,9 +5,10 @@ import (
 	"io"
 	"testing"
 
+	"server/components"
+	"server/tests/factories"
+
 	"github.com/PuerkitoBio/goquery"
-	"github.com/rangodisco/zelvy/server/components"
-	"github.com/rangodisco/zelvy/server/tests/factories"
 )
 
 func TestDisplay(t *testing.T) {

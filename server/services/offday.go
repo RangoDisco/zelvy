@@ -3,9 +3,10 @@ package services
 import (
 	"time"
 
+	"server/database"
+	"server/models"
+
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelvy/server/database"
-	"github.com/rangodisco/zelvy/server/models"
 )
 
 func IsOff(goalId uuid.UUID) bool {

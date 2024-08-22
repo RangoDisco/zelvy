@@ -3,10 +3,11 @@ package services
 import (
 	"strconv"
 
+	"server/enums"
+	"server/models"
+	"server/types"
+
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelvy/server/enums"
-	"github.com/rangodisco/zelvy/server/models"
-	"github.com/rangodisco/zelvy/server/types"
 )
 
 func ConvertToMetricModel(m types.MetricInputModel, summaryId uuid.UUID) models.Metric {

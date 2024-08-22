@@ -4,11 +4,12 @@ import (
 	"net/http"
 	"time"
 
+	"server/database"
+	"server/models"
+	"server/types"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelvy/server/database"
-	"github.com/rangodisco/zelvy/server/models"
-	"github.com/rangodisco/zelvy/server/types"
 )
 
 func RegisterUserRoutes(r *gin.Engine) {
