@@ -1,9 +1,34 @@
 package factories
 
 import (
+	"github.com/google/uuid"
 	"github.com/rangodisco/zelby/server/enums"
+	"github.com/rangodisco/zelby/server/models"
 	"github.com/rangodisco/zelby/server/types"
 )
+
+func CreateMetricModels(surmmaryId uuid.UUID) []models.Metric {
+	return []models.Metric{
+		{
+			ID:        uuid.New(),
+			Type:      enums.KcalBurned,
+			Value:     1091.9,
+			SummaryID: surmmaryId,
+		},
+		{
+			ID:        uuid.New(),
+			Type:      enums.KcalConsumed,
+			Value:     2083,
+			SummaryID: surmmaryId,
+		},
+		{
+			ID:        uuid.New(),
+			Type:      enums.MilliliterDrank,
+			Value:     2200,
+			SummaryID: surmmaryId,
+		},
+	}
+}
 
 func CreateMetricViewModels() []types.MetricViewModel {
 	return []types.MetricViewModel{

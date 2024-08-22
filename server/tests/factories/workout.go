@@ -1,29 +1,44 @@
 package factories
 
 import (
+	"github.com/google/uuid"
 	"github.com/rangodisco/zelby/server/enums"
+	"github.com/rangodisco/zelby/server/models"
+	"github.com/rangodisco/zelby/server/services"
 	"github.com/rangodisco/zelby/server/types"
 )
 
-func CreateWorkoutViewModels() []types.WorkoutViewModel {
-	return []types.WorkoutViewModel{
+func CreateWorkoutModels(summaryId uuid.UUID) []models.Workout {
+	return []models.Workout{
 		{
-			ID:           "id",
+			ID:           uuid.New(),
+			Name:         "Push 1",
 			KcalBurned:   320,
 			ActivityType: enums.WorkoutTypeStrength,
-			Name:         "Push 1",
-			Duration:     "1h00",
-			Picto:        "picto",
-		},
-		{
-			ID:           "id",
+			Duration:     3600,
+			SummaryID:    summaryId,
+		}, {
+			ID:           uuid.New(),
+			Name:         "Marche",
 			KcalBurned:   300,
 			ActivityType: enums.WorkoutTypeWalking,
-			Name:         "Marche",
-			Duration:     "1h00",
-			Picto:        "picto",
+			Duration:     3600,
+			SummaryID:    summaryId,
 		},
 	}
+}
+
+func CreateWorkoutViewModels() []types.WorkoutViewModel {
+	var workoutsViewModels []types.WorkoutViewModel
+
+	workouts := CreateWorkoutModels(uuid.New())
+
+	for _, w := range workouts {
+		workoutsViewModels = append(workoutsViewModels, services.ConvertToWorkoutViewModel(w))
+	}
+
+	return workoutsViewModels
+
 }
 
 func CreateWorkoutInputModels() []types.WorkoutInputModel {

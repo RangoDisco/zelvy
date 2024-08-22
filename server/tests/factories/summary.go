@@ -1,8 +1,24 @@
 package factories
 
 import (
+	"time"
+
+	"github.com/google/uuid"
+	"github.com/rangodisco/zelby/server/models"
 	"github.com/rangodisco/zelby/server/types"
 )
+
+func CreateSummaryModel() models.Summary {
+	id := uuid.New()
+
+	return models.Summary{
+		ID:       id,
+		Date:     time.Now(),
+		Metrics:  CreateMetricModels(id),
+		Workouts: CreateWorkoutModels(id),
+		Winner:   CreateWinner(),
+	}
+}
 
 func CreateSummaryViewModel() types.SummaryViewModel {
 	return types.SummaryViewModel{
@@ -11,7 +27,7 @@ func CreateSummaryViewModel() types.SummaryViewModel {
 		Steps:    1000,
 		Metrics:  CreateMetricViewModels(),
 		Workouts: CreateWorkoutViewModels(),
-		Winner:   CreateWinner(),
+		Winner:   CreateWinnerViewModel(),
 	}
 }
 
@@ -23,8 +39,17 @@ func CreateSummaryInputModel() types.SummaryInputModel {
 
 }
 
-func CreateWinner() types.Winner {
+func CreateWinnerViewModel() types.Winner {
 	return types.Winner{
 		DiscordID: "123456789",
+	}
+}
+
+func CreateWinner() models.User {
+	return models.User{
+		DiscordID:   "123456789",
+		Username:    "Test User",
+		PaypalEmail: "dummy@test.com",
+		CreatedAt:   time.Now(),
 	}
 }
