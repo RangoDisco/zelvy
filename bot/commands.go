@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/bwmarrin/discordgo"
-	"github.com/rangodisco/zelby/bot/utils"
+	"github.com/rangodisco/zelvy/bot/utils"
 	"io"
 	"log"
 	"net/http"
