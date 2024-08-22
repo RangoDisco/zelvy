@@ -1,0 +1,41 @@
+name: Go
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.21"
+
+      - name: Install Git
+        run: |
+          apt-get update
+          apt-get install -y git
+          apt-get install -y gcc libc6-dev
+
+      - name: Install templ
+        run: go install github.com/a-h/templ/cmd/templ@latest
+
+      - name: Build server
+        env:
+          GOPROXY: direct
+          GONOSUMDB: "*"
+          GOSUMDB: off
+        run: cd server && go mod tidy && templ generate && go build -v .
+
+      - name: Test server
+        env:
+          GOPROXY: direct
+          GONOSUMDB: "*"
+          GOSUMDB: off
+        run: cd server && go test -v ./tests/...
