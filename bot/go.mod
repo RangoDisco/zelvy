@@ -1,4 +1,4 @@
-module github.com/rangodisco/zelby/bot
+module github.com/rangodisco/zelvy/bot
 
 go 1.21.5
 

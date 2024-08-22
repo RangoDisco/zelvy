@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/rangodisco/zelby/bot/utils"
+	"github.com/rangodisco/zelvy/bot/utils"
 )
 
 /**
