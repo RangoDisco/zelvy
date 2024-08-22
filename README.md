@@ -24,15 +24,15 @@ Each value is a variable and therefore can be changed at any time (depending on 
 
 This project is composed of 4 parts each containing a `README.md` file with more information:
 
-- 🤖 [Bot](https://github.com/RangoDisco/zelby/tree/main/bot) written in Go with
+- 🤖 [Bot](https://github.com/rangodisco/zelvy/tree/main/bot) written in Go with
   the [discordgo](https://github.com/bwmarrin/discordgo) library
-- 🖥 [Server](https://github.com/RangoDisco/zelby/tree/main/server) written in Go
+- 🖥 [Server](https://github.com/rangodisco/zelvy/tree/main/server) written in Go
   with [Gin](https://github.com/gin-gonic/gin), [Gorm](https://github.com/go-gorm/gorm)
   and [PostgreSQL](https://www.postgresql.org/).
 - 🌐 The server also includes a frontend written
   with [Templ](https://github.com/a-h/templ), [htmx](https://github.com/bigskysoftware/htmx), [TailwindCSS](https://github.com/tailwindlabs/tailwindcss)
   and [DaisyUI](https://github.com/saadeghi/daisyui)
-- 📱 [Companion app](https://github.com/RangoDisco/zelby-companion) Written with Swift, for now on its own repository but
+- 📱 [Companion app](https://github.com/rangodisco/zelvy-companion) Written with Swift, for now on its own repository but
   will be moved here later
 
 # Backstory
