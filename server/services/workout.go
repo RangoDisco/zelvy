@@ -59,7 +59,6 @@ func ConvertToWorkoutViewModel(w models.Workout) types.WorkoutViewModel {
 	}
 }
 
-// Calculate main workout duration
 func CalculateMainWorkoutDuration(workouts []models.Workout) float64 {
 	var duration float64
 	for _, w := range workouts {
@@ -70,7 +69,6 @@ func CalculateMainWorkoutDuration(workouts []models.Workout) float64 {
 	return duration
 }
 
-// Calculate extra workout duration
 func CalculateExtraWorkoutDuration(workouts []models.Workout) float64 {
 	var duration float64
 	for _, w := range workouts {
