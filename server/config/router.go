@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rangodisco/zelby/server/components"
-	"github.com/rangodisco/zelby/server/gintemplrenderer"
-	"github.com/rangodisco/zelby/server/handlers"
-	"github.com/rangodisco/zelby/server/middlewares"
+	"github.com/rangodisco/zelvy/server/components"
+	"github.com/rangodisco/zelvy/server/gintemplrenderer"
+	"github.com/rangodisco/zelvy/server/handlers"
+	"github.com/rangodisco/zelvy/server/middlewares"
 )
 
 func SetupRouter() *gin.Engine {

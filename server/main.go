@@ -4,8 +4,8 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rangodisco/zelby/server/config"
-	"github.com/rangodisco/zelby/server/database"
+	"github.com/rangodisco/zelvy/server/config"
+	"github.com/rangodisco/zelvy/server/database"
 )
 
 func main() {

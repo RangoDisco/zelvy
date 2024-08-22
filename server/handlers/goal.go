@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rangodisco/zelby/server/database"
-	"github.com/rangodisco/zelby/server/models"
+	"github.com/rangodisco/zelvy/server/database"
+	"github.com/rangodisco/zelvy/server/models"
 )
 
 type CreateGoalBody struct {
