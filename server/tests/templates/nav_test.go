@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/rangodisco/zelby/server/components"
+	"github.com/rangodisco/zelvy/server/components"
 )
 
 func TestNav(t *testing.T) {

@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/rangodisco/zelby/server/components"
-	"github.com/rangodisco/zelby/server/services"
-	"github.com/rangodisco/zelby/server/types"
+	"github.com/rangodisco/zelvy/server/components"
+	"github.com/rangodisco/zelvy/server/services"
+	"github.com/rangodisco/zelvy/server/types"
 )
 
 func RegisterChartRoutes(r *gin.Engine) {

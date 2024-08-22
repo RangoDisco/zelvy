@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/rangodisco/zelby/server/components"
-	"github.com/rangodisco/zelby/server/tests/factories"
+	"github.com/rangodisco/zelvy/server/components"
+	"github.com/rangodisco/zelvy/server/tests/factories"
 )
 
 func TestDisplay(t *testing.T) {

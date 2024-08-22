@@ -6,10 +6,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/rangodisco/zelby/server/database"
-	"github.com/rangodisco/zelby/server/tests"
-	"github.com/rangodisco/zelby/server/tests/factories"
-	"github.com/rangodisco/zelby/server/types"
+	"github.com/rangodisco/zelvy/server/database"
+	"github.com/rangodisco/zelvy/server/tests"
+	"github.com/rangodisco/zelvy/server/tests/factories"
+	"github.com/rangodisco/zelvy/server/types"
 
 	"github.com/stretchr/testify/assert"
 )

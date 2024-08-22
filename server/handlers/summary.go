@@ -6,12 +6,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelby/server/components"
-	"github.com/rangodisco/zelby/server/database"
-	"github.com/rangodisco/zelby/server/gintemplrenderer"
-	"github.com/rangodisco/zelby/server/models"
-	"github.com/rangodisco/zelby/server/services"
-	"github.com/rangodisco/zelby/server/types"
+	"github.com/rangodisco/zelvy/server/components"
+	"github.com/rangodisco/zelvy/server/database"
+	"github.com/rangodisco/zelvy/server/gintemplrenderer"
+	"github.com/rangodisco/zelvy/server/models"
+	"github.com/rangodisco/zelvy/server/services"
+	"github.com/rangodisco/zelvy/server/types"
 )
 
 func RegisterSummaryRoutes(r *gin.Engine) {

@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/rangodisco/zelby/server/database"
-	"github.com/rangodisco/zelby/server/models"
-	"github.com/rangodisco/zelby/server/types"
+	"github.com/rangodisco/zelvy/server/database"
+	"github.com/rangodisco/zelvy/server/models"
+	"github.com/rangodisco/zelvy/server/types"
 )
 
 func FetchSummaryByDate(date string) (models.Summary, error) {
