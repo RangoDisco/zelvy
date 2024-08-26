@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"server/components"
-	"server/gintemplrenderer"
-	"server/handlers"
-	"server/middlewares"
+	"server/internal/api/handlers"
+	"server/internal/api/middlewares"
+	"server/pkg/gintemplrenderer"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,7 +29,7 @@ func SetupRouter() *gin.Engine {
 	handlers.RegisterChartRoutes(r)
 
 	// Serve static files
-	r.Static("/assets", "./assets")
+	r.Static("/assets", "../assets")
 
 	// Handle 404
 	r.NoRoute(func(c *gin.Context) {

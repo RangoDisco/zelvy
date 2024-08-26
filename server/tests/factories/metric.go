@@ -1,9 +1,9 @@
 package factories
 
 import (
-	"server/enums"
-	"server/models"
-	"server/types"
+	"server/internal/enums"
+	"server/internal/models"
+	"server/pkg/types"
 
 	"github.com/google/uuid"
 )

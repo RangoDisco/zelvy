@@ -3,8 +3,8 @@ package factories
 import (
 	"time"
 
-	"server/models"
-	"server/types"
+	"server/internal/models"
+	"server/pkg/types"
 
 	"github.com/google/uuid"
 )

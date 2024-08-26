@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"server/config"
-	"server/database"
+	"server/config/database"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
