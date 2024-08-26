@@ -6,10 +6,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"server/database"
+	"server/config/database"
+	"server/pkg/types"
 	"server/tests"
 	"server/tests/factories"
-	"server/types"
 
 	"github.com/stretchr/testify/assert"
 )

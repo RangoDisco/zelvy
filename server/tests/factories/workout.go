@@ -1,10 +1,10 @@
 package factories
 
 import (
-	"server/enums"
-	"server/models"
-	"server/services"
-	"server/types"
+	"server/internal/enums"
+	"server/internal/models"
+	"server/internal/services"
+	"server/pkg/types"
 
 	"github.com/google/uuid"
 )
