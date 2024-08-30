@@ -1,6 +1,8 @@
 package services
 
 import (
+	"encoding/json"
+	"os"
 	"time"
 
 	"server/config/database"
@@ -8,6 +10,7 @@ import (
 	"server/internal/models"
 	"server/pkg/types"
 
+	"github.com/go-resty/resty/v2"
 	"github.com/google/uuid"
 )
 
@@ -36,6 +39,32 @@ func FetchWorkoutsByDateRange(startDate time.Time, endDate time.Time) ([]models.
 	var workouts []models.Workout
 	err := database.GetDB().Raw("SELECT * FROM workouts w INNER JOIN summaries s ON w.summary_id = s.id WHERE s.date >= ? AND s.date < ?", startDate, endDate).Scan(&workouts).Error
 	return workouts, err
+}
+
+func FetchLastWorkoutFromHevy() (types.HevyWorkout, error) {
+	baseUrl := os.Getenv("HEVY_API_URL")
+	apiKey := os.Getenv("HEVY_API_KEY")
+
+	client := resty.New()
+
+	req := client.R().
+		SetHeader("X-API-KEY", apiKey)
+
+	resp, err := req.Get(baseUrl + "/workouts")
+	if err != nil {
+		return types.HevyWorkout{}, err
+	}
+
+	// Convert to HevyRes
+	var hevyRes types.HevyRes
+	if err := json.Unmarshal(resp.Body(), &hevyRes); err != nil {
+		return types.HevyWorkout{}, err
+	}
+
+	latestWorkout := hevyRes.Workouts[0]
+
+	return latestWorkout, nil
+
 }
 
 func ConvertToWorkoutModel(w types.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
