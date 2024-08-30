@@ -2,7 +2,6 @@ package database
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -19,18 +18,20 @@ var (
 	err error
 )
 
-func SetupDatabase() {
-
+func SetupDatabase() error {
+	var err error
 	var ginMode = os.Getenv("GIN_MODE")
 	switch ginMode {
 	case "test":
-		InitTestDatabase()
+		err = InitTestDatabase()
 	default:
-		InitDatabase()
+		err = InitDatabase()
 	}
+
+	return err
 }
 
-func InitDatabase() {
+func InitDatabase() error {
 	// Open a database connection
 	name := os.Getenv("DB_NAME")
 	user := os.Getenv("DB_USER")
@@ -43,15 +44,13 @@ func InitDatabase() {
 
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
-	if err != nil {
-		log.Fatal("Failed to connect to the database:", err)
-	}
+	return err
 }
 
-func InitTestDatabase() {
+func InitTestDatabase() error {
 	db, err = gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Failed to connect to the database:", err)
+		return err
 	}
 
 	// Auto-migrate your models
@@ -65,7 +64,7 @@ func InitTestDatabase() {
 	)
 
 	if err != nil {
-		log.Fatal("Failed to migrate models")
+		return err
 	}
 
 	// Seed database
@@ -79,8 +78,10 @@ func InitTestDatabase() {
 	res := db.Create(&testUser)
 
 	if res.Error != nil {
-		panic(res.Error)
+		return res.Error
 	}
+
+	return nil
 }
 
 func GetDB() *gorm.DB {
