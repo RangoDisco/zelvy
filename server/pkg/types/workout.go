@@ -15,3 +15,24 @@ type WorkoutInputModel struct {
 	Name         string  `json:"name"`
 	Duration     float64 `json:"duration"`
 }
+
+type HevyRes struct {
+	Page      int           `json:"page"`
+	PageCount int           `json:"pageCount"`
+	Workouts  []HevyWorkout `json:"workouts"`
+}
+
+type HevyWorkout struct {
+	ID        string         `json:"id"`
+	Title     string         `json:"title"`
+	Exercices []HevyExercice `json:"exercices"`
+	CreatedAt string         `json:"createdAt"`
+}
+
+type HevyExercice struct {
+	Sets []HevySets `json:"sets"`
+}
+
+type HevySets struct {
+	SetType string `json:"setType"`
+}
