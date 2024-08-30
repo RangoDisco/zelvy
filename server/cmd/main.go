@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"server/config"
@@ -12,10 +13,16 @@ import (
 func main() {
 
 	// Load environment variables
-	config.LoadEnv()
+	err := config.LoadEnv()
+	if err != nil {
+		log.Fatalf("failed to load environment variables: %v", err)
+	}
 
 	// Setup database
-	database.SetupDatabase()
+	err = database.SetupDatabase()
+	if err != nil {
+		log.Fatalf("failed to setup database: %v", err)
+	}
 
 	if os.Getenv("GIN_MODE") == "release" {
 		gin.SetMode(gin.ReleaseMode)
@@ -25,8 +32,8 @@ func main() {
 	r := config.SetupRouter()
 
 	// Run server
-	err := r.Run()
+	err = r.Run()
 	if err != nil {
-		return
+		log.Fatalf("failed to run server: %v", err)
 	}
 }
