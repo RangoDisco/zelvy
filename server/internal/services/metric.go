@@ -10,7 +10,8 @@ import (
 	"github.com/google/uuid"
 )
 
-func ConvertToMetricModel(m types.MetricInputModel, summaryId uuid.UUID) models.Metric {
+// ConvertToMetricModel Converts a metric input to a db model
+func ConvertToMetricModel(m *types.MetricInputModel, summaryId uuid.UUID) models.Metric {
 	return models.Metric{
 		ID:        uuid.New(),
 		SummaryID: summaryId,
@@ -20,13 +21,22 @@ func ConvertToMetricModel(m types.MetricInputModel, summaryId uuid.UUID) models.
 }
 
 // Determine if the metric is successful based on the threshold
-func IsMetricSuccessful(value float64, goalValue float64, comparison string, isOffDay bool) bool {
-	if comparison == "greater" {
-		return value >= goalValue || isOffDay
+func IsMetricSuccessful(value, goalValue float64, comparison string, isOffDay bool) bool {
+	// In case the day is off, goal is always achieved
+	if isOffDay {
+		return true
 	}
-	return value <= goalValue || isOffDay
+	switch comparison {
+	case "greater":
+		return value >= goalValue
+	case "less":
+		return value <= goalValue
+	default:
+		return false
+	}
 }
 
+// ConvertToMetricViewModel Converts a model to ViewModel that matches fields needed by the frontend
 func ConvertToMetricViewModel(goalType string, value float64, threshold float64, name string, comparison string, unit string, isOffDay bool) types.MetricViewModel {
 	var displayValue string
 	var displayThreshold string
@@ -54,6 +64,7 @@ func ConvertToMetricViewModel(goalType string, value float64, threshold float64,
 	}
 }
 
+// ConvertToWorkoutMetricViewModel Converts a workout related metric to ViewModel that matches fields needed by the frontend
 func ConvertToWorkoutMetricViewModel(goalType string, duration float64, goalValue float64, name string, comparison string, isOffDay bool) types.MetricViewModel {
 	return types.MetricViewModel{
 		Value:            duration,
@@ -68,6 +79,7 @@ func ConvertToWorkoutMetricViewModel(goalType string, duration float64, goalValu
 	}
 }
 
+// getMetricPicto Used to display picto in dashboard
 func getMetricPicto(goalType string) string {
 	switch goalType {
 	case enums.MainWorkoutDuration:
@@ -85,8 +97,7 @@ func getMetricPicto(goalType string) string {
 	}
 }
 
-// Used to display progress bar in dashboard
-
+// getProgression Used to display progress bar in dashboard
 func getProgression(value float64, threshold float64) int {
 
 	progression := int(value / threshold * 100)
@@ -98,7 +109,8 @@ func getProgression(value float64, threshold float64) int {
 	return progression
 }
 
-func CompareMetricsWithGoals(metrics []models.Metric, workouts []models.Workout) ([]types.MetricViewModel, error) {
+// CompareMetricsWithGoals Check if goal is achieved for each metric
+func CompareMetricsWithGoals(metrics *[]models.Metric, workouts *[]models.Workout) ([]types.MetricViewModel, error) {
 
 	// Firt fetch all goals
 	goals, err := FetchGoals()
@@ -110,7 +122,7 @@ func CompareMetricsWithGoals(metrics []models.Metric, workouts []models.Workout)
 
 	// Create a map of metrics to values and then iterate over the goals
 	metricMap := make(map[string]float64)
-	for _, m := range metrics {
+	for _, m := range *metrics {
 		metricMap[m.Type] = m.Value
 	}
 

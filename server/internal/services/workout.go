@@ -67,7 +67,12 @@ func FetchLastWorkoutFromHevy() (types.HevyWorkout, error) {
 
 }
 
-func ConvertToWorkoutModel(w types.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
+// func IsWorkoutGoalAchieved(hw types.HevyWorkout) bool {
+// 	// Fetch goal
+
+// }
+
+func ConvertToWorkoutModel(w *types.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
 	return models.Workout{
 		ID:           uuid.New(),
 		SummaryID:    summaryId,
@@ -78,7 +83,7 @@ func ConvertToWorkoutModel(w types.WorkoutInputModel, summaryId uuid.UUID) model
 	}
 }
 
-func ConvertToWorkoutViewModel(w models.Workout) types.WorkoutViewModel {
+func ConvertToWorkoutViewModel(w *models.Workout) types.WorkoutViewModel {
 	return types.WorkoutViewModel{
 		ID:           w.ID.String(),
 		KcalBurned:   w.KcalBurned,
@@ -89,9 +94,9 @@ func ConvertToWorkoutViewModel(w models.Workout) types.WorkoutViewModel {
 	}
 }
 
-func CalculateMainWorkoutDuration(workouts []models.Workout) float64 {
+func CalculateMainWorkoutDuration(workouts *[]models.Workout) float64 {
 	var duration float64
-	for _, w := range workouts {
+	for _, w := range *workouts {
 		if w.ActivityType == "strength" {
 			duration = duration + w.Duration
 		}
@@ -99,9 +104,9 @@ func CalculateMainWorkoutDuration(workouts []models.Workout) float64 {
 	return duration
 }
 
-func CalculateExtraWorkoutDuration(workouts []models.Workout) float64 {
+func CalculateExtraWorkoutDuration(workouts *[]models.Workout) float64 {
 	var duration float64
-	for _, w := range workouts {
+	for _, w := range *workouts {
 		if w.ActivityType != "strength" {
 			duration = duration + w.Duration
 		}
@@ -119,7 +124,7 @@ func getWorkoutPicto(activityType string) string {
 }
 
 // Handles name based on activity type in case null
-func getWorkoutName(w types.WorkoutInputModel) string {
+func getWorkoutName(w *types.WorkoutInputModel) string {
 	if w.Name != "" {
 		return w.Name
 	}

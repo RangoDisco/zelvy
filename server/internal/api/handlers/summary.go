@@ -33,7 +33,7 @@ func getTodaySummary(c *gin.Context) {
 	}
 
 	// Format data to fit fields in the view
-	res, err := services.CreateSummaryViewModel(summary)
+	res, err := services.CreateSummaryViewModel(&summary)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -69,17 +69,22 @@ func AddSummary(c *gin.Context) {
 
 	// Build and add metrics to the summary object
 	for _, m := range body.Metrics {
-		summary.Metrics = append(summary.Metrics, services.ConvertToMetricModel(m, summary.ID))
+		summary.Metrics = append(summary.Metrics, services.ConvertToMetricModel(&m, summary.ID))
 	}
 
 	// Build and add workouts to the summary object
 	for _, w := range body.Workouts {
-		workout := services.ConvertToWorkoutModel(w, summary.ID)
+		workout := services.ConvertToWorkoutModel(&w, summary.ID)
 		summary.Workouts = append(summary.Workouts, workout)
 	}
 
 	// Pick winner
-	summary.WinnerID = services.PickWinner()
+	w, err := services.PickWinner()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	summary.WinnerID = w
 
 	// Save summary
 	if err := database.GetDB().Create(&summary).Error; err != nil {

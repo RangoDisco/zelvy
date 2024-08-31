@@ -12,6 +12,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// FetchSummaryByDate retrives summary from db by date
 func FetchSummaryByDate(date string) (models.Summary, error) {
 	var summary models.Summary
 	// Start building query
@@ -37,7 +38,8 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 	return summary, nil
 }
 
-func CreateSummaryViewModel(summary models.Summary) (types.SummaryViewModel, error) {
+// CreateSummaryViewModel Converts a summary model to ViewModel that matches fields needed by the frontend
+func CreateSummaryViewModel(summary *models.Summary) (types.SummaryViewModel, error) {
 
 	// Build summary response
 	var res types.SummaryViewModel
@@ -46,7 +48,7 @@ func CreateSummaryViewModel(summary models.Summary) (types.SummaryViewModel, err
 	res.Winner.DiscordID = summary.Winner.DiscordID
 
 	// Compare metrics with goals to see wheter they are successful or not
-	metrics, err := CompareMetricsWithGoals(summary.Metrics, summary.Workouts)
+	metrics, err := CompareMetricsWithGoals(&summary.Metrics, &summary.Workouts)
 	if err != nil {
 		return types.SummaryViewModel{}, err
 	}
@@ -55,14 +57,14 @@ func CreateSummaryViewModel(summary models.Summary) (types.SummaryViewModel, err
 
 	// Add workouts to metrics object
 	for _, w := range summary.Workouts {
-		workout := ConvertToWorkoutViewModel(w)
+		workout := ConvertToWorkoutViewModel(&w)
 		res.Workouts = append(res.Workouts, workout)
 	}
 
 	return res, nil
 }
 
-// Convert ms to hour and minute format
+// ConvertMsToHour and minute format
 func ConvertMsToHour(ms float64) string {
 	duration := time.Duration(ms) * time.Second
 	hours := int(duration.Hours())
@@ -81,11 +83,14 @@ func FormatDate(stringDate string) (time.Time, time.Time, error) {
 	return sod, eod, nil
 }
 
-func PickWinner() uuid.UUID {
+// PickWinner randomly selects a user from the database
+func PickWinner() (uuid.UUID, error) {
 	var u models.User
 
 	// Get user from db randomly
-	database.GetDB().Order("RANDOM()").First(&u)
+	if err := database.GetDB().Order("RANDOM()").First(&u); err != nil {
+		return uuid.UUID{}, err.Error
+	}
 
-	return u.ID
+	return u.ID, nil
 }
