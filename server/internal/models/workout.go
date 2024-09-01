@@ -11,6 +11,8 @@ type Workout struct {
 	KcalBurned   int       `json:"kcalBurned"`
 	ActivityType string    `json:"activityType"`
 	Duration     float64   `json:"duration"`
+	HevyId       string    `json:"hevyId"`
+	TotalSets    int       `json:"totalSets"`
 	SummaryID    uuid.UUID
 }
 
