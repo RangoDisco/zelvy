@@ -6,4 +6,5 @@ const (
 	MilliliterDrank      = "LITTER_DRANK"
 	MainWorkoutDuration  = "MAIN_WORKOUT_DURATION"
 	ExtraWorkoutDuration = "EXTRA_WORKOUT_DURATION"
+	TotalSets            = "TOTAL_SETS"
 )
