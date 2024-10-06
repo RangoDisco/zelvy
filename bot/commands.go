@@ -3,12 +3,13 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/bwmarrin/discordgo"
-	"github.com/rangodisco/zelvy/bot/utils"
 	"io"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/rangodisco/zelvy/bot/utils"
 )
 
 type CreateUserBody struct {
@@ -201,7 +202,7 @@ var (
 				}
 				err := s.InteractionRespond(i.Interaction, response)
 				checkErr(err)
-				sendScheduleMessage(s)
+				utils.SendScheduleMessage(s)
 				return
 			}
 		},

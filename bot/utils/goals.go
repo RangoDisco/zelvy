@@ -23,7 +23,7 @@ func SetOffDay(goals []string) (bool, error) {
 	}
 
 	if resp.StatusCode() != 200 {
-		return false, fmt.Errorf("error disabling goals: %v", resp.Status)
+		return false, fmt.Errorf("error disabling goals: %v", resp.StatusCode())
 	}
 
 	return true, nil

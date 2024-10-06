@@ -1,22 +1,21 @@
-package message
+package utils
 
 import (
 	"log"
 	"os"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/rangodisco/zelvy/bot/utils"
 )
 
 /**
  * Send the metrics recap on the previously created thread (by CreateThread)
  */
-func SendRecap(s *discordgo.Session, channelID string, summary utils.Summary) {
+func SendRecap(s *discordgo.Session, channelID string, summary Summary) {
 	// Create new embed
 	embed := NewEmbed().
 		SetTitle("Stats du jour")
 
-	if utils.IsSuccess(summary.Metrics) {
+	if IsSuccess(summary.Metrics) {
 		embed.SetThumbnail(os.Getenv("SUCCESS_PICTURE"))
 	} else {
 		embed.SetThumbnail(os.Getenv("FAILURE_PICTURE"))
@@ -34,7 +33,7 @@ func SendRecap(s *discordgo.Session, channelID string, summary utils.Summary) {
 /**
  * Send the workouts on the previously created thread (by CreateThread)
  */
-func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary utils.Summary) {
+func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary Summary) {
 	embed := NewEmbed().
 		SetTitle("Séances").
 		SetThumbnail(os.Getenv("WORKOUTS_PICTURE"))
@@ -80,4 +79,30 @@ func sendEmbedMessage(s *discordgo.Session, channelID string, embed *discordgo.M
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func SendScheduleMessage(s *discordgo.Session) {
+	// Fetch Summary
+	summary, err := FetchSummary()
+	if err != nil {
+		log.Fatalf("Error fetching summary: %v", err)
+	}
+
+	// Calculate results
+	isSuccess := IsSuccess(summary.Metrics)
+
+	// Create thread
+	thread := CreateThread(s, ChannelID, isSuccess)
+
+	// Send first stats message
+	SendRecap(s, thread.ID, summary)
+
+	// Send workout details
+	SendWorkoutsDetails(s, thread.ID, summary)
+
+	// Get Discord profile of winner
+	winner, _ := s.User(summary.Winner.DiscordID)
+
+	// Send results
+	SendResults(s, thread.ID, isSuccess, winner)
 }
