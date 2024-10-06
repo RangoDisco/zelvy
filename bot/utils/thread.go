@@ -1,9 +1,10 @@
-package message
+package utils
 
 import (
-	"github.com/bwmarrin/discordgo"
 	"log"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 /**
