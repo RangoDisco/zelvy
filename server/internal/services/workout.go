@@ -1,8 +1,6 @@
 package services
 
 import (
-	"encoding/json"
-	"os"
 	"time"
 
 	"server/config/database"
@@ -10,7 +8,6 @@ import (
 	"server/internal/models"
 	"server/pkg/types"
 
-	"github.com/go-resty/resty/v2"
 	"github.com/google/uuid"
 )
 
@@ -35,43 +32,14 @@ func FetchChartWorkouts() ([]models.Workout, []models.Workout, error) {
 
 }
 
+// FetchWorkoutsByDateRange fetches all the workouts in the database between two dates
 func FetchWorkoutsByDateRange(startDate time.Time, endDate time.Time) ([]models.Workout, error) {
 	var workouts []models.Workout
 	err := database.GetDB().Raw("SELECT * FROM workouts w INNER JOIN summaries s ON w.summary_id = s.id WHERE s.date >= ? AND s.date < ?", startDate, endDate).Scan(&workouts).Error
 	return workouts, err
 }
 
-func FetchLastWorkoutFromHevy() (types.HevyWorkout, error) {
-	baseUrl := os.Getenv("HEVY_API_URL")
-	apiKey := os.Getenv("HEVY_API_KEY")
-
-	client := resty.New()
-
-	req := client.R().
-		SetHeader("X-API-KEY", apiKey)
-
-	resp, err := req.Get(baseUrl + "/workouts")
-	if err != nil {
-		return types.HevyWorkout{}, err
-	}
-
-	// Convert to HevyRes
-	var hevyRes types.HevyRes
-	if err := json.Unmarshal(resp.Body(), &hevyRes); err != nil {
-		return types.HevyWorkout{}, err
-	}
-
-	latestWorkout := hevyRes.Workouts[0]
-
-	return latestWorkout, nil
-
-}
-
-// func IsWorkoutGoalAchieved(hw types.HevyWorkout) bool {
-// 	// Fetch goal
-
-// }
-
+// ConvertToWorkoutModel converts a WorkoutInputModel to a Workout model (used when creating a new workout)
 func ConvertToWorkoutModel(w *types.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
 	return models.Workout{
 		ID:           uuid.New(),
@@ -83,6 +51,7 @@ func ConvertToWorkoutModel(w *types.WorkoutInputModel, summaryId uuid.UUID) mode
 	}
 }
 
+// ConvertToWorkoutViewModel converts a Workout model to a WorkoutViewModel (used in the front)
 func ConvertToWorkoutViewModel(w *models.Workout) types.WorkoutViewModel {
 	return types.WorkoutViewModel{
 		ID:           w.ID.String(),
@@ -94,6 +63,7 @@ func ConvertToWorkoutViewModel(w *models.Workout) types.WorkoutViewModel {
 	}
 }
 
+// CalculateMainWorkoutDuration sums the duration of all the gym sessions
 func CalculateMainWorkoutDuration(workouts *[]models.Workout) float64 {
 	var duration float64
 	for _, w := range *workouts {
@@ -104,6 +74,7 @@ func CalculateMainWorkoutDuration(workouts *[]models.Workout) float64 {
 	return duration
 }
 
+// CalculateExtraWorkoutDuration sums the duration of all cardio sessions
 func CalculateExtraWorkoutDuration(workouts *[]models.Workout) float64 {
 	var duration float64
 	for _, w := range *workouts {
