@@ -15,7 +15,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: "1.21"
+          go-version: "1.23"
 
       - name: Install Git
         run: |
@@ -31,7 +31,7 @@ jobs:
           GOPROXY: direct
           GONOSUMDB: "*"
           GOSUMDB: off
-        run: cd server && go mod tidy && templ generate && go build -v .
+        run: cd server && go mod tidy && templ generate && go build -v cmd/.
 
       - name: Test server
         env:
