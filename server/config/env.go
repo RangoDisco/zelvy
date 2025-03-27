@@ -2,10 +2,9 @@ package config
 
 import (
 	"fmt"
+	"github.com/joho/godotenv"
 	"os"
 	"path/filepath"
-
-	"github.com/joho/godotenv"
 )
 
 func LoadEnv() error {
@@ -16,7 +15,7 @@ func LoadEnv() error {
 	}
 
 	// Load main .env file
-	mainEnvPath := filepath.Join(cwd, "../.env")
+	mainEnvPath := filepath.Join(cwd, ".env")
 	if err := godotenv.Load(mainEnvPath); err != nil {
 		return fmt.Errorf("error loading .env file: %w", err)
 	}
@@ -26,9 +25,9 @@ func LoadEnv() error {
 
 	switch mode {
 	case "test":
-		envFile = "../.env.test"
+		envFile = ".env.test"
 	case "release":
-		envFile = "../.env.prod"
+		envFile = ".env.prod"
 	default:
 		return nil
 	}
