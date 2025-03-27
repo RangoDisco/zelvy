@@ -35,7 +35,7 @@ func CreateWorkoutViewModels() []types.WorkoutViewModel {
 	workouts := CreateWorkoutModels(uuid.New())
 
 	for _, w := range workouts {
-		workoutsViewModels = append(workoutsViewModels, services.ConvertToWorkoutViewModel(w))
+		workoutsViewModels = append(workoutsViewModels, services.ConvertToWorkoutViewModel(&w))
 	}
 
 	return workoutsViewModels

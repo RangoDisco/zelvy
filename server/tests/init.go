@@ -14,7 +14,7 @@ var Router *gin.Engine
 
 func init() {
 	// Load main environment variables
-	godotenv.Load("../.env")
+	godotenv.Load(".env")
 
 	// Ensure that the environment is set to test
 	os.Setenv("GIN_MODE", "test")
