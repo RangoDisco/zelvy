@@ -6,7 +6,6 @@ require (
 	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/a-h/templ v0.2.747
 	github.com/gin-gonic/gin v1.10.0
-	github.com/go-resty/resty/v2 v2.14.0
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.9.0

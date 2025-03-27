@@ -1,13 +1,11 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
 	"log"
 	"os"
-
 	"server/config"
 	"server/config/database"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {

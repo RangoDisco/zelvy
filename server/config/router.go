@@ -29,7 +29,7 @@ func SetupRouter() *gin.Engine {
 	handlers.RegisterChartRoutes(r)
 
 	// Serve static files
-	r.Static("/assets", "../assets")
+	r.Static("/assets", "assets")
 
 	// Handle 404
 	r.NoRoute(func(c *gin.Context) {
