@@ -2,9 +2,7 @@ package utils
 
 import "github.com/bwmarrin/discordgo"
 
-/**
- * Not used for now but could be useful for later features
- */
+// GetAvatarByUserID is not used for now but could be useful for later features
 func GetAvatarByUserID(session *discordgo.Session, userID string) (string, error) {
 	user, err := session.User(userID)
 	if err != nil {

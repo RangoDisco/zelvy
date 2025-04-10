@@ -6,7 +6,7 @@ import (
 	"github.com/go-co-op/gocron/v2"
 )
 
-// StartScheduler starts the scheduler to sync orders from all marketplaces every day
+// StartScheduler starts the scheduler to check for summary each day
 func StartScheduler() gocron.Scheduler {
 	s, err := gocron.NewScheduler()
 	if err != nil {

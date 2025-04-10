@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -12,27 +11,9 @@ import (
 	"github.com/rangodisco/zelvy/bot/utils"
 )
 
-var (
-	Token     string
-	AppID     string
-	GuildID   string
-	ChannelID string
-)
-
 // Parse command line arguments
 func init() {
-	// utils.ParseCommandLine()
-	flag.StringVar(&Token, "t", "", "Bot Token")
-	flag.StringVar(&AppID, "a", "", "Application ID")
-	flag.StringVar(&GuildID, "g", "", "Guild ID")
-	flag.StringVar(&ChannelID, "c", "", "Channel ID")
-
-	flag.Parse()
-
-	if Token == "" {
-		flag.Usage()
-		os.Exit(1)
-	}
+	utils.ParseCommandLine()
 }
 
 func checkErr(e error) {
