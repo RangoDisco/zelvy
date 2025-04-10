@@ -8,7 +8,7 @@ import (
 )
 
 /**
- * Send the metrics recap on the previously created thread (by CreateThread)
+ * SendRecap adds the metrics recap to the previously created thread (by CreateThread)
  */
 func SendRecap(s *discordgo.Session, channelID string, summary Summary) {
 	// Create new embed
@@ -31,7 +31,7 @@ func SendRecap(s *discordgo.Session, channelID string, summary Summary) {
 }
 
 /**
- * Send the workouts on the previously created thread (by CreateThread)
+ * SendWorkoutsDetails adds workouts to the previously created thread (by CreateThread)
  */
 func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary Summary) {
 	embed := NewEmbed().
@@ -49,8 +49,8 @@ func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary Summary
 }
 
 /**
- * Send the winner on the previously created thread (by CreateThread)
- * In case I failed, mentioned the winner, otherwise only send its name
+ * SendResults adds the winner on the previously created thread (by CreateThread)
+ * In case I failed, mention the winner, otherwise only send its name
  */
 func SendResults(s *discordgo.Session, channelID string, success bool, winner *discordgo.User) {
 	var err error
