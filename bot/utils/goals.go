@@ -8,9 +8,7 @@ type RequestBody struct {
 	Goals []string `json:"goals"`
 }
 
-/**
- * Send an array of goal type to be disabled for today
- */
+// SetOffDay disables any given goal for today
 func SetOffDay(goals []string) (bool, error) {
 	var b = RequestBody{
 		goals,
