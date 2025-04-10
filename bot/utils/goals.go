@@ -2,16 +2,13 @@ package utils
 
 import (
 	"fmt"
+	"github.com/rangodisco/zelvy/bot/types"
 )
-
-type RequestBody struct {
-	Goals []string `json:"goals"`
-}
 
 // SetOffDay disables any given goal for today
 func SetOffDay(goals []string) (bool, error) {
-	var b = RequestBody{
-		goals,
+	var b = types.GoalRequestBody{
+		Goals: goals,
 	}
 
 	resp, err := Request("POST", "/api/offdays", b)
