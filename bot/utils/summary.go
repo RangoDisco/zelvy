@@ -38,9 +38,7 @@ type Winner struct {
 	DiscordID string `json:"discordID"`
 }
 
-/**
- * Fetch today's  summary from the API
- */
+// FetchSummary fetches today's summary from the API
 func FetchSummary() (Summary, error) {
 
 	resp, err := Request("GET", "/summaries", nil)
@@ -57,9 +55,7 @@ func FetchSummary() (Summary, error) {
 	return summary, nil
 }
 
-/**
- * Determine if the summary is successful based on each metric success
- */
+// IsSuccess determines if the summary is successful based on each metric success
 func IsSuccess(metrics []Metric) bool {
 	// For each metric, check if it's a success
 	for _, metric := range metrics {
