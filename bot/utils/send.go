@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/rangodisco/zelvy/bot/types"
 	"log"
 	"os"
 
@@ -10,7 +11,7 @@ import (
 /**
  * SendRecap adds the metrics recap to the previously created thread (by CreateThread)
  */
-func SendRecap(s *discordgo.Session, channelID string, summary Summary) {
+func SendRecap(s *discordgo.Session, channelID string, summary types.Summary) {
 	// Create new embed
 	embed := NewEmbed().
 		SetTitle("Stats du jour")
@@ -33,7 +34,7 @@ func SendRecap(s *discordgo.Session, channelID string, summary Summary) {
 /**
  * SendWorkoutsDetails adds workouts to the previously created thread (by CreateThread)
  */
-func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary Summary) {
+func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary types.Summary) {
 	embed := NewEmbed().
 		SetTitle("Séances").
 		SetThumbnail(os.Getenv("WORKOUTS_PICTURE"))
