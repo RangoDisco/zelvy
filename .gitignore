@@ -37,4 +37,4 @@ go.work.sum
 *.db
 
 # XCode
-/companion
+/companion/
