@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"syscall"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/joho/godotenv"
@@ -23,7 +24,6 @@ func checkErr(e error) {
 }
 
 func main() {
-
 	// Init env
 	err := godotenv.Load()
 	if err != nil {
@@ -72,13 +72,21 @@ func main() {
 	}(dg)
 
 	// Register scheduler
-	s := utils.StartScheduler()
+	s := utils.StartScheduler(dg)
+
 	defer func() {
 		err := s.Shutdown()
 		if err != nil {
 			return
 		}
 	}()
+
+	// Keep program running
+	done := make(chan os.Signal, 1)
+	signal.Notify(done, syscall.SIGINT, syscall.SIGTERM)
+
+	// Block until we receive a signal
+	<-done
 
 	// Keep the bot running
 	fmt.Println("Running...")
