@@ -35,3 +35,6 @@ go.work.sum
 
 # Test db files
 *.db
+
+# XCode
+/companion
