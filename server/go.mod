@@ -1,8 +1,6 @@
 module server
 
-go 1.23.0
-
-toolchain go1.23.2
+go 1.24.1
 
 require (
 	github.com/PuerkitoBio/goquery v1.8.1
