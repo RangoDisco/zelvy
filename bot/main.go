@@ -65,7 +65,7 @@ func main() {
 	err = dg.Open()
 	checkErr(err)
 
-	// Close session once main function ends
+	// Close the session once the main function ends
 	defer func(dg *discordgo.Session) {
 		err := dg.Close()
 		checkErr(err)
