@@ -53,7 +53,7 @@ func InitTestDatabase() error {
 		return err
 	}
 
-	// Auto-migrate your models
+	// Auto-migrate models
 	err = db.AutoMigrate(
 		&models.Summary{},
 		&models.Metric{},
