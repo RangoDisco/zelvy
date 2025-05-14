@@ -27,7 +27,7 @@ func FetchSummary() (types.Summary, error) {
 func IsSuccess(metrics []types.Metric) bool {
 	// For each metric, check if it's a success
 	for _, metric := range metrics {
-		if !metric.Success {
+		if !metric.Success && !metric.IsOff {
 			return false
 		}
 	}
