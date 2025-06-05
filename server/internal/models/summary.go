@@ -7,6 +7,7 @@ import (
 )
 
 type Summary struct {
+	Timestamps
 	ID       uuid.UUID `gorm:"type:uuid;primary_key"`
 	Date     time.Time `json:"date"`
 	Metrics  []Metric  `gorm:"foreignKey:SummaryID"`
