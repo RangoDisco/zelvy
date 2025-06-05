@@ -1,6 +1,7 @@
 package services
 
 import (
+	"server/config/database"
 	"strconv"
 
 	"server/internal/enums"
@@ -11,13 +12,19 @@ import (
 )
 
 // ConvertToMetricModel Converts a metric input to a db model
-func ConvertToMetricModel(m *types.MetricInputModel, summaryId uuid.UUID) models.Metric {
+func ConvertToMetricModel(m *types.MetricInputModel, summaryId uuid.UUID) (models.Metric, bool) {
+	// Fetch linked goal
+	var goal models.Goal
+	if database.GetDB().Where("type = ?", m.Type).First(&goal).Error == nil {
+		return models.Metric{}, false
+	}
 	return models.Metric{
 		ID:        uuid.New(),
 		SummaryID: summaryId,
 		Type:      m.Type,
 		Value:     m.Value,
-	}
+		Goal:      &goal,
+	}, true
 }
 
 // Determine if the metric is successful based on the threshold
@@ -111,42 +118,23 @@ func getProgression(value float64, threshold float64) int {
 
 // CompareMetricsWithGoals Check if goal is achieved for each metric
 func CompareMetricsWithGoals(metrics *[]models.Metric, workouts *[]models.Workout) ([]types.MetricViewModel, error) {
-
-	// Firt fetch all goals
-	goals, err := FetchGoals()
-	if err != nil {
-		return []types.MetricViewModel{}, err
-	}
-
 	var comparedMetrics []types.MetricViewModel
-
-	// Create a map of metrics to values and then iterate over the goals
-	metricMap := make(map[string]float64)
 	for _, m := range *metrics {
-		metricMap[m.Type] = m.Value
-	}
-
-	for _, g := range goals {
 		var result types.MetricViewModel
-		// Find metric by goal type
-		value := metricMap[g.Type]
+		g := m.Goal
 
-		// Search if goal is off for today
-		isOffDay := IsOff(g.ID)
-
-		// Populate metric based on goal type
+		// Populate metric based on its type
 		switch g.Type {
 		case enums.MainWorkoutDuration:
 			duration := CalculateMainWorkoutDuration(workouts)
-			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée séance", g.Comparison, isOffDay)
+			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée séance", g.Comparison, m.IsOff)
 		case enums.ExtraWorkoutDuration:
 			duration := CalculateExtraWorkoutDuration(workouts)
-			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée supplémentaire", g.Comparison, isOffDay)
+			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée supplémentaire", g.Comparison, m.IsOff)
 		default:
-			result = ConvertToMetricViewModel(g.Type, value, g.Value, g.Name, g.Comparison, g.Unit, isOffDay)
+			result = ConvertToMetricViewModel(g.Type, m.Value, g.Value, g.Name, g.Comparison, g.Unit, m.IsOff)
 		}
 
-		// Add threshold to metric
 		comparedMetrics = append(comparedMetrics, result)
 	}
 
