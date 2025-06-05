@@ -7,6 +7,7 @@ import (
 )
 
 type User struct {
+	Timestamps
 	ID          uuid.UUID `gorm:"type:uuid;primary_key"`
 	Username    string    `gorm:"type:varchar(75)" json:"username"`
 	DiscordID   string    `gorm:"type:varchar(75);unique_index" json:"discordID"`
