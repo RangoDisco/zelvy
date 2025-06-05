@@ -69,7 +69,11 @@ func AddSummary(c *gin.Context) {
 
 	// Build and add metrics to the summary object
 	for _, m := range body.Metrics {
-		summary.Metrics = append(summary.Metrics, services.ConvertToMetricModel(&m, summary.ID))
+		mm, success := services.ConvertToMetricModel(&m, summary.ID)
+		if !success {
+			continue
+		}
+		summary.Metrics = append(summary.Metrics, mm)
 	}
 
 	// Build and add workouts to the summary object
