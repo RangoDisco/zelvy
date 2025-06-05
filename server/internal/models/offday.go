@@ -7,6 +7,7 @@ import (
 )
 
 type Offday struct {
+	Timestamps
 	ID     uuid.UUID `gorm:"type:uuid;primary_key"`
 	Day    time.Time `json:"day"`
 	GoalID uuid.UUID `gorm:"type:uuid;not null"`

@@ -15,7 +15,7 @@ import (
 // FetchSummaryByDate retrives summary from db by date
 func FetchSummaryByDate(date string) (models.Summary, error) {
 	var summary models.Summary
-	// Start building query
+	// Start building the query
 	q := database.GetDB().Preload("Workouts").Preload("Metrics").Preload("Winner").
 		Order("date desc")
 
