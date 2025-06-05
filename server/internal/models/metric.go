@@ -10,6 +10,8 @@ type Metric struct {
 	Type      string    `json:"type"`
 	Value     float64   `json:"value"`
 	SummaryID uuid.UUID
+	Goal      *Goal `json:"goal"`
+	GoalID    uuid.UUID
 }
 
 func (m *Metric) BeforeCreate(tx *gorm.DB) (err error) {
