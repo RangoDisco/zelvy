@@ -13,6 +13,7 @@ type Goal struct {
 	Name       string    `json:"name"`
 	Unit       string    `json:"unit"`
 	Comparison string    `json:"comparison"`
+	Active     bool      `json:"active"`
 }
 
 func (g *Goal) BeforeCreate(_ *gorm.DB) (err error) {
