@@ -23,7 +23,7 @@ func ConvertToMetricModel(m *types.MetricInputModel, summaryId uuid.UUID) (model
 		SummaryID: summaryId,
 		Type:      m.Type,
 		Value:     m.Value,
-		Goal:      goal,
+		GoalID:    goal.ID,
 	}, true
 }
 
