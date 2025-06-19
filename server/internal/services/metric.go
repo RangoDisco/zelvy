@@ -15,7 +15,7 @@ import (
 func ConvertToMetricModel(m *types.MetricInputModel, summaryId uuid.UUID) (models.Metric, bool) {
 	// Fetch linked goal
 	var goal models.Goal
-	if database.GetDB().Where("type = ?", m.Type).First(&goal).Error == nil {
+	if database.GetDB().Where("type = ?", m.Type).First(&goal).Error != nil {
 		return models.Metric{}, false
 	}
 	return models.Metric{
