@@ -15,7 +15,7 @@ import (
 )
 
 func TestAddSummary(t *testing.T) {
-	// Create example input model
+	// Create an example input model
 	summaryToCreate := factories.CreateSummaryInputModel()
 
 	w := httptest.NewRecorder()
@@ -35,7 +35,7 @@ func TestGetSummary(t *testing.T) {
 	res := database.GetDB().Create(&summary)
 	assert.NoError(t, res.Error)
 
-	// Try fetching latest summary
+	// Try fetching the latest summary
 	w := httptest.NewRecorder()
 	req := SendRequest("GET", "/summaries", nil)
 
