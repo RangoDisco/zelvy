@@ -29,7 +29,7 @@ func setOffDay(c *gin.Context) {
 		var goal models.Goal
 
 		// Ensure that goal exists
-		if err := database.GetDB().First(&goal, "type = ?", og).Error; err != nil {
+		if err := database.GetDB().Where("type = ? AND active = ?", og, 0).First(&goal).Error; err != nil {
 			continue
 		}
 
