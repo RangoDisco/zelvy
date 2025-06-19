@@ -17,7 +17,7 @@ func IsOff(goalId uuid.UUID) bool {
 		return false
 	}
 
-	if offDay.ID == uuid.Nil {
+	if offDay.ID != uuid.Nil {
 		return true
 	}
 
