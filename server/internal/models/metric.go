@@ -10,8 +10,8 @@ type Metric struct {
 	Type      string    `json:"type"`
 	Value     float64   `json:"value"`
 	SummaryID uuid.UUID
-	Goal      *Goal `json:"goal"`
-	GoalID    uuid.UUID
+	GoalID    uuid.UUID `gorm:"type:uuid; default:null"`
+	Goal      Goal      `gorm:"foreignKey:GoalID;references:ID; default:null"`
 }
 
 func (m *Metric) BeforeCreate(tx *gorm.DB) (err error) {

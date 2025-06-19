@@ -23,7 +23,7 @@ func ConvertToMetricModel(m *types.MetricInputModel, summaryId uuid.UUID) (model
 		SummaryID: summaryId,
 		Type:      m.Type,
 		Value:     m.Value,
-		Goal:      &goal,
+		Goal:      goal,
 	}, true
 }
 
@@ -116,23 +116,24 @@ func getProgression(value float64, threshold float64) int {
 	return progression
 }
 
-// CompareMetricsWithGoals Check if goal is achieved for each metric
+// CompareMetricsWithGoals Check if goal is achieved, off or failed for each metric
 func CompareMetricsWithGoals(metrics *[]models.Metric, workouts *[]models.Workout) ([]types.MetricViewModel, error) {
 	var comparedMetrics []types.MetricViewModel
 	for _, m := range *metrics {
 		var result types.MetricViewModel
 		g := m.Goal
+		isOff := IsOff(m.GoalID)
 
 		// Populate metric based on its type
 		switch g.Type {
 		case enums.MainWorkoutDuration:
 			duration := CalculateMainWorkoutDuration(workouts)
-			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée séance", g.Comparison, m.IsOff)
+			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée séance", g.Comparison, isOff)
 		case enums.ExtraWorkoutDuration:
 			duration := CalculateExtraWorkoutDuration(workouts)
-			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée supplémentaire", g.Comparison, m.IsOff)
+			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée supplémentaire", g.Comparison, isOff)
 		default:
-			result = ConvertToMetricViewModel(g.Type, m.Value, g.Value, g.Name, g.Comparison, g.Unit, m.IsOff)
+			result = ConvertToMetricViewModel(g.Type, m.Value, g.Value, g.Name, g.Comparison, g.Unit, isOff)
 		}
 
 		comparedMetrics = append(comparedMetrics, result)

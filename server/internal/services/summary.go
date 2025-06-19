@@ -12,11 +12,11 @@ import (
 	"github.com/google/uuid"
 )
 
-// FetchSummaryByDate retrives summary from db by date
+// FetchSummaryByDate retrieves summary from db by date
 func FetchSummaryByDate(date string) (models.Summary, error) {
 	var summary models.Summary
 	// Start building the query
-	q := database.GetDB().Preload("Workouts").Preload("Metrics").Preload("Winner").
+	q := database.GetDB().Preload("Workouts").Preload("Metrics").Preload("Metrics.Goal").Preload("Winner").
 		Order("date desc")
 
 	// In case a date is provided, we want to fetch the summary for that date
