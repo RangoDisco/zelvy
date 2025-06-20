@@ -47,6 +47,7 @@ func addGoal(c *gin.Context) {
 		Name:       body.Name,
 		Unit:       body.Unit,
 		Comparison: body.Comparison,
+		Active:     true,
 	}
 
 	if err := database.GetDB().Create(&goal).Error; err != nil {

@@ -6,6 +6,7 @@ import (
 )
 
 type Workout struct {
+	Timestamps
 	ID           uuid.UUID `gorm:"type:uuid;primary_key"`
 	Name         string    `json:"name"`
 	KcalBurned   int       `json:"kcalBurned"`
