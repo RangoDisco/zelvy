@@ -128,10 +128,10 @@ func CompareMetricsWithGoals(metrics *[]models.Metric, workouts *[]models.Workou
 		switch g.Type {
 		case enums.MainWorkoutDuration:
 			duration := CalculateMainWorkoutDuration(workouts)
-			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée séance", g.Comparison, isOff)
+			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Gym duration", g.Comparison, isOff)
 		case enums.ExtraWorkoutDuration:
 			duration := CalculateExtraWorkoutDuration(workouts)
-			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée supplémentaire", g.Comparison, isOff)
+			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Cardio duration", g.Comparison, isOff)
 		default:
 			result = ConvertToMetricViewModel(g.Type, m.Value, g.Value, g.Name, g.Comparison, g.Unit, isOff)
 		}

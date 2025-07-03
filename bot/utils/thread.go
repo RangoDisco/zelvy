@@ -15,7 +15,7 @@ func CreateThread(s *discordgo.Session, channelID string, isSuccess bool) *disco
 	// Get current day
 	date := time.Now().Format("2006-01-02")
 
-	name := "Stats du " + date
+	name := "Stats for " + date
 
 	if isSuccess {
 		name += " ✅"
