@@ -132,10 +132,10 @@ func CompareMetricsWithGoals(metrics []models.Metric, workouts *[]models.Workout
 		switch g.Type {
 		case enums.MainWorkoutDuration:
 			duration := CalculateMainWorkoutDuration(workouts)
-			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée séance", g.Comparison, isOff)
+			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Gym duration", g.Comparison, isOff)
 		case enums.ExtraWorkoutDuration:
 			duration := CalculateExtraWorkoutDuration(workouts)
-			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée supplémentaire", g.Comparison, isOff)
+			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Cardio duration", g.Comparison, isOff)
 		default:
 			// Find linked metric thanks to goalID
 			idx := slices.IndexFunc(metrics, func(m models.Metric) bool {
