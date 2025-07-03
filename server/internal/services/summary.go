@@ -55,7 +55,7 @@ func CreateSummaryViewModel(summary *models.Summary) (types.SummaryViewModel, er
 
 	res.Metrics = metrics
 
-	// Add workouts to metrics object
+	// Add workouts to the metrics object
 	for _, w := range summary.Workouts {
 		workout := ConvertToWorkoutViewModel(&w)
 		res.Workouts = append(res.Workouts, workout)
