@@ -14,7 +14,7 @@ import (
 func SendRecap(s *discordgo.Session, channelID string, summary types.Summary) {
 	// Create new embed
 	embed := NewEmbed().
-		SetTitle("Stats du jour")
+		SetTitle("Today's stats")
 
 	if IsSuccess(summary.Metrics) {
 		embed.SetThumbnail(os.Getenv("SUCCESS_PICTURE"))
@@ -36,7 +36,7 @@ func SendRecap(s *discordgo.Session, channelID string, summary types.Summary) {
  */
 func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary types.Summary) {
 	embed := NewEmbed().
-		SetTitle("Séances").
+		SetTitle("Workouts").
 		SetThumbnail(os.Getenv("WORKOUTS_PICTURE"))
 
 	// Add workouts Fields
@@ -57,9 +57,9 @@ func SendResults(s *discordgo.Session, channelID string, success bool, winner *d
 	var err error
 
 	if success {
-		_, err = s.ChannelMessageSend(channelID, "Pas de gagnant aujourd'hui, mais ça aurait dû être "+winner.GlobalName)
+		_, err = s.ChannelMessageSend(channelID, "No winner today, but it should have been "+winner.GlobalName)
 	} else {
-		_, err = s.ChannelMessageSend(channelID, "Gagnant du jour: "+winner.Mention()+", bien joué pour tes 5€ chacal")
+		_, err = s.ChannelMessageSend(channelID, "Today's winner: "+winner.Mention())
 	}
 	if err != nil {
 		log.Fatal(err)
@@ -99,7 +99,7 @@ func SendScheduleMessage(s *discordgo.Session) {
 	// Create thread
 	thread := CreateThread(s, ChannelID, isSuccess)
 
-	// Send first stats message
+	// Send the first stats message
 	SendRecap(s, thread.ID, summary)
 
 	// Send workout details
