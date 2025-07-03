@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"os"
+	"server/internal/enums"
 	"time"
 
 	"server/internal/models"
@@ -81,6 +82,52 @@ func InitTestDatabase() error {
 		return res.Error
 	}
 
+	goals := []models.Goal{
+		{
+			ID:         uuid.New(),
+			Type:       enums.KcalBurned,
+			Value:      1000,
+			Name:       "",
+			Unit:       "kcal",
+			Comparison: "greater",
+		},
+		{
+			ID:         uuid.New(),
+			Type:       enums.KcalConsumed,
+			Value:      2000,
+			Name:       "",
+			Unit:       "kcal",
+			Comparison: "less",
+		},
+		{
+			ID:         uuid.New(),
+			Type:       enums.MilliliterDrank,
+			Value:      2000,
+			Name:       "",
+			Unit:       "kcal",
+			Comparison: "greater",
+		},
+		{
+			ID:         uuid.New(),
+			Type:       enums.MainWorkoutDuration,
+			Value:      3600,
+			Name:       "",
+			Unit:       "mn",
+			Comparison: "greater",
+		},
+		{
+			ID:         uuid.New(),
+			Type:       enums.ExtraWorkoutDuration,
+			Value:      3600,
+			Name:       "",
+			Unit:       "mn",
+			Comparison: "greater",
+		},
+	}
+
+	for _, g := range goals {
+		res = db.Create(&g)
+	}
 	return nil
 }
 
