@@ -88,7 +88,7 @@ func PickWinner() (uuid.UUID, error) {
 	var u models.User
 
 	// Get user from db randomly
-	if err := database.GetDB().Order("RANDOM()").First(&u); err != nil {
+	if err := database.GetDB().Order("RANDOM()").First(&u); err.Error != nil {
 		return uuid.UUID{}, err.Error
 	}
 
