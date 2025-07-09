@@ -2,6 +2,7 @@ package services
 
 import (
 	"server/config/database"
+	"slices"
 	"strconv"
 
 	"server/internal/enums"
@@ -117,12 +118,15 @@ func getProgression(value float64, threshold float64) int {
 }
 
 // CompareMetricsWithGoals Check if goal is achieved, off or failed for each metric
-func CompareMetricsWithGoals(metrics *[]models.Metric, workouts *[]models.Workout) ([]types.MetricViewModel, error) {
+func CompareMetricsWithGoals(metrics []models.Metric, workouts *[]models.Workout) ([]types.MetricViewModel, error) {
 	var comparedMetrics []types.MetricViewModel
-	for _, m := range *metrics {
+	// First, get all active goals
+	var goals []models.Goal
+	database.GetDB().Where("active = ?", true).Find(&goals)
+
+	for _, g := range goals {
 		var result types.MetricViewModel
-		g := m.Goal
-		isOff := IsOff(m.GoalID)
+		isOff := IsOff(g.ID)
 
 		// Populate metric based on its type
 		switch g.Type {
@@ -133,6 +137,11 @@ func CompareMetricsWithGoals(metrics *[]models.Metric, workouts *[]models.Workou
 			duration := CalculateExtraWorkoutDuration(workouts)
 			result = ConvertToWorkoutMetricViewModel(g.Type, duration, g.Value, "Durée supplémentaire", g.Comparison, isOff)
 		default:
+			// Find linked metric thanks to goalID
+			idx := slices.IndexFunc(metrics, func(m models.Metric) bool {
+				return m.GoalID == g.ID
+			})
+			m := metrics[idx]
 			result = ConvertToMetricViewModel(g.Type, m.Value, g.Value, g.Name, g.Comparison, g.Unit, isOff)
 		}
 

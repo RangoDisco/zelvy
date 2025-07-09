@@ -48,14 +48,14 @@ func CreateSummaryViewModel(summary *models.Summary) (types.SummaryViewModel, er
 	res.Winner.DiscordID = summary.Winner.DiscordID
 
 	// Compare metrics with goals to see wheter they are successful or not
-	metrics, err := CompareMetricsWithGoals(&summary.Metrics, &summary.Workouts)
+	metrics, err := CompareMetricsWithGoals(summary.Metrics, &summary.Workouts)
 	if err != nil {
 		return types.SummaryViewModel{}, err
 	}
 
 	res.Metrics = metrics
 
-	// Add workouts to metrics object
+	// Add workouts to the metrics object
 	for _, w := range summary.Workouts {
 		workout := ConvertToWorkoutViewModel(&w)
 		res.Workouts = append(res.Workouts, workout)
