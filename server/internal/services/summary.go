@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"time"
 
@@ -21,7 +22,7 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 
 	// In case a date is provided, we want to fetch the summary for that date
 	if date != "" {
-		sod, eod, err := FormatDate(date)
+		sod, eod, err := formatDate(date)
 		if err != nil {
 			return models.Summary{}, err
 		}
@@ -40,39 +41,51 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 
 // CreateSummaryViewModel Converts a summary model to ViewModel that matches fields needed by the frontend
 func CreateSummaryViewModel(summary *models.Summary) (types.SummaryViewModel, error) {
-
-	// Build summary response
 	var res types.SummaryViewModel
+
+	var goals []models.Goal
+	database.GetDB().Where("active = ?", true).Find(&goals)
+
+	// Check if each goal has been fulfilled
+	for _, g := range goals {
+		idx := slices.IndexFunc(summary.Metrics, func(m models.Metric) bool {
+			return m.GoalID == g.ID
+		})
+		var m *models.Metric
+		if idx == -1 {
+			m = &summary.Metrics[idx]
+		} else {
+			m = nil
+		}
+		goalModel, err := convertToGoalViewModel(m, &g, &summary.Workouts)
+		if err != nil {
+			return types.SummaryViewModel{}, err
+		}
+		res.Goals = append(res.Goals, goalModel)
+	}
+
+	// Add workouts to the metrics object
+	for _, w := range summary.Workouts {
+		workout := convertToWorkoutViewModel(&w)
+		res.Workouts = append(res.Workouts, workout)
+	}
+
 	res.ID = summary.ID.String()
 	res.Date = fmt.Sprintf("%d %s %d", summary.Date.Day(), summary.Date.Month(), summary.Date.Year())
 	res.Winner.DiscordID = summary.Winner.DiscordID
 
-	// Compare metrics with goals to see wheter they are successful or not
-	metrics, err := CompareMetricsWithGoals(summary.Metrics, &summary.Workouts)
-	if err != nil {
-		return types.SummaryViewModel{}, err
-	}
-
-	res.Metrics = metrics
-
-	// Add workouts to the metrics object
-	for _, w := range summary.Workouts {
-		workout := ConvertToWorkoutViewModel(&w)
-		res.Workouts = append(res.Workouts, workout)
-	}
-
 	return res, nil
 }
 
-// ConvertMsToHour and minute format
-func ConvertMsToHour(ms float64) string {
+// convertMsToHour and minute format
+func convertMsToHour(ms float64) string {
 	duration := time.Duration(ms) * time.Second
 	hours := int(duration.Hours())
 	minutes := int(duration.Minutes()) % 60
 	return strconv.Itoa(hours) + "h" + strconv.Itoa(minutes) + "m"
 }
 
-func FormatDate(stringDate string) (time.Time, time.Time, error) {
+func formatDate(stringDate string) (time.Time, time.Time, error) {
 	// Parse date
 	sod, err := time.Parse("2006-01-02", stringDate)
 	if err != nil {
