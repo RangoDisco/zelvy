@@ -4,7 +4,7 @@ type SummaryViewModel struct {
 	ID       string             `json:"id"`
 	Date     string             `json:"date"`
 	Steps    int                `json:"steps"`
-	Metrics  []MetricViewModel  `json:"metrics"`
+	Goals    []GoalViewModel    `json:"goals"`
 	Workouts []WorkoutViewModel `json:"workouts"`
 	Winner   Winner             `json:"winner"`
 }
