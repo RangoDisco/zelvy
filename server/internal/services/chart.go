@@ -14,7 +14,7 @@ func GetWorkoutTypeChart() (types.Chart, error) {
 	chart.Type = "radar"
 
 	// Get workouts for this week and last week
-	thisWeek, lastWeek, err := FetchChartWorkouts()
+	thisWeek, lastWeek, err := fetchChartWorkouts()
 	if err != nil {
 		return types.Chart{}, err
 	}
