@@ -31,32 +31,6 @@ func CreateMetricModels(surmmaryId uuid.UUID) []models.Metric {
 	}
 }
 
-func CreateMetricViewModels() []types.MetricViewModel {
-	return []types.MetricViewModel{
-		{
-			Name:             "Calories brulées",
-			Value:            1500,
-			DisplayValue:     "1500",
-			Threshold:        1500,
-			DisplayThreshold: "1500",
-			Success:          true,
-			IsOff:            false,
-			Progression:      100,
-			Picto:            "picto",
-		}, {
-			Name:             "Calories consommées",
-			Value:            3600,
-			DisplayValue:     "1h00",
-			Threshold:        7200,
-			DisplayThreshold: "2h00",
-			Success:          false,
-			IsOff:            false,
-			Progression:      50,
-			Picto:            "picto",
-		},
-	}
-}
-
 func CreateMetricInputModels() []types.MetricInputModel {
 	return []types.MetricInputModel{
 		{
