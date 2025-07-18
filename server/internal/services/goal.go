@@ -14,39 +14,45 @@ import (
 
 // convertToGoalViewModel Check if a goal is achieved, off or failed for each metric
 func convertToGoalViewModel(m *models.Metric, g *models.Goal, workouts *[]models.Workout) (types.GoalViewModel, error) {
-	var displayValue string
-	var displayThreshold string
-	var value float64
 
-	// Populate goal based on its type
-	if g.Type == enums.MainWorkoutDuration || g.Type == enums.ExtraWorkoutDuration {
-		value = calculateWorkoutDuration(workouts, g.Type)
-		displayValue = convertMsToHour(value)
-		displayThreshold = convertMsToHour(g.Value)
-	} else {
-		switch g.Unit {
-		case "L":
-			displayValue = strconv.FormatFloat(m.Value, 'f', 2, 64) + "L"
-			displayThreshold = strconv.FormatFloat(g.Value, 'f', 2, 64) + "L"
-
-		default:
-			displayValue = strconv.Itoa(int(m.Value))
-			displayThreshold = strconv.Itoa(int(g.Value))
-		}
-	}
+	value := getValue(m, g, workouts)
+	displayValue, displayThreshold := formatDisplayValue(value, g)
 
 	isOff := isOff(g.ID)
 	return types.GoalViewModel{
-		Value:            m.Value,
+		Value:            value,
 		DisplayValue:     displayValue,
 		Threshold:        g.Value,
 		DisplayThreshold: displayThreshold,
 		Name:             g.Name,
-		Success:          isAchieved(m.Value, g.Value, g.Comparison, isOff),
+		Success:          isAchieved(value, g.Value, g.Comparison, isOff),
 		IsOff:            isOff,
-		Progression:      getProgression(m.Value, g.Value),
+		Progression:      getProgression(value, g.Value),
 		Picto:            getMetricPicto(g.Type),
 	}, nil
+}
+
+func getValue(m *models.Metric, g *models.Goal, w *[]models.Workout) float64 {
+	if g.Type == enums.MainWorkoutDuration || g.Type == enums.ExtraWorkoutDuration {
+		return calculateWorkoutDuration(w, g.Type)
+	}
+
+	return m.Value
+}
+
+func formatDisplayValue(value float64, g *models.Goal) (string, string) {
+	if g.Type == enums.MainWorkoutDuration || g.Type == enums.ExtraWorkoutDuration {
+		return convertMsToHour(value), convertMsToHour(g.Value)
+	}
+
+	switch g.Unit {
+	case "L":
+
+		return strconv.FormatFloat(value, 'f', 2, 64) + "L", strconv.FormatFloat(g.Value, 'f', 2, 64) + "L"
+
+	default:
+		return strconv.Itoa(int(value)), strconv.Itoa(int(g.Value))
+	}
 }
 
 // isAchieved, used when creating a view model, determines if the goal is achieved, based on the threshold
