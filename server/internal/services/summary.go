@@ -51,12 +51,16 @@ func CreateSummaryViewModel(summary *models.Summary) (types.SummaryViewModel, er
 		idx := slices.IndexFunc(summary.Metrics, func(m models.Metric) bool {
 			return m.GoalID == g.ID
 		})
+
 		var m *models.Metric
+
+		// Workouts related goals don't have a related metric
 		if idx == -1 {
-			m = &summary.Metrics[idx]
-		} else {
 			m = nil
+		} else {
+			m = &summary.Metrics[idx]
 		}
+
 		goalModel, err := convertToGoalViewModel(m, &g, &summary.Workouts)
 		if err != nil {
 			return types.SummaryViewModel{}, err
@@ -66,7 +70,7 @@ func CreateSummaryViewModel(summary *models.Summary) (types.SummaryViewModel, er
 
 	// Add workouts to the metrics object
 	for _, w := range summary.Workouts {
-		workout := convertToWorkoutViewModel(&w)
+		workout := ConvertToWorkoutViewModel(&w)
 		res.Workouts = append(res.Workouts, workout)
 	}
 
