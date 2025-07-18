@@ -26,7 +26,7 @@ func CreateSummaryViewModel() types.SummaryViewModel {
 		ID:       "id",
 		Date:     "2024-01-01",
 		Steps:    1000,
-		Metrics:  CreateMetricViewModels(),
+		Goals:    CreateGoalViewModels(),
 		Workouts: CreateWorkoutViewModels(),
 		Winner:   CreateWinnerViewModel(),
 	}
