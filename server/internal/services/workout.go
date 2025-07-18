@@ -23,8 +23,8 @@ func ConvertToWorkoutModel(w *types.WorkoutInputModel, summaryId uuid.UUID) mode
 	}
 }
 
-// convertToWorkoutViewModel used when fetching a summary, converts a Workout model to a WorkoutViewModel
-func convertToWorkoutViewModel(w *models.Workout) types.WorkoutViewModel {
+// ConvertToWorkoutViewModel used when fetching a summary, converts a Workout model to a WorkoutViewModel
+func ConvertToWorkoutViewModel(w *models.Workout) types.WorkoutViewModel {
 	return types.WorkoutViewModel{
 		ID:           w.ID.String(),
 		KcalBurned:   w.KcalBurned,
