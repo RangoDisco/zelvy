@@ -39,7 +39,7 @@ func ConvertToWorkoutViewModel(w *models.Workout) types.WorkoutViewModel {
 func calculateWorkoutDuration(w *[]models.Workout, target string) float64 {
 	var duration float64
 	for _, w := range *w {
-		if target == enums.MainWorkoutDuration && w.ActivityType == "strength" {
+		if (target == enums.MainWorkoutDuration && w.ActivityType == "strength") || (target == enums.ExtraWorkoutDuration && w.ActivityType != "strength") {
 			duration = duration + w.Duration
 		}
 	}
