@@ -25,7 +25,7 @@ func convertToGoalViewModel(m *models.Metric, g *models.Goal, workouts *[]models
 		Threshold:        g.Value,
 		DisplayThreshold: displayThreshold,
 		Name:             g.Name,
-		Success:          isAchieved(value, g.Value, g.Comparison, isOff),
+		IsSuccessful:     isAchieved(value, g.Value, g.Comparison, isOff),
 		IsOff:            isOff,
 		Progression:      getProgression(value, g.Value),
 		Picto:            getMetricPicto(g.Type),
