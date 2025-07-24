@@ -23,11 +23,11 @@ func FetchSummary() (types.Summary, error) {
 	return summary, nil
 }
 
-// IsSuccess determines if the summary is successful based on each metric success
-func IsSuccess(metrics []types.Metric) bool {
+// IsSuccessful determines if the summary is successful based on each metric success
+func IsSuccessful(goals []types.Goal) bool {
 	// For each metric, check if it's a success
-	for _, metric := range metrics {
-		if !metric.Success && !metric.IsOff {
+	for _, g := range goals {
+		if !g.IsSuccessful && !g.IsOff {
 			return false
 		}
 	}

@@ -16,15 +16,16 @@ func SendRecap(s *discordgo.Session, channelID string, summary types.Summary) {
 	embed := NewEmbed().
 		SetTitle("Today's stats")
 
-	if IsSuccess(summary.Metrics) {
+	if IsSuccessful(summary.Goals) {
 		embed.SetThumbnail(os.Getenv("SUCCESS_PICTURE"))
 	} else {
 		embed.SetThumbnail(os.Getenv("FAILURE_PICTURE"))
 	}
 
 	// Add metrics Fields
-	for _, metric := range summary.Metrics {
-		embed.AddField(formatFieldTitle(metric.Name, metric.Success, metric.IsOff), metric.DisplayValue+"/"+metric.DisplayThreshold)
+	for _, g := range summary.Goals {
+
+		embed.AddField(formatFieldTitle(g.Name, g.IsSuccessful, g.IsOff), g.DisplayValue+"/"+g.DisplayThreshold)
 	}
 
 	sendEmbedMessage(s, channelID, embed.MessageEmbed)
@@ -94,10 +95,10 @@ func SendScheduleMessage(s *discordgo.Session) {
 	}
 
 	// Calculate results
-	isSuccess := IsSuccess(summary.Metrics)
+	isSuccessful := IsSuccessful(summary.Goals)
 
 	// Create thread
-	thread := CreateThread(s, ChannelID, isSuccess)
+	thread := CreateThread(s, ChannelID, isSuccessful)
 
 	// Send the first stats message
 	SendRecap(s, thread.ID, summary)
@@ -109,5 +110,5 @@ func SendScheduleMessage(s *discordgo.Session) {
 	winner, _ := s.User(summary.Winner.DiscordID)
 
 	// Send results
-	SendResults(s, thread.ID, isSuccess, winner)
+	SendResults(s, thread.ID, isSuccessful, winner)
 }

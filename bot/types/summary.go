@@ -7,13 +7,13 @@ type WorkoutData struct {
 	Duration     string `json:"duration"`
 }
 
-type Metric struct {
+type Goal struct {
 	Name             string  `json:"name"`
 	Value            float64 `json:"value"`
 	DisplayValue     string  `json:"displayValue"`
 	Threshold        float64 `json:"threshold"`
 	DisplayThreshold string  `json:"displayThreshold"`
-	Success          bool    `json:"success"`
+	IsSuccessful     bool    `json:"isSuccessful"`
 	IsOff            bool    `json:"isOff"`
 	Progression      int     `json:"difference"`
 	Picto            string  `json:"picto"`
@@ -23,7 +23,7 @@ type Summary struct {
 	ID       string        `json:"id"`
 	Date     string        `json:"date"`
 	Steps    int           `json:"steps"`
-	Metrics  []Metric      `json:"metrics"`
+	Goals    []Goal        `json:"goals"`
 	Workouts []WorkoutData `json:"workouts"`
 	Winner   Winner        `json:"winner"`
 }
