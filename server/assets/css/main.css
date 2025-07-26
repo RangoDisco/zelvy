@@ -1,6 +1,34 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "zelvy";
+  default: true;
+  prefersdark: true;
+  color-scheme: dark;
+
+  --font-family-basier: "Basier", sans-serif;
+
+  --color-primary: #085ca7;
+  --color-primary-content: #ffffffd8;
+  --color-secondary: #bfae71;
+  --color-secondary-content: #0d0b04;
+  --color-accent: #dc8850;
+  --color-accent-content: #110602;
+  --color-neutral: #1c1c1c;
+  --color-neutral-content: #757575;
+  --color-base-100: #161616;
+  --color-base-200: #282828;
+  --color-base-300: #000000;
+  --color-base-content: #bebebe;
+  --color-info: #2563eb;
+  --color-info-content: #d2e2ff;
+  --color-success: #52b45c;
+  --color-success-content: #020c03;
+  --color-warning: #ffca11;
+  --color-warning-content: #160f00;
+  --color-error: #f35248;
+  --color-error-content: #140202;
+}
 
 @layer base {
   @font-face {

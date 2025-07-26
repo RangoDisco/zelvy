@@ -16,7 +16,7 @@ import (
 )
 
 func RegisterSummaryRoutes(r *gin.Engine) {
-	r.GET("/summaries", getTodaySummary)
+	r.GET("/", getTodaySummary)
 	r.POST("/api/summaries", AddSummary)
 }
 
@@ -47,7 +47,7 @@ func getTodaySummary(c *gin.Context) {
 		return
 	}
 
-	r := gintemplrenderer.New(c.Request.Context(), http.StatusOK, components.Summary(res))
+	r := gintemplrenderer.New(c.Request.Context(), http.StatusOK, components.Home(res))
 
 	c.Render(http.StatusOK, r)
 
