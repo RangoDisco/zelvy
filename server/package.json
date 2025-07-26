@@ -5,16 +5,17 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tailwindcss build assets/css/main.css -o assets/css/tailwind.css --minify",
-    "watch": "tailwindcss build assets/css/main.css -o assets/css/tailwind.css --watch"
+    "build": "npx @tailwindcss/cli -i assets/css/main.css -o assets/css/tailwind.css --minify",
+    "watch": "./tailwindcss -i assets/css/main.css -o assets/css/tailwind.css --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^4.1.11"
   },
   "dependencies": {
-    "daisyui": "^4.12.24"
+    "@tailwindcss/cli": "^4.1.11",
+    "daisyui": "^5.0.46"
   }
 }
