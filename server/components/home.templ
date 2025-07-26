@@ -1,0 +1,41 @@
+package components
+
+import "server/pkg/types"
+
+templ Home(summary types.SummaryViewModel) {
+	@Layout() {
+		<section data-testid="summaryTemplate" class="container mx-auto p-6 md:mx-none flex flex-col gap-6">
+			<div class="flex w-full justify-between pb-4">
+				<div>
+					<h5 data-testid="summaryTemplateDate" class="text-lg text-base-content md:text-2xl">
+						{ summary.Date }
+					</h5>
+				</div>
+				<div class="flex">
+					// <button class="btn btn-ghost btn-sm" name="calendar-button"><i class="text-xl text-base-content ri-calendar-fill"></i></button>
+				</div>
+			</div>
+			<section class="flex justify-start align-center">
+				<div class="w-full bg-base-200 flex align-center gap-0 rounded-full cursor-pointer">
+					<a class="cursor-pointer w-1/2 p-1 bg-primary rounded-full flex align-center justify-center transition-colors duration-300">Daily</a>
+					<a href="/overview" class="cursor-pointer w-1/2 p-1 peer-checked/overview:bg-primary rounded-full flex align-center justify-center transition-colors duration-300">
+						Overview
+					</a>
+				</div>
+			</section>
+			@SummaryDetails(summary)
+			<section class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+				<div
+					class="m-auto"
+					id="chart-container"
+					hx-get="/charts"
+					hx-trigger="load"
+					hx-swap="outerHTML"
+				>
+					<span class="loading loading-spinner loading-lg m-auto"></span>
+				</div>
+				@Workouts(summary.Workouts)
+			</section>
+		</section>
+	}
+}
