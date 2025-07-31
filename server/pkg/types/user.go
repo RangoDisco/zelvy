@@ -9,3 +9,8 @@ type UserRequest struct {
 type Winner struct {
 	DiscordID string `json:"discordID"`
 }
+
+type WinnerViewModel struct {
+	Username string `json:"username"`
+	Wins     int    `json:"wins"`
+}

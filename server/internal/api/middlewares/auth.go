@@ -29,7 +29,6 @@ func CheckKey(publicRoutes []string) gin.HandlerFunc {
 }
 
 func isProtected(route string, publicRoutes []string, method string) bool {
-
 	// Check if the route starts with "/assets/"
 	if strings.HasPrefix(route, "/assets/") && method == http.MethodGet {
 		return false
