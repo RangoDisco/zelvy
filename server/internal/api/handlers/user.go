@@ -36,7 +36,6 @@ func addUser(c *gin.Context) {
 		return
 	}
 
-	// Convert to model
 	u := models.User{
 		ID:          uuid.New(),
 		Username:    body.Username,

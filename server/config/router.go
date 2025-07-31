@@ -18,8 +18,8 @@ func SetupRouter() *gin.Engine {
 	ginHtmlRenderer := r.HTMLRender
 	r.HTMLRender = &gintemplrenderer.HTMLTemplRenderer{FallbackHtmlRenderer: ginHtmlRenderer}
 
-	// Middleware to check API key in header
-	r.Use(middlewares.CheckKey([]string{"/", "/summaries", "/charts"}))
+	// Defines public routes (mainly the dashboard's ones)
+	r.Use(middlewares.CheckKey([]string{"/", "/overview", "/overview/winners", "/charts"}))
 
 	// Register handlers from handlers package
 	handlers.RegisterSummaryRoutes(r)
@@ -27,6 +27,7 @@ func SetupRouter() *gin.Engine {
 	handlers.RegisterOffDayRoutes(r)
 	handlers.RegisterUserRoutes(r)
 	handlers.RegisterChartRoutes(r)
+	handlers.RegisterOverviewRoutes(r)
 
 	// Serve static files
 	r.Static("/assets", "assets")

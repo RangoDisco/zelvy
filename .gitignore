@@ -38,3 +38,6 @@ go.work.sum
 
 # XCode
 /companion/
+
+# Android
+android
