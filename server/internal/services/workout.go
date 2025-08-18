@@ -3,10 +3,11 @@ package services
 import (
 	"time"
 
-	"server/config/database"
-	"server/internal/enums"
-	"server/internal/models"
-	"server/pkg/types"
+	pb_wrk "github.com/rangodisco/zelvy/gen/zelvy/workout"
+	"github.com/rangodisco/zelvy/server/config/database"
+	"github.com/rangodisco/zelvy/server/internal/enums"
+	"github.com/rangodisco/zelvy/server/internal/models"
+	"github.com/rangodisco/zelvy/server/pkg/types"
 
 	"github.com/google/uuid"
 )
@@ -24,10 +25,11 @@ func ConvertToWorkoutModel(w *types.WorkoutInputModel, summaryId uuid.UUID) mode
 }
 
 // ConvertToWorkoutViewModel used when fetching a summary, converts a Workout model to a WorkoutViewModel
-func ConvertToWorkoutViewModel(w *models.Workout) types.WorkoutViewModel {
-	return types.WorkoutViewModel{
-		ID:           w.ID.String(),
-		KcalBurned:   w.KcalBurned,
+func ConvertToWorkoutViewModel(w *models.Workout) pb_wrk.WorkoutViewModel {
+	return pb_wrk.WorkoutViewModel{
+		Id: w.ID.String(),
+		// TODO: fix
+		KcalBurned:   int64(w.KcalBurned),
 		ActivityType: w.ActivityType,
 		Name:         w.Name,
 		Duration:     convertMsToHour(w.Duration),
