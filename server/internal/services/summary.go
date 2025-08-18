@@ -2,20 +2,20 @@ package services
 
 import (
 	"fmt"
+	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
+	pb_usr "github.com/rangodisco/zelvy/gen/zelvy/user"
 	"slices"
 	"strconv"
 	"time"
 
-	"server/config/database"
-	"server/internal/models"
-	"server/pkg/types"
-
 	"github.com/google/uuid"
+	"github.com/rangodisco/zelvy/server/config/database"
+	"github.com/rangodisco/zelvy/server/internal/models"
 )
 
 // FetchSummaryByDate retrieves summary from db by date
 func FetchSummaryByDate(date string) (models.Summary, error) {
-	var summary models.Summary
+	var s models.Summary
 	// Start building the query
 	q := database.GetDB().Preload("Workouts").Preload("Metrics").Preload("Metrics.Goal").Preload("Winner").
 		Order("date desc")
@@ -32,16 +32,16 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 	}
 
 	// Query handlers from today
-	if err := q.First(&summary).Error; err != nil {
+	if err := q.First(&s).Error; err != nil {
 		return models.Summary{}, err
 	}
 
-	return summary, nil
+	return s, nil
 }
 
 // CreateSummaryViewModel Converts a summary model to ViewModel that matches fields needed by the frontend
-func CreateSummaryViewModel(summary *models.Summary) (types.SummaryViewModel, error) {
-	var res types.SummaryViewModel
+func CreateSummaryViewModel(summary *models.Summary) (*pb_sum.GetSummaryResponse, error) {
+	var res pb_sum.GetSummaryResponse
 
 	var goals []models.Goal
 	database.GetDB().Where("active = ?", true).Find(&goals)
@@ -63,22 +63,24 @@ func CreateSummaryViewModel(summary *models.Summary) (types.SummaryViewModel, er
 
 		goalModel, err := convertToGoalViewModel(m, &g, &summary.Workouts)
 		if err != nil {
-			return types.SummaryViewModel{}, err
+			return &pb_sum.GetSummaryResponse{}, err
 		}
-		res.Goals = append(res.Goals, goalModel)
+		res.Goals = append(res.Goals, &goalModel)
 	}
 
 	// Add workouts to the metrics object
 	for _, w := range summary.Workouts {
 		workout := ConvertToWorkoutViewModel(&w)
-		res.Workouts = append(res.Workouts, workout)
+		res.Workouts = append(res.Workouts, &workout)
 	}
 
-	res.ID = summary.ID.String()
-	res.Date = fmt.Sprintf("%d %s %d", summary.Date.Day(), summary.Date.Month(), summary.Date.Year())
-	res.Winner.DiscordID = summary.Winner.DiscordID
+	res.Id = summary.ID.String()
+	res.Day = fmt.Sprintf("%d %s %d", summary.Date.Day(), summary.Date.Month(), summary.Date.Year())
 
-	return res, nil
+	winner := pb_usr.GetSummaryUserResponse{DiscordId: summary.Winner.DiscordID}
+	res.Winner = &winner
+
+	return &res, nil
 }
 
 // convertMsToHour and minute format
