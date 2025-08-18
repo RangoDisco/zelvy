@@ -2,10 +2,10 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/rangodisco/zelvy/server/config"
+	"github.com/rangodisco/zelvy/server/config/database"
 	"log"
 	"os"
-	"server/config"
-	"server/config/database"
 )
 
 func main() {
@@ -26,12 +26,8 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	// Setup router
-	r := config.SetupRouter()
-
-	// Run server
-	err = r.Run()
+	err = config.SetupGRpc()
 	if err != nil {
-		log.Fatalf("failed to run server: %v", err)
+		log.Fatalf("failed to setup gRpc: %v", err)
 	}
 }
