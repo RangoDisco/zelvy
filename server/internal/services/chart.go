@@ -3,9 +3,9 @@ package services
 import (
 	"fmt"
 
-	"server/internal/enums"
-	"server/internal/models"
-	"server/pkg/types"
+	"github.com/rangodisco/zelvy/server/internal/enums"
+	"github.com/rangodisco/zelvy/server/internal/models"
+	"github.com/rangodisco/zelvy/server/pkg/types"
 )
 
 // TODO: rework whole system
