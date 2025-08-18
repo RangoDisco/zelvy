@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package zelvy.summary;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/summary";
+
+import "zelvy/goal/get_summary_goal_response.proto";
+import "zelvy/workout/workout_view_model.proto";
+import "zelvy/user/get_summary_user_response.proto";
+
+message GetSummaryResponse {
+  string id = 1;
+  string day = 2;
+  repeated zelvy.goal.GetSummaryGoalResponse goals = 3;
+  repeated zelvy.workout.WorkoutViewModel workouts = 4;
+  zelvy.user.GetSummaryUserResponse winner = 5;
+}
