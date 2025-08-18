@@ -1,10 +1,10 @@
 package services
 
 import (
-	"server/config/database"
-	"server/internal/enums"
-	"server/internal/models"
-	"server/pkg/types"
+	"github.com/rangodisco/zelvy/server/config/database"
+	"github.com/rangodisco/zelvy/server/internal/enums"
+	"github.com/rangodisco/zelvy/server/internal/models"
+	"github.com/rangodisco/zelvy/server/pkg/types"
 
 	"github.com/google/uuid"
 )
@@ -44,8 +44,8 @@ func getMetricPicto(goalType string) string {
 }
 
 // getProgression Used to display progress bar in dashboard
-func getProgression(value float64, threshold float64) int {
-	progression := int(value / threshold * 100)
+func getProgression(value float64, threshold float64) int64 {
+	progression := int64(value / threshold * 100)
 	if progression > 100 {
 		progression = 100
 	}
