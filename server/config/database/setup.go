@@ -2,11 +2,11 @@ package database
 
 import (
 	"fmt"
+	"github.com/rangodisco/zelvy/server/internal/enums"
 	"os"
-	"server/internal/enums"
 	"time"
 
-	"server/internal/models"
+	"github.com/rangodisco/zelvy/server/internal/models"
 
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
