@@ -6,7 +6,10 @@ option go_package = "github.com/rangodisco/zelvy/gen/zelvy/summary";
 
 import "zelvy/summary/get_summary_request.proto";
 import "zelvy/summary/get_summary_response.proto";
+import "zelvy/summary/add_summary_request.proto";
+import "zelvy/summary/add_summary_response.proto";
 
 service SummaryService {
   rpc GetSummary(GetSummaryResquest) returns (GetSummaryResponse);
+  rpc AddSummary(AddSummaryRequest) returns(AddSummaryResponse);
 }
