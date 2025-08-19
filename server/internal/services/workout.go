@@ -3,22 +3,21 @@ package services
 import (
 	"time"
 
+	"github.com/google/uuid"
 	pb_wrk "github.com/rangodisco/zelvy/gen/zelvy/workout"
 	"github.com/rangodisco/zelvy/server/config/database"
 	"github.com/rangodisco/zelvy/server/internal/enums"
 	"github.com/rangodisco/zelvy/server/internal/models"
-	"github.com/rangodisco/zelvy/server/pkg/types"
-
-	"github.com/google/uuid"
 )
 
 // ConvertToWorkoutModel converts a WorkoutInputModel to a Workout model (used when creating a new workout)
-func ConvertToWorkoutModel(w *types.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
+func ConvertToWorkoutModel(w *pb_wrk.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
 	return models.Workout{
-		ID:           uuid.New(),
-		SummaryID:    summaryId,
-		KcalBurned:   w.KcalBurned,
-		ActivityType: w.ActivityType,
+		ID:         uuid.New(),
+		SummaryID:  summaryId,
+		KcalBurned: w.KcalBurned,
+		// TODO: handle enum
+		ActivityType: string(w.ActivityType),
 		Name:         getWorkoutName(w),
 		Duration:     w.Duration,
 	}
@@ -66,19 +65,19 @@ func getWorkoutPicto(activityType string) string {
 }
 
 // Handles name based on the activity's type in case null
-func getWorkoutName(w *types.WorkoutInputModel) string {
-	if w.Name != "" {
-		return w.Name
+func getWorkoutName(w *pb_wrk.WorkoutInputModel) string {
+	if len(*w.Name) > 0 {
+		return *w.Name
 	}
 
 	switch w.ActivityType {
-	case enums.WorkoutTypeStrength:
+	case pb_wrk.WorkoutActivityType_STRENGTH:
 		return "Gym"
-	case enums.WorkoutTypeRunning:
+	case pb_wrk.WorkoutActivityType_RUNNING:
 		return "Running"
-	case enums.WorkoutTypeCycling:
+	case pb_wrk.WorkoutActivityType_CYCLING:
 		return "Cycling"
-	case enums.WorkoutTypeWalking:
+	case pb_wrk.WorkoutActivityType_WALk:
 		return "Walking"
 	default:
 		return "Random silly workout"

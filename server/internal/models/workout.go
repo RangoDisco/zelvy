@@ -9,7 +9,7 @@ type Workout struct {
 	Timestamps
 	ID           uuid.UUID `gorm:"type:uuid;primary_key"`
 	Name         string    `json:"name"`
-	KcalBurned   int       `json:"kcalBurned"`
+	KcalBurned   int64     `json:"kcalBurned"`
 	ActivityType string    `json:"activityType"`
 	Duration     float64   `json:"duration"`
 	SummaryID    uuid.UUID
