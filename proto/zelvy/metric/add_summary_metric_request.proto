@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zelvy.metric;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/metric";
+
+import "zelvy/goal/goal_type_enum.proto";
+
+message AddSummaryMetricRequest {
+  goal.GoalType type = 1;
+  double value = 2;
+}
