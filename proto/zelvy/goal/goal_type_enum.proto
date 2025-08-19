@@ -1,0 +1,12 @@
+syntax = "proto3";
+package zelvy.goal;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/goal";
+
+enum GoalType {
+  UNSPECIFIED = 0;
+  KCAL_CONSUMED = 1;
+  MILLILITER_DRANK = 2;
+  STEPS = 3;
+  MAIN_WORKOUT_DURATION = 4;
+  EXTRA_WORKOUT_DURATION = 5;
+}
