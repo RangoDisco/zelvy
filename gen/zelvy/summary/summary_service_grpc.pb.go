@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SummaryServiceClient interface {
 	GetSummary(ctx context.Context, in *GetSummaryResquest, opts ...grpc.CallOption) (*GetSummaryResponse, error)
+	AddSummary(ctx context.Context, in *AddSummaryRequest, opts ...grpc.CallOption) (*AddSummaryResponse, error)
 }
 
 type summaryServiceClient struct {
@@ -42,11 +43,21 @@ func (c *summaryServiceClient) GetSummary(ctx context.Context, in *GetSummaryRes
 	return out, nil
 }
 
+func (c *summaryServiceClient) AddSummary(ctx context.Context, in *AddSummaryRequest, opts ...grpc.CallOption) (*AddSummaryResponse, error) {
+	out := new(AddSummaryResponse)
+	err := c.cc.Invoke(ctx, "/zelvy.summary.SummaryService/AddSummary", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SummaryServiceServer is the server API for SummaryService service.
 // All implementations must embed UnimplementedSummaryServiceServer
 // for forward compatibility
 type SummaryServiceServer interface {
 	GetSummary(context.Context, *GetSummaryResquest) (*GetSummaryResponse, error)
+	AddSummary(context.Context, *AddSummaryRequest) (*AddSummaryResponse, error)
 	mustEmbedUnimplementedSummaryServiceServer()
 }
 
@@ -56,6 +67,9 @@ type UnimplementedSummaryServiceServer struct {
 
 func (UnimplementedSummaryServiceServer) GetSummary(context.Context, *GetSummaryResquest) (*GetSummaryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSummary not implemented")
+}
+func (UnimplementedSummaryServiceServer) AddSummary(context.Context, *AddSummaryRequest) (*AddSummaryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddSummary not implemented")
 }
 func (UnimplementedSummaryServiceServer) mustEmbedUnimplementedSummaryServiceServer() {}
 
@@ -88,6 +102,24 @@ func _SummaryService_GetSummary_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SummaryService_AddSummary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddSummaryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SummaryServiceServer).AddSummary(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/zelvy.summary.SummaryService/AddSummary",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SummaryServiceServer).AddSummary(ctx, req.(*AddSummaryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SummaryService_ServiceDesc is the grpc.ServiceDesc for SummaryService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +130,10 @@ var SummaryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSummary",
 			Handler:    _SummaryService_GetSummary_Handler,
+		},
+		{
+			MethodName: "AddSummary",
+			Handler:    _SummaryService_AddSummary_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
