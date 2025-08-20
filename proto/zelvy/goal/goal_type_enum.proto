@@ -9,4 +9,5 @@ enum GoalType {
   STEPS = 3;
   MAIN_WORKOUT_DURATION = 4;
   EXTRA_WORKOUT_DURATION = 5;
+  KCAL_BURNED = 6;
 }
