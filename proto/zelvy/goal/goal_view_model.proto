@@ -3,7 +3,7 @@ syntax = "proto3";
 package zelvy.goal;
 option go_package = "github.com/rangodisco/zelvy/gen/zelvy/goal";
 
-message GetSummaryGoalResponse {
+message GoalViewModel {
   string name = 1;
   double value = 2;
   string display_value = 3;
