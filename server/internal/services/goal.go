@@ -33,7 +33,7 @@ func convertToGoalViewModel(m *models.Metric, g *models.Goal, workouts *[]models
 }
 
 func getValue(m *models.Metric, g *models.Goal, w *[]models.Workout) float64 {
-	if g.Type == enums.MainWorkoutDuration || g.Type == enums.ExtraWorkoutDuration {
+	if g.Type == pb_goa.GoalType_MAIN_WORKOUT_DURATION.String() || g.Type == pb_goa.GoalType_EXTRA_WORKOUT_DURATION.String() {
 		return calculateWorkoutDuration(w, g.Type)
 	}
 
