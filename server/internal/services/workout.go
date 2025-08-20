@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
 	pb_wrk "github.com/rangodisco/zelvy/gen/zelvy/workout"
 	"github.com/rangodisco/zelvy/server/config/database"
 	"github.com/rangodisco/zelvy/server/internal/enums"
@@ -17,7 +18,7 @@ func ConvertToWorkoutModel(w *pb_wrk.WorkoutInputModel, summaryId uuid.UUID) mod
 		SummaryID:  summaryId,
 		KcalBurned: w.KcalBurned,
 		// TODO: handle enum
-		ActivityType: string(w.ActivityType),
+		ActivityType: w.ActivityType.String(),
 		Name:         getWorkoutName(w),
 		Duration:     w.Duration,
 	}
@@ -40,7 +41,8 @@ func ConvertToWorkoutViewModel(w *models.Workout) pb_wrk.WorkoutViewModel {
 func calculateWorkoutDuration(w *[]models.Workout, target string) float64 {
 	var duration float64
 	for _, w := range *w {
-		if (target == enums.MainWorkoutDuration && w.ActivityType == "strength") || (target == enums.ExtraWorkoutDuration && w.ActivityType != "strength") {
+		if (target == pb_goa.GoalType_MAIN_WORKOUT_DURATION.String() && w.ActivityType == pb_wrk.WorkoutActivityType_STRENGTH.String()) ||
+			(target == pb_goa.GoalType_EXTRA_WORKOUT_DURATION.String() && w.ActivityType != pb_wrk.WorkoutActivityType_STRENGTH.String()) {
 			duration = duration + w.Duration
 		}
 	}
@@ -66,7 +68,7 @@ func getWorkoutPicto(activityType string) string {
 
 // Handles name based on the activity's type in case null
 func getWorkoutName(w *pb_wrk.WorkoutInputModel) string {
-	if len(*w.Name) > 0 {
+	if w.Name != nil {
 		return *w.Name
 	}
 
