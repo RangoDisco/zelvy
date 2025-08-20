@@ -7,6 +7,6 @@ import "zelvy/metric/add_summary_metric_request.proto";
 import "zelvy/workout/workout_input_model.proto";
 
 message AddSummaryRequest {
-  repeated zelvy.metric.AddSummaryMetricRequest metrics = 1;
-  repeated zelvy.workout.WorkoutInputModel workouts = 2;
+  repeated metric.AddSummaryMetricRequest metrics = 1;
+  repeated workout.WorkoutInputModel workouts = 2;
 }
