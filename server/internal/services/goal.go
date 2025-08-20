@@ -13,13 +13,13 @@ import (
 )
 
 // convertToGoalViewModel Check if a goal is achieved, off or failed for each metric
-func convertToGoalViewModel(m *models.Metric, g *models.Goal, workouts *[]models.Workout) (pb_goa.GetSummaryGoalResponse, error) {
+func convertToGoalViewModel(m *models.Metric, g *models.Goal, workouts *[]models.Workout) (pb_goa.GoalViewModel, error) {
 
 	value := getValue(m, g, workouts)
 	displayValue, displayThreshold := formatDisplayValue(value, g)
 
 	isOff := isOff(g.ID)
-	return pb_goa.GetSummaryGoalResponse{
+	return pb_goa.GoalViewModel{
 		Value:            value,
 		DisplayValue:     displayValue,
 		Threshold:        g.Value,
