@@ -71,7 +71,7 @@ func CreateSummaryViewModel(summary *models.Summary) (*pb_sum.GetSummaryResponse
 	// Add workouts to the metrics object
 	for _, w := range summary.Workouts {
 		workout := ConvertToWorkoutViewModel(&w)
-		res.Workouts = append(res.Workouts, &workout)
+		res.Workouts = append(res.Workouts, workout)
 	}
 
 	res.Id = summary.ID.String()
