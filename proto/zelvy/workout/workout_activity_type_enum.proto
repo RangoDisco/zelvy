@@ -6,7 +6,7 @@ option go_package = "github.com/rangodisco/zelvy/gen/zelvy/workout";
 enum WorkoutActivityType {
   UNSPECIFIED = 0;
   STRENGTH = 1;
-  WALk = 2;
+  WALK = 2;
   CYCLING = 3;
   RUNNING = 4;
 }
