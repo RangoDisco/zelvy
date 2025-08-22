@@ -3,16 +3,17 @@ package factories
 import (
 	"time"
 
-	"server/internal/models"
-	"server/pkg/types"
+	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
+	pb_usr "github.com/rangodisco/zelvy/gen/zelvy/user"
+	"github.com/rangodisco/zelvy/server/internal/models"
 
 	"github.com/google/uuid"
 )
 
-func CreateSummaryModel() models.Summary {
+func CreateSummaryModel() *models.Summary {
 	id := uuid.New()
 
-	return models.Summary{
+	return &models.Summary{
 		ID:       id,
 		Date:     time.Now(),
 		Metrics:  CreateMetricModels(id),
@@ -21,28 +22,27 @@ func CreateSummaryModel() models.Summary {
 	}
 }
 
-func CreateSummaryViewModel() types.SummaryViewModel {
-	return types.SummaryViewModel{
-		ID:       "id",
-		Date:     "2024-01-01",
-		Steps:    1000,
+func CreateSummaryViewModel() pb_sum.GetSummaryResponse {
+	return pb_sum.GetSummaryResponse{
+		Id:       "id",
+		Day:      "2024-01-01",
 		Goals:    CreateGoalViewModels(),
 		Workouts: CreateWorkoutViewModels(),
 		Winner:   CreateWinnerViewModel(),
 	}
 }
 
-func CreateSummaryInputModel() types.SummaryInputModel {
-	return types.SummaryInputModel{
+func CreateSummaryInputModel() *pb_sum.AddSummaryRequest {
+	return &pb_sum.AddSummaryRequest{
 		Metrics:  CreateMetricInputModels(),
 		Workouts: CreateWorkoutInputModels(),
 	}
 
 }
 
-func CreateWinnerViewModel() types.Winner {
-	return types.Winner{
-		DiscordID: "123456789",
+func CreateWinnerViewModel() *pb_usr.GetSummaryUserResponse {
+	return &pb_usr.GetSummaryUserResponse{
+		DiscordId: "1231231231",
 	}
 }
 
