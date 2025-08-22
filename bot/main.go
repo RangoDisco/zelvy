@@ -71,6 +71,8 @@ func main() {
 		checkErr(err)
 	}(dg)
 
+	utils.SetupClient()
+
 	// Register scheduler
 	s := utils.StartScheduler(dg)
 
@@ -81,7 +83,7 @@ func main() {
 		}
 	}()
 
-	// Keep program running
+	// Keep the program running
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, syscall.SIGINT, syscall.SIGTERM)
 
