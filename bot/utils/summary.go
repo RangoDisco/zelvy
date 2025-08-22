@@ -1,30 +1,26 @@
 package utils
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
-	"github.com/rangodisco/zelvy/bot/types"
+	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
+	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
+	"time"
 )
 
 // FetchSummary fetches today's summary from the API
-func FetchSummary() (types.Summary, error) {
-
-	resp, err := Request("GET", "/summaries", nil)
-	if err != nil || resp.StatusCode() != 200 {
-		return types.Summary{}, fmt.Errorf("error fetching summary: %d %v", resp.StatusCode(), err)
+func FetchSummary() (*pb_sum.GetSummaryResponse, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	resp, err := Client.GetSummary(ctx, &pb_sum.GetSummaryResquest{})
+	if err != nil {
+		return &pb_sum.GetSummaryResponse{}, fmt.Errorf("error fetching summary: %v", err)
 	}
-
-	// Unmarshal response body to Summary struct
-	var summary types.Summary
-	if err := json.Unmarshal(resp.Body(), &summary); err != nil {
-		return types.Summary{}, fmt.Errorf("error unmarshalling response body: %v", err)
-	}
-
-	return summary, nil
+	return resp, nil
 }
 
 // IsSuccessful determines if the summary is successful based on each metric success
-func IsSuccessful(goals []types.Goal) bool {
+func IsSuccessful(goals []*pb_goa.GoalViewModel) bool {
 	// For each metric, check if it's a success
 	for _, g := range goals {
 		if !g.IsSuccessful && !g.IsOff {

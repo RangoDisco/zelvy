@@ -1,16 +1,16 @@
 package services
 
 import (
-	"server/config/database"
-	"server/internal/enums"
-	"server/internal/models"
-	"server/pkg/types"
+	pb_met "github.com/rangodisco/zelvy/gen/zelvy/metric"
+	"github.com/rangodisco/zelvy/server/config/database"
+	"github.com/rangodisco/zelvy/server/internal/enums"
+	"github.com/rangodisco/zelvy/server/internal/models"
 
 	"github.com/google/uuid"
 )
 
 // ConvertToMetricModel Converts a metric input to a db model
-func ConvertToMetricModel(m *types.MetricInputModel, summaryId uuid.UUID) (models.Metric, bool) {
+func ConvertToMetricModel(m *pb_met.AddSummaryMetricRequest, summaryId uuid.UUID) (models.Metric, bool) {
 	// Fetch linked goal
 	var goal models.Goal
 	if database.GetDB().Where("type = ?", m.Type).First(&goal).Error != nil {
@@ -19,9 +19,10 @@ func ConvertToMetricModel(m *types.MetricInputModel, summaryId uuid.UUID) (model
 	return models.Metric{
 		ID:        uuid.New(),
 		SummaryID: summaryId,
-		Type:      m.Type,
-		Value:     m.Value,
-		GoalID:    goal.ID,
+		// TODO: handle enum
+		Type:   string(m.Type),
+		Value:  m.Value,
+		GoalID: goal.ID,
 	}, true
 }
 
@@ -44,8 +45,8 @@ func getMetricPicto(goalType string) string {
 }
 
 // getProgression Used to display progress bar in dashboard
-func getProgression(value float64, threshold float64) int {
-	progression := int(value / threshold * 100)
+func getProgression(value float64, threshold float64) int64 {
+	progression := int64(value / threshold * 100)
 	if progression > 100 {
 		progression = 100
 	}

@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/rangodisco/zelvy/bot/types"
+	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
 	"log"
 	"os"
 
@@ -11,7 +11,7 @@ import (
 /**
  * SendRecap adds the metrics recap to the previously created thread (by CreateThread)
  */
-func SendRecap(s *discordgo.Session, channelID string, summary types.Summary) {
+func SendRecap(s *discordgo.Session, channelID string, summary *pb_sum.GetSummaryResponse) {
 	// Create new embed
 	embed := NewEmbed().
 		SetTitle("Today's stats")
@@ -35,7 +35,7 @@ func SendRecap(s *discordgo.Session, channelID string, summary types.Summary) {
 /**
  * SendWorkoutsDetails adds workouts to the previously created thread (by CreateThread)
  */
-func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary types.Summary) {
+func SendWorkoutsDetails(s *discordgo.Session, channelID string, summary *pb_sum.GetSummaryResponse) {
 	embed := NewEmbed().
 		SetTitle("Workouts").
 		SetThumbnail(os.Getenv("WORKOUTS_PICTURE"))
@@ -107,7 +107,7 @@ func SendScheduleMessage(s *discordgo.Session) {
 	SendWorkoutsDetails(s, thread.ID, summary)
 
 	// Get Discord profile of winner
-	winner, _ := s.User(summary.Winner.DiscordID)
+	winner, _ := s.User(summary.Winner.DiscordId)
 
 	// Send results
 	SendResults(s, thread.ID, isSuccessful, winner)

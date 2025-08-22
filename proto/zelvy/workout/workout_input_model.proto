@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package zelvy.workout;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/workout";
+
+import "zelvy/workout/workout_activity_type_enum.proto";
+
+message WorkoutInputModel {
+  workout.WorkoutActivityType activity_type = 1;
+  optional string name = 2;
+  int64 kcal_burned = 3;
+  double duration = 4;
+}
