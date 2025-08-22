@@ -1,11 +1,11 @@
 package factories
 
 import (
-	"server/internal/enums"
-	"server/internal/models"
-	"server/pkg/types"
-
 	"github.com/google/uuid"
+	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
+	pb_met "github.com/rangodisco/zelvy/gen/zelvy/metric"
+	"github.com/rangodisco/zelvy/server/internal/enums"
+	"github.com/rangodisco/zelvy/server/internal/models"
 )
 
 func CreateMetricModels(surmmaryId uuid.UUID) []models.Metric {
@@ -31,19 +31,19 @@ func CreateMetricModels(surmmaryId uuid.UUID) []models.Metric {
 	}
 }
 
-func CreateMetricInputModels() []types.MetricInputModel {
-	return []types.MetricInputModel{
+func CreateMetricInputModels() []*pb_met.AddSummaryMetricRequest {
+	return []*pb_met.AddSummaryMetricRequest{
 		{
 			Value: 1091.9,
-			Type:  enums.KcalBurned,
+			Type:  pb_goa.GoalType_KCAL_BURNED,
 		},
 		{
 			Value: 2083,
-			Type:  enums.KcalConsumed,
+			Type:  pb_goa.GoalType_KCAL_CONSUMED,
 		},
 		{
 			Value: 2200,
-			Type:  enums.MilliliterDrank,
+			Type:  pb_goa.GoalType_MILLILITER_DRANK,
 		},
 	}
 }
