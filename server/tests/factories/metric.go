@@ -7,25 +7,25 @@ import (
 	"github.com/rangodisco/zelvy/server/internal/models"
 )
 
-func CreateMetricModels(surmmaryId uuid.UUID) []models.Metric {
+func CreateMetricModels(summaryId uuid.UUID) []models.Metric {
 	return []models.Metric{
 		{
 			ID:        uuid.New(),
 			Type:      pb_goa.GoalType_KCAL_BURNED.String(),
 			Value:     1091.9,
-			SummaryID: surmmaryId,
+			SummaryID: summaryId,
 		},
 		{
 			ID:        uuid.New(),
 			Type:      pb_goa.GoalType_KCAL_CONSUMED.String(),
 			Value:     2083,
-			SummaryID: surmmaryId,
+			SummaryID: summaryId,
 		},
 		{
 			ID:        uuid.New(),
 			Type:      pb_goa.GoalType_MILLILITER_DRANK.String(),
 			Value:     2200,
-			SummaryID: surmmaryId,
+			SummaryID: summaryId,
 		},
 	}
 }
