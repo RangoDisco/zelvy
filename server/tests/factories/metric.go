@@ -4,7 +4,6 @@ import (
 	"github.com/google/uuid"
 	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
 	pb_met "github.com/rangodisco/zelvy/gen/zelvy/metric"
-	"github.com/rangodisco/zelvy/server/internal/enums"
 	"github.com/rangodisco/zelvy/server/internal/models"
 )
 
@@ -12,19 +11,19 @@ func CreateMetricModels(surmmaryId uuid.UUID) []models.Metric {
 	return []models.Metric{
 		{
 			ID:        uuid.New(),
-			Type:      enums.KcalBurned,
+			Type:      pb_goa.GoalType_KCAL_BURNED.String(),
 			Value:     1091.9,
 			SummaryID: surmmaryId,
 		},
 		{
 			ID:        uuid.New(),
-			Type:      enums.KcalConsumed,
+			Type:      pb_goa.GoalType_KCAL_CONSUMED.String(),
 			Value:     2083,
 			SummaryID: surmmaryId,
 		},
 		{
 			ID:        uuid.New(),
-			Type:      enums.MilliliterDrank,
+			Type:      pb_goa.GoalType_MILLILITER_DRANK.String(),
 			Value:     2200,
 			SummaryID: surmmaryId,
 		},
