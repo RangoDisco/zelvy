@@ -13,14 +13,14 @@ import (
 func ConvertToMetricModel(m *pb_met.AddSummaryMetricRequest, summaryId uuid.UUID) (models.Metric, bool) {
 	// Fetch linked goal
 	var goal models.Goal
-	if database.GetDB().Where("type = ?", m.Type).First(&goal).Error != nil {
+	if database.GetDB().Where("type = ? AND active = ?", m.Type.String(), true).First(&goal).Error != nil {
 		return models.Metric{}, false
 	}
 	return models.Metric{
 		ID:        uuid.New(),
 		SummaryID: summaryId,
 		// TODO: handle enum
-		Type:   string(m.Type),
+		Type:   m.Type.String(),
 		Value:  m.Value,
 		GoalID: goal.ID,
 	}, true
