@@ -1,4 +1,4 @@
-package utils
+package grpc
 
 import (
 	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"

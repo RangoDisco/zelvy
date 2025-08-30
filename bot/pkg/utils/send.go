@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"github.com/rangodisco/zelvy/bot/pkg/config"
 	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
 	"log"
 	"os"
@@ -8,9 +9,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-/**
- * SendRecap adds the metrics recap to the previously created thread (by CreateThread)
- */
+// SendRecap adds the metrics recap to the previously created thread (by CreateThread)
 func SendRecap(s *discordgo.Session, channelID string, summary *pb_sum.GetSummaryResponse) {
 	// Create new embed
 	embed := NewEmbed().
@@ -98,7 +97,7 @@ func SendScheduleMessage(s *discordgo.Session) {
 	isSuccessful := IsSuccessful(summary.Goals)
 
 	// Create thread
-	thread := CreateThread(s, ChannelID, isSuccessful)
+	thread := CreateThread(s, config.ChannelID, isSuccessful)
 
 	// Send the first stats message
 	SendRecap(s, thread.ID, summary)
