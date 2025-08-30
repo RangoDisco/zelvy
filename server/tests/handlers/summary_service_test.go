@@ -21,7 +21,7 @@ func TestMain(m *testing.M) {
 	godotenv.Load(".env")
 
 	// Ensure that the environment is set to tests
-	os.Setenv("GIN_MODE", "tests")
+	os.Setenv("GIN_MODE", "test")
 
 	// Load environment variables
 	config.LoadEnv()
