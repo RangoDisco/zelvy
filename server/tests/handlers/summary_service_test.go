@@ -20,8 +20,8 @@ func TestMain(m *testing.M) {
 	// Load main environment variables
 	godotenv.Load(".env")
 
-	// Ensure that the environment is set to test
-	os.Setenv("GIN_MODE", "test")
+	// Ensure that the environment is set to tests
+	os.Setenv("GIN_MODE", "tests")
 
 	// Load environment variables
 	config.LoadEnv()
