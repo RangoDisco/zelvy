@@ -23,15 +23,12 @@ jobs:
           sudo apt-get install -y git
           sudo apt-get install -y gcc libc6-dev
 
-      - name: Install templ
-        run: go install github.com/a-h/templ/cmd/templ@latest
-
       - name: Build server
         env:
           GOPROXY: direct
           GONOSUMDB: "*"
           GOSUMDB: off
-        run: cd server && go mod tidy && templ generate && go build -v cmd/.
+        run: cd server && go mod tidy && go build -v cmd/.
 
       - name: Test server
         env:
