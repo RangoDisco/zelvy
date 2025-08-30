@@ -1,0 +1,25 @@
+package config
+
+import (
+	"flag"
+	"os"
+)
+
+var (
+	Token     string
+	AppID     string
+	GuildID   string
+	ChannelID string
+)
+
+func SetGlobals() {
+	Token = os.Getenv("BOT_TOKEN")
+	AppID = os.Getenv("BOT_APP_ID")
+	GuildID = os.Getenv("BOT_GUILD_ID")
+	ChannelID = os.Getenv("BOT_CHANNEL_ID")
+
+	if Token == "" {
+		flag.Usage()
+		os.Exit(1)
+	}
+}

@@ -1,12 +1,10 @@
 package factories
 
 import (
-	"server/internal/enums"
-	"server/internal/models"
-	"server/internal/services"
-	"server/pkg/types"
-
 	"github.com/google/uuid"
+	pb_wkr "github.com/rangodisco/zelvy/gen/zelvy/workout"
+	"github.com/rangodisco/zelvy/server/internal/models"
+	"github.com/rangodisco/zelvy/server/internal/services"
 )
 
 func CreateWorkoutModels(summaryId uuid.UUID) []models.Workout {
@@ -15,22 +13,22 @@ func CreateWorkoutModels(summaryId uuid.UUID) []models.Workout {
 			ID:           uuid.New(),
 			Name:         "Push 1",
 			KcalBurned:   320,
-			ActivityType: enums.WorkoutTypeStrength,
+			ActivityType: pb_wkr.WorkoutActivityType_STRENGTH.String(),
 			Duration:     3600,
 			SummaryID:    summaryId,
 		}, {
 			ID:           uuid.New(),
 			Name:         "Marche",
 			KcalBurned:   300,
-			ActivityType: enums.WorkoutTypeWalking,
+			ActivityType: pb_wkr.WorkoutActivityType_WALK.String(),
 			Duration:     3600,
 			SummaryID:    summaryId,
 		},
 	}
 }
 
-func CreateWorkoutViewModels() []types.WorkoutViewModel {
-	var workoutsViewModels []types.WorkoutViewModel
+func CreateWorkoutViewModels() []*pb_wkr.WorkoutViewModel {
+	var workoutsViewModels []*pb_wkr.WorkoutViewModel
 
 	workouts := CreateWorkoutModels(uuid.New())
 
@@ -42,18 +40,18 @@ func CreateWorkoutViewModels() []types.WorkoutViewModel {
 
 }
 
-func CreateWorkoutInputModels() []types.WorkoutInputModel {
-	return []types.WorkoutInputModel{
+func CreateWorkoutInputModels() []*pb_wkr.WorkoutInputModel {
+	pushName := "Push 1"
+	return []*pb_wkr.WorkoutInputModel{
 		{
-			Name:         "Push 1",
+			Name:         &pushName,
 			Duration:     3600,
-			ActivityType: enums.WorkoutTypeStrength,
+			ActivityType: pb_wkr.WorkoutActivityType_STRENGTH,
 			KcalBurned:   320,
 		},
 		{
-			Name:         "Marche",
 			Duration:     3600,
-			ActivityType: enums.WorkoutTypeWalking,
+			ActivityType: pb_wkr.WorkoutActivityType_WALK,
 			KcalBurned:   300,
 		},
 	}

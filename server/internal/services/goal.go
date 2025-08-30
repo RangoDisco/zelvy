@@ -1,25 +1,25 @@
 package services
 
 import (
-	"server/internal/enums"
-	"server/pkg/types"
+	"github.com/rangodisco/zelvy/server/internal/enums"
 	"strconv"
 	"time"
 
-	"server/config/database"
-	"server/internal/models"
+	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
+	"github.com/rangodisco/zelvy/server/config/database"
+	"github.com/rangodisco/zelvy/server/internal/models"
 
 	"github.com/google/uuid"
 )
 
 // convertToGoalViewModel Check if a goal is achieved, off or failed for each metric
-func convertToGoalViewModel(m *models.Metric, g *models.Goal, workouts *[]models.Workout) (types.GoalViewModel, error) {
+func convertToGoalViewModel(m *models.Metric, g *models.Goal, workouts *[]models.Workout) (pb_goa.GoalViewModel, error) {
 
 	value := getValue(m, g, workouts)
 	displayValue, displayThreshold := formatDisplayValue(value, g)
 
 	isOff := isOff(g.ID)
-	return types.GoalViewModel{
+	return pb_goa.GoalViewModel{
 		Value:            value,
 		DisplayValue:     displayValue,
 		Threshold:        g.Value,
@@ -33,7 +33,7 @@ func convertToGoalViewModel(m *models.Metric, g *models.Goal, workouts *[]models
 }
 
 func getValue(m *models.Metric, g *models.Goal, w *[]models.Workout) float64 {
-	if g.Type == enums.MainWorkoutDuration || g.Type == enums.ExtraWorkoutDuration {
+	if g.Type == pb_goa.GoalType_MAIN_WORKOUT_DURATION.String() || g.Type == pb_goa.GoalType_EXTRA_WORKOUT_DURATION.String() {
 		return calculateWorkoutDuration(w, g.Type)
 	}
 

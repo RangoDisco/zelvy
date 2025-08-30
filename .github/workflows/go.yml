@@ -2,9 +2,9 @@ name: Go
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build:
@@ -23,19 +23,16 @@ jobs:
           sudo apt-get install -y git
           sudo apt-get install -y gcc libc6-dev
 
-      - name: Install templ
-        run: go install github.com/a-h/templ/cmd/templ@latest
-
-      - name: Build server
+      - name: Build app
         env:
           GOPROXY: direct
           GONOSUMDB: "*"
           GOSUMDB: off
-        run: cd server && go mod tidy && templ generate && go build -v cmd/.
+        run: go mod tidy && go build -v cmd/.
 
-      - name: Test server
+      - name: Run tests
         env:
           GOPROXY: direct
           GONOSUMDB: "*"
           GOSUMDB: off
-        run: cd server && go test -v ./tests/...
+        run: go test -v ./...

@@ -3,31 +3,33 @@ package services
 import (
 	"time"
 
-	"server/config/database"
-	"server/internal/enums"
-	"server/internal/models"
-	"server/pkg/types"
-
 	"github.com/google/uuid"
+	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
+	pb_wrk "github.com/rangodisco/zelvy/gen/zelvy/workout"
+	"github.com/rangodisco/zelvy/server/config/database"
+	"github.com/rangodisco/zelvy/server/internal/enums"
+	"github.com/rangodisco/zelvy/server/internal/models"
 )
 
 // ConvertToWorkoutModel converts a WorkoutInputModel to a Workout model (used when creating a new workout)
-func ConvertToWorkoutModel(w *types.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
+func ConvertToWorkoutModel(w *pb_wrk.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
 	return models.Workout{
-		ID:           uuid.New(),
-		SummaryID:    summaryId,
-		KcalBurned:   w.KcalBurned,
-		ActivityType: w.ActivityType,
+		ID:         uuid.New(),
+		SummaryID:  summaryId,
+		KcalBurned: w.KcalBurned,
+		// TODO: handle enum
+		ActivityType: w.ActivityType.String(),
 		Name:         getWorkoutName(w),
 		Duration:     w.Duration,
 	}
 }
 
 // ConvertToWorkoutViewModel used when fetching a summary, converts a Workout model to a WorkoutViewModel
-func ConvertToWorkoutViewModel(w *models.Workout) types.WorkoutViewModel {
-	return types.WorkoutViewModel{
-		ID:           w.ID.String(),
-		KcalBurned:   w.KcalBurned,
+func ConvertToWorkoutViewModel(w *models.Workout) *pb_wrk.WorkoutViewModel {
+	return &pb_wrk.WorkoutViewModel{
+		Id: w.ID.String(),
+		// TODO: fix
+		KcalBurned:   int64(w.KcalBurned),
 		ActivityType: w.ActivityType,
 		Name:         w.Name,
 		Duration:     convertMsToHour(w.Duration),
@@ -39,7 +41,8 @@ func ConvertToWorkoutViewModel(w *models.Workout) types.WorkoutViewModel {
 func calculateWorkoutDuration(w *[]models.Workout, target string) float64 {
 	var duration float64
 	for _, w := range *w {
-		if (target == enums.MainWorkoutDuration && w.ActivityType == "strength") || (target == enums.ExtraWorkoutDuration && w.ActivityType != "strength") {
+		if (target == pb_goa.GoalType_MAIN_WORKOUT_DURATION.String() && w.ActivityType == pb_wrk.WorkoutActivityType_STRENGTH.String()) ||
+			(target == pb_goa.GoalType_EXTRA_WORKOUT_DURATION.String() && w.ActivityType != pb_wrk.WorkoutActivityType_STRENGTH.String()) {
 			duration = duration + w.Duration
 		}
 	}
@@ -64,19 +67,19 @@ func getWorkoutPicto(activityType string) string {
 }
 
 // Handles name based on the activity's type in case null
-func getWorkoutName(w *types.WorkoutInputModel) string {
-	if w.Name != "" {
-		return w.Name
+func getWorkoutName(w *pb_wrk.WorkoutInputModel) string {
+	if w.Name != nil {
+		return *w.Name
 	}
 
 	switch w.ActivityType {
-	case enums.WorkoutTypeStrength:
+	case pb_wrk.WorkoutActivityType_STRENGTH:
 		return "Gym"
-	case enums.WorkoutTypeRunning:
+	case pb_wrk.WorkoutActivityType_RUNNING:
 		return "Running"
-	case enums.WorkoutTypeCycling:
+	case pb_wrk.WorkoutActivityType_CYCLING:
 		return "Cycling"
-	case enums.WorkoutTypeWalking:
+	case pb_wrk.WorkoutActivityType_WALK:
 		return "Walking"
 	default:
 		return "Random silly workout"

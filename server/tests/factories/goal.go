@@ -1,9 +1,9 @@
 package factories
 
-import "server/pkg/types"
+import pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
 
-func CreateGoalViewModels() []types.GoalViewModel {
-	return []types.GoalViewModel{
+func CreateGoalViewModels() []*pb_goa.GoalViewModel {
+	return []*pb_goa.GoalViewModel{
 		{
 			Name:             "Calories brulées",
 			Value:            1500,
@@ -14,7 +14,8 @@ func CreateGoalViewModels() []types.GoalViewModel {
 			IsOff:            false,
 			Progression:      100,
 			Picto:            "picto",
-		}, {
+		},
+		{
 			Name:             "Calories consommées",
 			Value:            3600,
 			DisplayValue:     "1h00",

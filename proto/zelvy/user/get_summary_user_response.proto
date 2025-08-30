@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package zelvy.user;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/user";
+
+message GetSummaryUserResponse {
+  string discord_id = 1;
+}
