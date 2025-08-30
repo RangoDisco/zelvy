@@ -2,9 +2,8 @@ package utils
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"log"
-
 	"github.com/go-co-op/gocron/v2"
+	"log"
 )
 
 // StartScheduler starts the scheduler to check for summary each day

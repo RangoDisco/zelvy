@@ -1,15 +1,15 @@
-package main
+package commands
 
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/rangodisco/zelvy/bot/pkg/utils"
 	"io"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/bwmarrin/discordgo"
-	"github.com/rangodisco/zelvy/bot/utils"
 )
 
 type CreateUserBody struct {
@@ -78,10 +78,12 @@ var (
 				},
 			}
 			err := s.InteractionRespond(i.Interaction, response)
-			checkErr(err)
+			if err != nil {
+				log.Println(err)
+			}
 		},
 	}
-	commandsHandlers = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){
+	Handlers = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){
 		"set": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			var response *discordgo.InteractionResponse
 
@@ -167,11 +169,15 @@ var (
 					},
 				}
 				err := s.InteractionRespond(i.Interaction, response)
-				checkErr(err)
+				if err != nil {
+					log.Fatal(err)
+				}
 			case "paypal":
 				response = handlePaypalCommand(i)
 				err := s.InteractionRespond(i.Interaction, response)
-				checkErr(err)
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
 		},
 		"get": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
@@ -188,7 +194,9 @@ var (
 						},
 					}
 					err := s.InteractionRespond(i.Interaction, response)
-					checkErr(err)
+					if err != nil {
+						log.Fatal(err)
+					}
 					return
 				}
 				// TODO check len
@@ -201,7 +209,9 @@ var (
 					},
 				}
 				err := s.InteractionRespond(i.Interaction, response)
-				checkErr(err)
+				if err != nil {
+					log.Fatal(err)
+				}
 				utils.SendScheduleMessage(s)
 				return
 			}
@@ -250,16 +260,22 @@ func createUser(u *discordgo.User, email string) int {
 	}
 
 	j, err := json.Marshal(b)
-	checkErr(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	r, err := http.NewRequest("POST", baseUrl+"/api/users", bytes.NewBuffer(j))
-	checkErr(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	r.Header.Add("X-API-KEY", apiKey)
 
 	client := &http.Client{}
 	resp, err := client.Do(r)
-	checkErr(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
