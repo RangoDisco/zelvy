@@ -1,7 +1,6 @@
 package main
 
 import (
-	bot "github.com/rangodisco/zelvy/bot/pkg/config/setup"
 	"github.com/rangodisco/zelvy/server/config"
 	"github.com/rangodisco/zelvy/server/config/database"
 	"log"
@@ -13,7 +12,10 @@ func init() {
 		log.Fatalf("failed to load environment variables: %v", err)
 	}
 
-	err = database.SetupDatabase()
+}
+
+func main() {
+	err := database.SetupDatabase()
 	if err != nil {
 		log.Fatalf("failed to setup database: %v", err)
 	}
@@ -22,9 +24,9 @@ func init() {
 	if err != nil {
 		log.Fatalf("failed to setup gRpc: %v", err)
 	}
+	//err = bot.Setup()
+	//if err != nil {
+	//	log.Fatalf("failed to setup bot: %v", err)
+	//}
 
-	err = bot.Setup()
-	if err != nil {
-		log.Fatalf("failed to setup bot: %v", err)
-	}
 }

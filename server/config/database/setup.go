@@ -2,10 +2,10 @@ package database
 
 import (
 	"fmt"
-	"github.com/rangodisco/zelvy/server/internal/enums"
 	"os"
 	"time"
 
+	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
 	"github.com/rangodisco/zelvy/server/internal/models"
 
 	"github.com/google/uuid"
@@ -85,43 +85,48 @@ func InitTestDatabase() error {
 	goals := []models.Goal{
 		{
 			ID:         uuid.New(),
-			Type:       enums.KcalBurned,
+			Type:       pb_goa.GoalType_KCAL_BURNED.String(),
 			Value:      1000,
-			Name:       "",
+			Name:       "Burned kcal",
 			Unit:       "kcal",
 			Comparison: "greater",
+			Active:     true,
 		},
 		{
 			ID:         uuid.New(),
-			Type:       enums.KcalConsumed,
+			Type:       pb_goa.GoalType_KCAL_CONSUMED.String(),
 			Value:      2000,
-			Name:       "",
+			Name:       "Eaten kcal",
 			Unit:       "kcal",
 			Comparison: "less",
+			Active:     true,
 		},
 		{
 			ID:         uuid.New(),
-			Type:       enums.MilliliterDrank,
+			Type:       pb_goa.GoalType_MILLILITER_DRANK.String(),
 			Value:      2000,
-			Name:       "",
+			Name:       "Water drank",
 			Unit:       "kcal",
 			Comparison: "greater",
+			Active:     true,
 		},
 		{
 			ID:         uuid.New(),
-			Type:       enums.MainWorkoutDuration,
+			Type:       pb_goa.GoalType_MAIN_WORKOUT_DURATION.String(),
 			Value:      3600,
-			Name:       "",
+			Name:       "Gym duration",
 			Unit:       "mn",
 			Comparison: "greater",
+			Active:     true,
 		},
 		{
 			ID:         uuid.New(),
-			Type:       enums.ExtraWorkoutDuration,
+			Type:       pb_goa.GoalType_EXTRA_WORKOUT_DURATION.String(),
 			Value:      3600,
-			Name:       "",
+			Name:       "Cardio duration",
 			Unit:       "mn",
 			Comparison: "greater",
+			Active:     true,
 		},
 	}
 
