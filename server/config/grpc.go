@@ -1,7 +1,8 @@
 package config
 
 import (
-	pb_sum "github.com/rangodisco/zelvy/server/internal/api/grpc/summary"
+	"github.com/rangodisco/zelvy/server/internal/api/grpc/summary"
+	"github.com/rangodisco/zelvy/server/internal/api/grpc/user"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"net"
@@ -15,7 +16,8 @@ func SetupGRpc() error {
 
 	s := grpc.NewServer()
 
-	pb_sum.RegisterServer(s)
+	summary.RegisterServer(s)
+	user.RegisterServer(s)
 
 	reflection.Register(s)
 
