@@ -20,7 +20,7 @@ func LoadEnv() error {
 		return fmt.Errorf("error loading .env file: %w", err)
 	}
 
-	mode := os.Getenv("GIN_MODE")
+	mode := os.Getenv("APP_ENV")
 	var envFile string
 
 	switch mode {

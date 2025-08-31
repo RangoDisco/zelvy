@@ -21,7 +21,7 @@ var (
 
 func SetupDatabase() error {
 	var err error
-	var ginMode = os.Getenv("GIN_MODE")
+	var ginMode = os.Getenv("APP_ENV")
 	switch ginMode {
 	case "test":
 		err = InitTestDatabase()
