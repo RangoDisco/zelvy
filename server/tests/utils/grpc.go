@@ -2,8 +2,8 @@ package utils
 
 import (
 	"context"
-	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
-	pb_sum_s "github.com/rangodisco/zelvy/server/internal/api/grpc/summary"
+	"github.com/rangodisco/zelvy/server/internal/api/grpc/summary"
+	"github.com/rangodisco/zelvy/server/internal/api/grpc/user"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/test/bufconn"
@@ -12,9 +12,8 @@ import (
 )
 
 var (
-	Conn   *grpc.ClientConn
-	Client pb_sum.SummaryServiceClient
-	Lis    *bufconn.Listener
+	Conn *grpc.ClientConn
+	Lis  *bufconn.Listener
 )
 
 func bufDialer(context.Context, string) (net.Conn, error) {
@@ -26,7 +25,9 @@ func SetupGrpc() {
 	Lis = bufconn.Listen(bufferInsecure)
 
 	s := grpc.NewServer()
-	pb_sum_s.RegisterServer(s)
+	summary.RegisterServer(s)
+	user.RegisterServer(s)
+
 	go func() {
 		if err := s.Serve(Lis); err != nil {
 			log.Fatal(err)
