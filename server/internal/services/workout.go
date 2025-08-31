@@ -27,9 +27,8 @@ func ConvertToWorkoutModel(w *pb_wrk.WorkoutInputModel, summaryId uuid.UUID) mod
 // ConvertToWorkoutViewModel used when fetching a summary, converts a Workout model to a WorkoutViewModel
 func ConvertToWorkoutViewModel(w *models.Workout) *pb_wrk.WorkoutViewModel {
 	return &pb_wrk.WorkoutViewModel{
-		Id: w.ID.String(),
-		// TODO: fix
-		KcalBurned:   int64(w.KcalBurned),
+		Id:           w.ID.String(),
+		KcalBurned:   w.KcalBurned,
 		ActivityType: w.ActivityType,
 		Name:         w.Name,
 		Duration:     convertMsToHour(w.Duration),
