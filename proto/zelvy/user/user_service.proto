@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package zelvy.user;
+
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/user";
+
+import "zelvy/user/add_user_request.proto";
+import "zelvy/user/add_user_response.proto";
+
+service UserService {
+  rpc AddUser(AddUserRequest) returns (AddUserResponse);
+}
