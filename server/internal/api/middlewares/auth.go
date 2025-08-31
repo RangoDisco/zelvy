@@ -1,44 +1,28 @@
 package middlewares
 
 import (
-	"net/http"
+	"context"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"os"
-	"strings"
-
-	"github.com/gin-gonic/gin"
 )
 
-func CheckKey(publicRoutes []string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		clientAPIKey := c.GetHeader("X-API-KEY")
-		serverAPIKey := os.Getenv("API_KEY")
-
-		// Bypass auth in test context
-		if os.Getenv("APP_ENV") == "test" {
-			c.Next()
-			return
-		}
-
-		if isProtected(c.Request.URL.Path, publicRoutes, c.Request.Method) && (clientAPIKey == "" || clientAPIKey != serverAPIKey) {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-			c.Abort()
-			return
-		}
-		c.Next()
+func AuthInterceptor(ctx context.Context, req interface{}, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+	meta, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "UNAUTHORIZED")
 	}
-}
-
-func isProtected(route string, publicRoutes []string, method string) bool {
-
-	// Check if the route starts with "/assets/"
-	if strings.HasPrefix(route, "/assets/") && method == http.MethodGet {
-		return false
+	reqKey := meta["authorization"]
+	if len(reqKey) == 0 {
+		return nil, status.Error(codes.Unauthenticated, "UNAUTHORIZED")
 	}
 
-	for _, publicRoute := range publicRoutes {
-		if publicRoute == route && method == http.MethodGet {
-			return false
-		}
+	serverAPIKey := os.Getenv("API_KEY")
+	if reqKey[0] != serverAPIKey {
+		return nil, status.Error(codes.Unauthenticated, "UNAUTHORIZED")
 	}
-	return true
+
+	return handler(ctx, req)
 }
