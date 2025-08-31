@@ -14,7 +14,7 @@ func CheckKey(publicRoutes []string) gin.HandlerFunc {
 		serverAPIKey := os.Getenv("API_KEY")
 
 		// Bypass auth in test context
-		if os.Getenv("GIN_MODE") == "test" {
+		if os.Getenv("APP_ENV") == "test" {
 			c.Next()
 			return
 		}
