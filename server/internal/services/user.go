@@ -1,7 +1,6 @@
 package services
 
 import (
-	"errors"
 	"github.com/google/uuid"
 	pb_usr "github.com/rangodisco/zelvy/gen/zelvy/user"
 	"github.com/rangodisco/zelvy/server/config/database"
@@ -39,7 +38,8 @@ func findExistingUser(body *pb_usr.AddUserRequest) (*models.User, error) {
 	if database.GetDB().Where("discord_id = ?", body.DiscordId).First(&existingUser).Error == nil {
 		return &existingUser, nil
 	}
-	return nil, errors.New("user not found")
+
+	return nil, nil
 }
 
 func updateUserEmail(user *models.User, email string) error {
