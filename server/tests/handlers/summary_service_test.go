@@ -37,11 +37,11 @@ func TestAddSummary(t *testing.T) {
 	// Create an example input model
 	body := factories.CreateSummaryInputModel()
 
-	utils.Client = pb_sum.NewSummaryServiceClient(utils.Conn)
+	client := pb_sum.NewSummaryServiceClient(utils.Conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	resp, err := utils.Client.AddSummary(ctx, body)
+	resp, err := client.AddSummary(ctx, body)
 	if err != nil {
 		t.Fatal(err, resp)
 	}
@@ -50,13 +50,12 @@ func TestAddSummary(t *testing.T) {
 }
 
 func TestGetSummary(t *testing.T) {
-
-	utils.Client = pb_sum.NewSummaryServiceClient(utils.Conn)
+	client := pb_sum.NewSummaryServiceClient(utils.Conn)
 
 	// Try fetching the latest summary
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	resp, err := utils.Client.GetSummary(ctx, &pb_sum.GetSummaryResquest{})
+	resp, err := client.GetSummary(ctx, &pb_sum.GetSummaryResquest{})
 	if err != nil {
 		t.Fatal(err, resp)
 	}
