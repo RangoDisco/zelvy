@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/rangodisco/zelvy/server/internal/api/grpc/summary"
 	"github.com/rangodisco/zelvy/server/internal/api/grpc/user"
+	"github.com/rangodisco/zelvy/server/internal/api/middlewares"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"net"
@@ -14,7 +15,7 @@ func SetupGRpc() error {
 		return err
 	}
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(grpc.UnaryInterceptor(middlewares.AuthInterceptor))
 
 	summary.RegisterServer(s)
 	user.RegisterServer(s)
