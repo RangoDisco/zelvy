@@ -3,15 +3,17 @@ package utils
 import (
 	"context"
 	"fmt"
+	"github.com/rangodisco/zelvy/bot/pkg/config"
 	"github.com/rangodisco/zelvy/bot/pkg/utils/grpc"
 	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
 	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
+	"google.golang.org/grpc/metadata"
 	"time"
 )
 
 // FetchSummary fetches today's summary from the API
 func FetchSummary() (*pb_sum.GetSummaryResponse, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(metadata.NewOutgoingContext(context.Background(), metadata.New(map[string]string{"authorization": config.ApiKey})), 10*time.Second)
 	defer cancel()
 	resp, err := grpc.Client.GetSummary(ctx, &pb_sum.GetSummaryResquest{})
 	if err != nil {
