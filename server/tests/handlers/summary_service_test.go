@@ -3,8 +3,8 @@ package tests
 import (
 	"context"
 	"github.com/joho/godotenv"
+	"github.com/rangodisco/zelvy/config"
 	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
-	"github.com/rangodisco/zelvy/server/config"
 	"github.com/rangodisco/zelvy/server/tests/utils"
 	"os"
 	"testing"
