@@ -2,6 +2,7 @@ package utils
 
 import (
 	"context"
+	"github.com/rangodisco/zelvy/server/internal/api/grpc/goal"
 	"github.com/rangodisco/zelvy/server/internal/api/grpc/summary"
 	"github.com/rangodisco/zelvy/server/internal/api/grpc/user"
 	"google.golang.org/grpc"
@@ -27,6 +28,7 @@ func SetupGrpc() {
 	s := grpc.NewServer()
 	summary.RegisterServer(s)
 	user.RegisterServer(s)
+	goal.RegisterServer(s)
 
 	go func() {
 		if err := s.Serve(Lis); err != nil {

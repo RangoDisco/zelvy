@@ -28,3 +28,12 @@ func CreateGoalViewModels() []*pb_goa.GoalViewModel {
 		},
 	}
 }
+
+func CreateDisableGoalRequest() *pb_goa.DisableGoalsRequest {
+	goals := []pb_goa.GoalType{
+		pb_goa.GoalType_MAIN_WORKOUT_DURATION,
+		pb_goa.GoalType_EXTRA_WORKOUT_DURATION,
+		pb_goa.GoalType_UNSPECIFIED,
+	}
+	return &pb_goa.DisableGoalsRequest{Goals: goals}
+}
