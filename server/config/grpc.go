@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/rangodisco/zelvy/server/internal/api/grpc/goal"
 	"github.com/rangodisco/zelvy/server/internal/api/grpc/summary"
 	"github.com/rangodisco/zelvy/server/internal/api/grpc/user"
 	"github.com/rangodisco/zelvy/server/internal/api/middlewares"
@@ -20,6 +21,7 @@ func SetupGRpc(errChan chan<- error, stopChan <-chan struct{}) {
 
 	summary.RegisterServer(s)
 	user.RegisterServer(s)
+	goal.RegisterServer(s)
 
 	reflection.Register(s)
 
