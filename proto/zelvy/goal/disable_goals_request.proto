@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zelvy.goal;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/goal";
+
+import "zelvy/goal/goal_type_enum.proto";
+
+message DisableGoalsRequest {
+  repeated GoalType goals = 1;
+}
