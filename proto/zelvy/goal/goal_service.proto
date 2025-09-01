@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zelvy.goal;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/goal";
+
+import "zelvy/goal/disable_goals_request.proto";
+import "zelvy/goal/disable_goals_response.proto";
+
+service GoalService {
+  rpc DisableGoals(DisableGoalsRequest) returns (DisableGoalsResponse);
+}
