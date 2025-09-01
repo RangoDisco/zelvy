@@ -10,6 +10,7 @@ var (
 	AppID     string
 	GuildID   string
 	ChannelID string
+	ApiKey    string
 )
 
 func SetGlobals() {
@@ -17,6 +18,7 @@ func SetGlobals() {
 	AppID = os.Getenv("BOT_APP_ID")
 	GuildID = os.Getenv("BOT_GUILD_ID")
 	ChannelID = os.Getenv("BOT_CHANNEL_ID")
+	ApiKey = os.Getenv("API_KEY")
 
 	if Token == "" {
 		flag.Usage()
