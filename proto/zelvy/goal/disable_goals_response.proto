@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zelvy.goal;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/goal";
+
+import "zelvy/goal/goal_type_enum.proto";
+
+message DisableGoalsResponse {
+  repeated goal.GoalType disabled_goals = 1;
+  repeated goal.GoalType error_goals = 2;
+}
