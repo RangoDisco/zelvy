@@ -6,13 +6,14 @@ import (
 	"github.com/rangodisco/zelvy/server/internal/api/middlewares"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"log"
 	"net"
 )
 
-func SetupGRpc() error {
+func SetupGRpc(errChan chan<- error, stopChan <-chan struct{}) {
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
-		return err
+		log.Fatalf("failed to listen: %v", err)
 	}
 
 	s := grpc.NewServer(grpc.UnaryInterceptor(middlewares.AuthInterceptor))
@@ -22,9 +23,13 @@ func SetupGRpc() error {
 
 	reflection.Register(s)
 
-	if err := s.Serve(lis); err != nil {
-		return err
-	}
-
-	return nil
+	go func() {
+		<-stopChan
+		s.GracefulStop()
+	}()
+	go func() {
+		if err := s.Serve(lis); err != nil {
+			errChan <- err
+		}
+	}()
 }

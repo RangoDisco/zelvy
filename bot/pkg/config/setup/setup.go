@@ -1,16 +1,11 @@
 package setup
 
 import (
-	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/rangodisco/zelvy/bot/pkg/config"
 	"github.com/rangodisco/zelvy/bot/pkg/utils"
 	"github.com/rangodisco/zelvy/bot/pkg/utils/commands"
 	"github.com/rangodisco/zelvy/bot/pkg/utils/grpc"
-	"log"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 var (
@@ -19,44 +14,27 @@ var (
 )
 
 // Setup setups everything needed for the discord bot to work
-func Setup() error {
+func Setup(errChan chan<- error, stopChan <-chan struct{}) {
 	config.SetGlobals()
 
 	// Init new Discord session
 	dg, err = discordgo.New("Bot " + config.Token)
 	if err != nil {
-		return err
+		errChan <- err
+		return
 	}
 
 	err = registerCommands()
 	if err != nil {
-		return err
+		errChan <- err
+		return
 	}
 
-	err = setupSession()
-	if err != nil {
-		return err
-	}
+	setupSession(errChan, stopChan)
 
 	grpc.SetupClient()
 
 	//setupScheduler()
-
-	// Keep the program running
-	done := make(chan os.Signal, 1)
-	signal.Notify(done, syscall.SIGINT, syscall.SIGTERM)
-
-	// Block until we receive a signal
-	<-done
-
-	// Keep the bot running
-	fmt.Println("Bot running...")
-
-	sc := make(chan os.Signal, 1)
-	signal.Notify(sc, os.Interrupt)
-	<-sc
-
-	return nil
 }
 
 // registerCommands registers each command contained in the commands util
@@ -93,20 +71,15 @@ func registerCommands() error {
 }
 
 // setupSession opens a new discordgo session and closes it when the main function ends
-func setupSession() error {
-	err = dg.Open()
-	if err != nil {
-		return err
-	}
-
-	defer func(dg *discordgo.Session) {
-		err := dg.Close()
-		if err != nil {
-			log.Fatal(err)
+func setupSession(errChan chan<- error, stopChan <-chan struct{}) {
+	go func() {
+		if err := dg.Open(); err != nil {
+			errChan <- err
+			return
 		}
-	}(dg)
-
-	return nil
+		defer dg.Close()
+		<-stopChan
+	}()
 }
 
 func setupScheduler() {
