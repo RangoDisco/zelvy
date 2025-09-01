@@ -12,6 +12,38 @@ import (
 	"github.com/google/uuid"
 )
 
+// DisableGoal fetches a goals by its type, creates an Offday and inserts in db, disabling the goal for the day
+func DisableGoal(goalType pb_goa.GoalType) error {
+	var goal models.Goal
+	if err := database.GetDB().Where("type = ? AND active = true", goalType.String()).First(&goal).Error; err != nil {
+		return err
+	}
+	err := createOffDay(goal)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func createOffDay(goal models.Goal) error {
+	offDay := models.Offday{
+		GoalID: goal.ID,
+		Day:    time.Now(),
+	}
+
+	// See if goal has already been disabled for today
+	isAlreadyOff := isOff(goal.ID)
+	if isAlreadyOff {
+		return nil
+	}
+
+	if err := database.GetDB().Save(&offDay).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
 // convertToGoalViewModel Check if a goal is achieved, off or failed for each metric
 func convertToGoalViewModel(m *models.Metric, g *models.Goal, workouts *[]models.Workout) (pb_goa.GoalViewModel, error) {
 
