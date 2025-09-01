@@ -2,7 +2,8 @@ package main
 
 import (
 	bot "github.com/rangodisco/zelvy/bot/pkg/config/setup"
-	"github.com/rangodisco/zelvy/server/config"
+	"github.com/rangodisco/zelvy/config"
+	server "github.com/rangodisco/zelvy/server/config"
 	"github.com/rangodisco/zelvy/server/config/database"
 	"log"
 	"os"
@@ -27,7 +28,7 @@ func main() {
 		log.Fatalf("failed to setup database: %v", err)
 	}
 
-	config.SetupGRpc(errChan, stopChan)
+	server.SetupGRpc(errChan, stopChan)
 
 	bot.Setup(errChan, stopChan)
 
