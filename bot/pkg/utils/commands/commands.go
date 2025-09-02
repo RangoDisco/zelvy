@@ -8,12 +8,6 @@ import (
 	"os"
 )
 
-type CreateUserBody struct {
-	Username    string `json:"username"`
-	DiscordID   string `json:"discordId"`
-	PaypalEmail string `json:"paypalEmail"`
-}
-
 var (
 	Commands = []*discordgo.ApplicationCommand{
 		{
