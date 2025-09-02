@@ -1,12 +1,9 @@
 package commands
 
 import (
-	"bytes"
-	"encoding/json"
+	"github.com/rangodisco/zelvy/bot/pkg/services"
 	"github.com/rangodisco/zelvy/bot/pkg/utils"
-	"io"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/bwmarrin/discordgo"
@@ -26,17 +23,17 @@ var (
 				{
 					Type:        discordgo.ApplicationCommandOptionSubCommand,
 					Name:        "offday",
-					Description: "Désactive un ou plusieurs objectifs pour aujourd'hui",
+					Description: "Disable one or multiple goal(s) for the day",
 				},
 				{
 					Type:        discordgo.ApplicationCommandOptionSubCommand,
 					Name:        "paypal",
-					Description: "Link ton PayPal",
+					Description: "Link your PayPal account",
 					Options: []*discordgo.ApplicationCommandOption{
 						{
 							Type:        discordgo.ApplicationCommandOptionString,
 							Name:        "email",
-							Description: "L'email que tu utilises pour ton compte Paypal",
+							Description: "The email address linked to your PayPal account",
 						},
 					},
 				},
@@ -49,12 +46,12 @@ var (
 				{
 					Type:        discordgo.ApplicationCommandOptionSubCommand,
 					Name:        "summary",
-					Description: "Récupère les stats d'une journée",
+					Description: "Fetch summary for a given day",
 					Options: []*discordgo.ApplicationCommandOption{
 						{
 							Type:        discordgo.ApplicationCommandOptionString,
 							Name:        "date",
-							Description: "La date de la journée que tu veux voir sous format YYYY-MM-DD (e.g 2023-07-31)",
+							Description: "Wanted date formatted as YYYY-MM-DD (e.g 2023-07-31)",
 						},
 					},
 				},
@@ -68,13 +65,13 @@ var (
 			data := i.MessageComponentData()
 
 			// Send the values to the backend
-			utils.SetOffDay(data.Values)
+			services.SetOffDay(data.Values)
 
 			// Send a message to the user
 			response := &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
 				Data: &discordgo.InteractionResponseData{
-					Content: "C'est bon, objectifs désactivés",
+					Content: "Done",
 				},
 			}
 			err := s.InteractionRespond(i.Interaction, response)
@@ -109,20 +106,20 @@ var (
 				response = &discordgo.InteractionResponse{
 					Type: discordgo.InteractionResponseChannelMessageWithSource,
 					Data: &discordgo.InteractionResponseData{
-						Content: "Ok super, tu veux désactiver quel(s) objectif(s) pour aujourd'hui ?",
+						Content: "Which goal(s) would you like to disable today ?",
 						Flags:   discordgo.MessageFlagsEphemeral,
 						Components: []discordgo.MessageComponent{
 							discordgo.ActionsRow{
 								Components: []discordgo.MessageComponent{
 									discordgo.SelectMenu{
 										CustomID:    "metrics_to_disable",
-										Placeholder: "Sélectionne un ou plusieurs objectifs",
+										Placeholder: "Please select one or multiple goal(s)",
 										MinValues:   &minValues,
 										MaxValues:   5,
 										Options: []discordgo.SelectMenuOption{
 											{
-												Label:       "Séance principale",
-												Description: "Pas de salle",
+												Label:       "Gym",
+												Description: "No gym",
 												Value:       "MAIN_WORKOUT_DURATION",
 												Default:     false,
 												Emoji: &discordgo.ComponentEmoji{
@@ -130,32 +127,32 @@ var (
 												},
 											},
 											{
-												Label:       "Sport additionnel",
-												Description: "Pas de cardio",
+												Label:       "Cardio",
+												Description: "No cardio",
 												Value:       "EXTRA_WORKOUT_DURATION",
 												Emoji: &discordgo.ComponentEmoji{
 													Name: "👟",
 												},
 											},
 											{
-												Label:       "Calories consommées",
-												Description: "Mange à balle",
+												Label:       "Eaten Kcal",
+												Description: "No limit",
 												Value:       "KCAL_CONSUMED",
 												Emoji: &discordgo.ComponentEmoji{
 													Name: "🍛",
 												},
 											},
 											{
-												Label:       "Calories brulées",
-												Description: "Pas bouger",
+												Label:       "Burned kcal",
+												Description: "Lazy",
 												Value:       "KCAL_BURNED",
 												Emoji: &discordgo.ComponentEmoji{
 													Name: "🔥",
 												},
 											},
 											{
-												Label:       "Eau",
-												Description: "Pas d'eau",
+												Label:       "Water",
+												Description: "",
 												Value:       "MILILITER_CONSUMED",
 												Emoji: &discordgo.ComponentEmoji{
 													Name: "🍶",
@@ -173,7 +170,8 @@ var (
 					log.Fatal(err)
 				}
 			case "paypal":
-				response = handlePaypalCommand(i)
+				sRes := services.HandlePaypalCommand(i)
+				response = returnEphemeralInteraction(sRes)
 				err := s.InteractionRespond(i.Interaction, response)
 				if err != nil {
 					log.Fatal(err)
@@ -204,7 +202,7 @@ var (
 				response = &discordgo.InteractionResponse{
 					Type: discordgo.InteractionResponseChannelMessageWithSource,
 					Data: &discordgo.InteractionResponseData{
-						Content: "C'est bon",
+						Content: "Done",
 						Flags:   discordgo.MessageFlagsEphemeral,
 					},
 				}
@@ -218,74 +216,6 @@ var (
 		},
 	}
 )
-
-func handlePaypalCommand(m *discordgo.InteractionCreate) *discordgo.InteractionResponse {
-	var c string
-	o := m.ApplicationCommandData().Options[0].Options
-
-	// Send error to user in case no email was provided
-	if len(o) == 0 {
-		c = "Merci de rentrer l'email lié à ton compte Paypal"
-		return returnEphemeralInteraction(c)
-	}
-
-	email := o[0].StringValue()
-	// Create user in database
-	status := createUser(m.Member.User, email)
-
-	// Let the user know if the email was added successfully
-	switch status {
-	case 200:
-		c = "Email modifiée avec succès"
-	case 201:
-		c = "Paypal ajouté avec succès"
-	default:
-		c = "Erreur lors de l'ajout de ton compte Paypal"
-	}
-
-	return returnEphemeralInteraction(c)
-}
-
-/**
- * createUser Send user's info to backend and create a new user or update the existing email
- */
-func createUser(u *discordgo.User, email string) int {
-	baseUrl := os.Getenv("BASE_URL")
-	apiKey := os.Getenv("API_KEY")
-
-	b := CreateUserBody{
-		Username:    u.GlobalName,
-		DiscordID:   u.ID,
-		PaypalEmail: email,
-	}
-
-	j, err := json.Marshal(b)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	r, err := http.NewRequest("POST", baseUrl+"/api/users", bytes.NewBuffer(j))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	r.Header.Add("X-API-KEY", apiKey)
-
-	client := &http.Client{}
-	resp, err := client.Do(r)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}(resp.Body)
-
-	return resp.StatusCode
-}
 
 func returnEphemeralInteraction(c string) *discordgo.InteractionResponse {
 	return &discordgo.InteractionResponse{
