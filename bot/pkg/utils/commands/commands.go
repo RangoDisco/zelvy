@@ -52,7 +52,7 @@ var (
 			Description: "All get commands",
 		},
 	}
-	componentsHandlers = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){
+	ComponentsHandlers = map[string]func(s *discordgo.Session, i *discordgo.InteractionCreate){
 		// Send all values to the backend to disable it for today
 		"metrics_to_disable": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			data := i.MessageComponentData()
