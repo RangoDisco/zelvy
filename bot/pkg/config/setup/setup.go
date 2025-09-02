@@ -5,7 +5,6 @@ import (
 	"github.com/rangodisco/zelvy/bot/pkg/config"
 	"github.com/rangodisco/zelvy/bot/pkg/utils"
 	"github.com/rangodisco/zelvy/bot/pkg/utils/commands"
-	"github.com/rangodisco/zelvy/bot/pkg/utils/grpc"
 )
 
 var (
@@ -32,7 +31,7 @@ func Setup(errChan chan<- error, stopChan <-chan struct{}) {
 
 	setupSession(errChan, stopChan)
 
-	grpc.SetupClient()
+	config.SetupClient()
 
 	//setupScheduler()
 }

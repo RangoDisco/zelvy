@@ -2,6 +2,7 @@ package utils
 
 import (
 	"github.com/rangodisco/zelvy/bot/pkg/config"
+	"github.com/rangodisco/zelvy/bot/pkg/services"
 	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
 	"log"
 	"os"
@@ -15,7 +16,7 @@ func SendRecap(s *discordgo.Session, channelID string, summary *pb_sum.GetSummar
 	embed := NewEmbed().
 		SetTitle("Today's stats")
 
-	if IsSuccessful(summary.Goals) {
+	if services.IsSuccessful(summary.Goals) {
 		embed.SetThumbnail(os.Getenv("SUCCESS_PICTURE"))
 	} else {
 		embed.SetThumbnail(os.Getenv("FAILURE_PICTURE"))
@@ -88,13 +89,13 @@ func sendEmbedMessage(s *discordgo.Session, channelID string, embed *discordgo.M
 
 func SendScheduleMessage(s *discordgo.Session) {
 	// Fetch Summary
-	summary, err := FetchSummary()
+	summary, err := services.FetchSummary()
 	if err != nil {
 		log.Fatalf("Error fetching summary: %v", err)
 	}
 
 	// Calculate results
-	isSuccessful := IsSuccessful(summary.Goals)
+	isSuccessful := services.IsSuccessful(summary.Goals)
 
 	// Create thread
 	thread := CreateThread(s, config.ChannelID, isSuccessful)
