@@ -60,8 +60,8 @@ var (
 			resp, _ := services.DisableGoals(data.Values)
 
 			var content string
-			if len(resp.DisabledGoals) > 0 {
-				content = "Failed " + string(rune(len(resp.DisabledGoals))) + "times"
+			if len(resp.ErrorGoals) > 0 {
+				content = "Failed " + string(rune(len(resp.ErrorGoals))) + "times"
 			} else {
 				content = "Success"
 			}
