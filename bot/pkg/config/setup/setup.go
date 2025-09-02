@@ -46,7 +46,7 @@ func registerCommands() error {
 			}
 		case discordgo.InteractionMessageComponent:
 
-			if h, ok := commands.Handlers[i.MessageComponentData().CustomID]; ok {
+			if h, ok := commands.ComponentsHandlers[i.MessageComponentData().CustomID]; ok {
 				h(s, i)
 			}
 		}
