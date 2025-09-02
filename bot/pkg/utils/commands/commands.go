@@ -1,12 +1,11 @@
 package commands
 
 import (
+	"github.com/bwmarrin/discordgo"
 	"github.com/rangodisco/zelvy/bot/pkg/services"
 	"github.com/rangodisco/zelvy/bot/pkg/utils"
 	"log"
 	"os"
-
-	"github.com/bwmarrin/discordgo"
 )
 
 type CreateUserBody struct {
@@ -64,14 +63,20 @@ var (
 		"metrics_to_disable": func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 			data := i.MessageComponentData()
 
-			// Send the values to the backend
-			services.SetOffDay(data.Values)
+			resp, _ := services.DisableGoals(data.Values)
+
+			var content string
+			if len(resp.DisabledGoals) > 0 {
+				content = "Failed " + string(rune(len(resp.DisabledGoals))) + "times"
+			} else {
+				content = "Success"
+			}
 
 			// Send a message to the user
 			response := &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
 				Data: &discordgo.InteractionResponseData{
-					Content: "Done",
+					Content: content,
 				},
 			}
 			err := s.InteractionRespond(i.Interaction, response)
@@ -116,49 +121,7 @@ var (
 										Placeholder: "Please select one or multiple goal(s)",
 										MinValues:   &minValues,
 										MaxValues:   5,
-										Options: []discordgo.SelectMenuOption{
-											{
-												Label:       "Gym",
-												Description: "No gym",
-												Value:       "MAIN_WORKOUT_DURATION",
-												Default:     false,
-												Emoji: &discordgo.ComponentEmoji{
-													Name: "🏋️",
-												},
-											},
-											{
-												Label:       "Cardio",
-												Description: "No cardio",
-												Value:       "EXTRA_WORKOUT_DURATION",
-												Emoji: &discordgo.ComponentEmoji{
-													Name: "👟",
-												},
-											},
-											{
-												Label:       "Eaten Kcal",
-												Description: "No limit",
-												Value:       "KCAL_CONSUMED",
-												Emoji: &discordgo.ComponentEmoji{
-													Name: "🍛",
-												},
-											},
-											{
-												Label:       "Burned kcal",
-												Description: "Lazy",
-												Value:       "KCAL_BURNED",
-												Emoji: &discordgo.ComponentEmoji{
-													Name: "🔥",
-												},
-											},
-											{
-												Label:       "Water",
-												Description: "",
-												Value:       "MILILITER_CONSUMED",
-												Emoji: &discordgo.ComponentEmoji{
-													Name: "🍶",
-												},
-											},
-										},
+										Options:     services.GetGoalOptions(),
 									},
 								},
 							},
