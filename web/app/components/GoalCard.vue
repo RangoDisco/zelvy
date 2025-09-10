@@ -1,0 +1,31 @@
+<script setup lang="ts">
+const props = defineProps(["goal"]);
+</script>
+
+<template>
+  <article data-testid="summaryDetailsTemplateMetric"
+           class="carousel-item bg-base-200 flex-col justify-evenly rounded-lg aspect-square w-[45%] md:rounded-none md:px-2 md:aspect-auto md:h-56 md:w-1/5">
+    <div class="pb-4">
+      <h2 data-testid="summaryDetailsTemplateMetricName" class="text-sm text-primary-content px-2 pt-4 pb-2 md:text-lg">
+        Kcal burned</h2>
+      <hr class="opacity-10"/>
+    </div>
+    <div
+        class="flex gap-4 items-center justify-center h-18 p-2 text-secondary md:border-r md:border-accent-neutral-content">
+      <p data-testid="summaryDetailsTemplateMetricPicto" class="text-3xl">🤡</p>
+      <h3 data-testid="summaryDetailsTemplateMetricValue" class="text-3xl">1032</h3>
+    </div>
+    <div class="pt-2 pb-4 px-2">
+      <p class="opacity-80 text-sm mb-1 ml-2 md:text-lg">Goal: <span
+          data-testid="summaryDetailsTemplateMetricThreshold">1000</span></p>
+      <div class="relative h-2 w-full">
+        <div
+            class="bg-primary h-2 rounded-l-full absolute top-0 left-0"></div>
+        <div class="bg-primary-content h-2 w-full rounded-full"></div>
+      </div>
+    </div>
+  </article>
+</template>
+
+<style scoped>
+</style>
