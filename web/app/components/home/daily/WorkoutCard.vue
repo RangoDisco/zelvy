@@ -3,7 +3,8 @@
 </script>
 
 <template>
-  <article data-testid="workoutsTemplateWorkout" class="flex items-center justify-between w-full bg-base-200 rounded-lg h-[70px] px-4">
+  <article data-testid="workoutsTemplateWorkout"
+           class="flex items-center justify-between w-full bg-base-200 rounded-lg h-[70px] px-4">
     <div class="w-full flex gap-4 items-center">
       <img
           src=""
