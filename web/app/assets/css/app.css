@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 @plugin "daisyui";
 
 @plugin "daisyui/theme" {
@@ -34,4 +35,7 @@
     --border: 1px;
     --depth: 0;
     --noise: 0;
+    --text-3xl: 32px;
+    --text-sm: 14px;
+    --rounded-lg: 10px;
 }
