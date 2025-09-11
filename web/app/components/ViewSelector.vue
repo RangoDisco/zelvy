@@ -1,5 +1,12 @@
 <script setup lang="ts">
-
+const updateView = async (view: "daily" | "overview") => {
+  await navigateTo({
+    path: "/",
+    query: {
+      view: view
+    }
+  });
+};
 </script>
 
 <template>
@@ -9,13 +16,16 @@
         type="radio"
         name="views"
         aria-label="Daily"
-        checked
+        :checked="$route.query.view === 'daily'"
+        @change="updateView('daily')"
     />
     <input
         class="join-item btn rounded-full w-1/2 h-8"
         type="radio"
         name="views"
         aria-label="Overview"
+        :checked="$route.query.view === 'overview'"
+        @change="updateView('overview')"
     />
   </div>
 </template>
