@@ -4,19 +4,13 @@ const props = defineProps(["goal"]);
 
 <template>
   <article data-testid="summaryDetailsTemplateMetric"
-           class="carousel-item bg-base-200 flex-col justify-evenly rounded-lg aspect-square w-[45%] md:rounded-none md:px-2 md:aspect-auto md:h-56 md:w-1/5">
-    <div class="pb-4">
-      <h2 data-testid="summaryDetailsTemplateMetricName" class="text-sm text-primary-content px-2 pt-4 pb-2 md:text-lg">
-        Kcal burned</h2>
-      <hr class="opacity-10"/>
-    </div>
-    <div
-        class="flex gap-4 items-center justify-center h-18 p-2 text-secondary md:border-r md:border-accent-neutral-content">
-      <p data-testid="summaryDetailsTemplateMetricPicto" class="text-3xl">🤡</p>
-      <h3 data-testid="summaryDetailsTemplateMetricValue" class="text-3xl">1032</h3>
-    </div>
-    <div class="pt-2 pb-4 px-2">
-      <p class="opacity-80 text-sm mb-1 ml-2 md:text-lg">Goal: <span
+           class="carousel-item bg-base-200 flex-col px-4 justify-evenly rounded-lg aspect-square w-[45%]
+           md:rounded-none md:px-2 md:aspect-auto md:h-56 md:w-1/5">
+    <p data-testid="summaryDetailsTemplateMetricName" class="text-base text-primary-content/50 md:text-lg">
+      Kcal burned</p>
+    <h3 data-testid="summaryDetailsTemplateMetricValue" class="text-3xl text-base-content">1032</h3>
+    <div class="flex flex-col gap-1">
+      <p class="opacity-80 text-sm md:text-lg">Goal: <span
           data-testid="summaryDetailsTemplateMetricThreshold">1000</span></p>
       <div class="relative h-2 w-full">
         <div
