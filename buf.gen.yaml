@@ -11,6 +11,9 @@ plugins:
   - remote: buf.build/community/stephenh-ts-proto
     out: gen
     opt:
-      - outputServices=grpc-web
+      - outputServices=grpc-js
       - esModuleInterop=true
-      - outputClientImpl=grpc-web
+      - outputClientImpl=grpc-js
+      - generateDependencies=true
+      - outputEncodeMethods=true
+      - outputJsonMethods=true
