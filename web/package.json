@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.13.4",
     "@tailwindcss/vite": "^4.1.13",
     "daisyui": "^5.1.8",
     "nuxt": "^4.1.1",
