@@ -38,3 +38,28 @@ go.work.sum
 
 # XCode
 /companion/
+
+
+# Nuxt
+# Nuxt dev/build outputs
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.fleet
+
+# Local env files
+.env.*
+!.env.example
+
