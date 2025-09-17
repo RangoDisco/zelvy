@@ -1,5 +1,6 @@
 <script setup lang="ts">
-
+const props = defineProps(["workout"]);
+const workout = props.workout;
 </script>
 
 <template>
@@ -12,11 +13,11 @@
           class="w-10 h-10 rounded-md"
       />
       <div>
-        <p data-testid="workoutsTemplateWorkoutName" class="text-lg text-base-content">Pull 2</p>
-        <p data-testid="workoutsTemplateWorkoutDuration" class="text-md text-base-content">1h07</p>
+        <p data-testid="workoutsTemplateWorkoutName" class="text-lg text-base-content">{{workout.name}}</p>
+        <p data-testid="workoutsTemplateWorkoutDuration" class="text-md text-base-content">{{workout.duration}}</p>
       </div>
     </div>
-    <div data-testid="workoutsTemplateWorkoutActivityType" class="self-end pb-2 text-base">Gym</div>
+    <div data-testid="workoutsTemplateWorkoutActivityType" class="self-end pb-2 text-base">{{ workout.activityType.toLowerCase()}}</div>
   </article>
 </template>
 
