@@ -14,6 +14,9 @@ importers:
       '@grpc/grpc-js':
         specifier: ^1.14.0
         version: 1.14.0
+      daisyui:
+        specifier: ^5.1.14
+        version: 5.1.14
     devDependencies:
       '@eslint/compat':
         specifier: ^1.2.5
@@ -31,7 +34,7 @@ importers:
         specifier: ^6.0.0
         version: 6.2.0(svelte@5.39.4)(vite@7.1.7(@types/node@22.18.6)(jiti@2.6.0)(lightningcss@1.30.1))
       '@tailwindcss/vite':
-        specifier: ^4.0.0
+        specifier: ^4.1.13
         version: 4.1.13(vite@7.1.7(@types/node@22.18.6)(jiti@2.6.0)(lightningcss@1.30.1))
       '@types/node':
         specifier: ^22
@@ -70,7 +73,7 @@ importers:
         specifier: ^4.0.0
         version: 4.3.2(picomatch@4.0.3)(svelte@5.39.4)(typescript@5.9.2)
       tailwindcss:
-        specifier: ^4.0.0
+        specifier: ^4.1.13
         version: 4.1.13
       typescript:
         specifier: ^5.0.0
@@ -894,6 +897,9 @@ packages:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
     engines: {node: '>=4'}
     hasBin: true
+
+  daisyui@5.1.14:
+    resolution: {integrity: sha512-c9Op7tB8vLzzazFaLeyFsmmVMLrU8sYo1sHuStBGTbaAzLVxrulelGQBROo/lS2ZxWm/CnCb9NWdKbTL+MaKFA==}
 
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
@@ -2518,6 +2524,8 @@ snapshots:
       which: 2.0.2
 
   cssesc@3.0.0: {}
+
+  daisyui@5.1.14: {}
 
   debug@4.4.3:
     dependencies:
