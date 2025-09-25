@@ -19,7 +19,7 @@ func RegisterServer(s *grpc.Server) {
 	pb_sum.RegisterSummaryServiceServer(s, &server{})
 }
 
-func (s *server) GetSummary(_ context.Context, request *pb_sum.GetSummaryResquest) (*pb_sum.GetSummaryResponse, error) {
+func (s *server) GetSummary(_ context.Context, request *pb_sum.GetSummaryRequest) (*pb_sum.GetSummaryResponse, error) {
 	// Fetch summary
 	sum, err := services.FetchSummaryByDate(request.Day)
 	if err != nil {

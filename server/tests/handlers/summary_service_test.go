@@ -55,7 +55,7 @@ func TestGetSummary(t *testing.T) {
 	// Try fetching the latest summary
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	resp, err := client.GetSummary(ctx, &pb_sum.GetSummaryResquest{})
+	resp, err := client.GetSummary(ctx, &pb_sum.GetSummaryRequest{})
 	if err != nil {
 		t.Fatal(err, resp)
 	}
