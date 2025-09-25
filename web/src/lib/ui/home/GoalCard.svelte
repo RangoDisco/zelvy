@@ -5,7 +5,7 @@
         goal: GoalViewModel
     }
 
-    let {goal}: Props = $props();
+    const {goal}: Props = $props();
 </script>
 
 <article data-testid="summaryDetailsTemplateMetric"
@@ -20,7 +20,7 @@
                 data-testid="summaryDetailsTemplateMetricThreshold">{goal.displayThreshold}</span></p>
         <div class="relative h-2 w-full">
             <div class="bg-primary h-2 rounded-l-full absolute top-0 left-0
-            w-[{goal.progression}%] {goal.progression === 100 ? 'rounded-r-full' : ''}">
+            w-[{goal.progression}%]{goal.progression === 100 ? ' rounded-r-full' : ''}">
             </div>
             <div class="bg-primary-content h-2 w-full rounded-full"></div>
         </div>
