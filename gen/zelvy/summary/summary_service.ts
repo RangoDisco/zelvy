@@ -19,7 +19,7 @@ import {
 } from "@grpc/grpc-js";
 import { AddSummaryRequest } from "./add_summary_request";
 import { AddSummaryResponse } from "./add_summary_response";
-import { GetSummaryResquest } from "./get_summary_request";
+import { GetSummaryRequest } from "./get_summary_request";
 import { GetSummaryResponse } from "./get_summary_response";
 
 export const protobufPackage = "zelvy.summary";
@@ -30,8 +30,8 @@ export const SummaryServiceService = {
     path: "/zelvy.summary.SummaryService/GetSummary",
     requestStream: false,
     responseStream: false,
-    requestSerialize: (value: GetSummaryResquest) => Buffer.from(GetSummaryResquest.encode(value).finish()),
-    requestDeserialize: (value: Buffer) => GetSummaryResquest.decode(value),
+    requestSerialize: (value: GetSummaryRequest) => Buffer.from(GetSummaryRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => GetSummaryRequest.decode(value),
     responseSerialize: (value: GetSummaryResponse) => Buffer.from(GetSummaryResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => GetSummaryResponse.decode(value),
   },
@@ -47,22 +47,22 @@ export const SummaryServiceService = {
 } as const;
 
 export interface SummaryServiceServer extends UntypedServiceImplementation {
-  getSummary: handleUnaryCall<GetSummaryResquest, GetSummaryResponse>;
+  getSummary: handleUnaryCall<GetSummaryRequest, GetSummaryResponse>;
   addSummary: handleUnaryCall<AddSummaryRequest, AddSummaryResponse>;
 }
 
 export interface SummaryServiceClient extends Client {
   getSummary(
-    request: GetSummaryResquest,
+    request: GetSummaryRequest,
     callback: (error: ServiceError | null, response: GetSummaryResponse) => void,
   ): ClientUnaryCall;
   getSummary(
-    request: GetSummaryResquest,
+    request: GetSummaryRequest,
     metadata: Metadata,
     callback: (error: ServiceError | null, response: GetSummaryResponse) => void,
   ): ClientUnaryCall;
   getSummary(
-    request: GetSummaryResquest,
+    request: GetSummaryRequest,
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: GetSummaryResponse) => void,
