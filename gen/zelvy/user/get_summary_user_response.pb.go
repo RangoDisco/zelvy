@@ -24,6 +24,7 @@ const (
 type GetSummaryUserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	DiscordId     string                 `protobuf:"bytes,1,opt,name=discord_id,json=discordId,proto3" json:"discord_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,15 +66,23 @@ func (x *GetSummaryUserResponse) GetDiscordId() string {
 	return ""
 }
 
+func (x *GetSummaryUserResponse) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 var File_zelvy_user_get_summary_user_response_proto protoreflect.FileDescriptor
 
 const file_zelvy_user_get_summary_user_response_proto_rawDesc = "" +
 	"\n" +
 	"*zelvy/user/get_summary_user_response.proto\x12\n" +
-	"zelvy.user\"7\n" +
+	"zelvy.user\"K\n" +
 	"\x16GetSummaryUserResponse\x12\x1d\n" +
 	"\n" +
-	"discord_id\x18\x01 \x01(\tR\tdiscordIdB,Z*github.com/rangodisco/zelvy/gen/zelvy/userb\x06proto3"
+	"discord_id\x18\x01 \x01(\tR\tdiscordId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04nameB,Z*github.com/rangodisco/zelvy/gen/zelvy/userb\x06proto3"
 
 var (
 	file_zelvy_user_get_summary_user_response_proto_rawDescOnce sync.Once
