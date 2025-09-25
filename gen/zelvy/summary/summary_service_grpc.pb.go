@@ -27,7 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type SummaryServiceClient interface {
-	GetSummary(ctx context.Context, in *GetSummaryResquest, opts ...grpc.CallOption) (*GetSummaryResponse, error)
+	GetSummary(ctx context.Context, in *GetSummaryRequest, opts ...grpc.CallOption) (*GetSummaryResponse, error)
 	AddSummary(ctx context.Context, in *AddSummaryRequest, opts ...grpc.CallOption) (*AddSummaryResponse, error)
 }
 
@@ -39,7 +39,7 @@ func NewSummaryServiceClient(cc grpc.ClientConnInterface) SummaryServiceClient {
 	return &summaryServiceClient{cc}
 }
 
-func (c *summaryServiceClient) GetSummary(ctx context.Context, in *GetSummaryResquest, opts ...grpc.CallOption) (*GetSummaryResponse, error) {
+func (c *summaryServiceClient) GetSummary(ctx context.Context, in *GetSummaryRequest, opts ...grpc.CallOption) (*GetSummaryResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetSummaryResponse)
 	err := c.cc.Invoke(ctx, SummaryService_GetSummary_FullMethodName, in, out, cOpts...)
@@ -63,7 +63,7 @@ func (c *summaryServiceClient) AddSummary(ctx context.Context, in *AddSummaryReq
 // All implementations must embed UnimplementedSummaryServiceServer
 // for forward compatibility.
 type SummaryServiceServer interface {
-	GetSummary(context.Context, *GetSummaryResquest) (*GetSummaryResponse, error)
+	GetSummary(context.Context, *GetSummaryRequest) (*GetSummaryResponse, error)
 	AddSummary(context.Context, *AddSummaryRequest) (*AddSummaryResponse, error)
 	mustEmbedUnimplementedSummaryServiceServer()
 }
@@ -75,7 +75,7 @@ type SummaryServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedSummaryServiceServer struct{}
 
-func (UnimplementedSummaryServiceServer) GetSummary(context.Context, *GetSummaryResquest) (*GetSummaryResponse, error) {
+func (UnimplementedSummaryServiceServer) GetSummary(context.Context, *GetSummaryRequest) (*GetSummaryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSummary not implemented")
 }
 func (UnimplementedSummaryServiceServer) AddSummary(context.Context, *AddSummaryRequest) (*AddSummaryResponse, error) {
@@ -103,7 +103,7 @@ func RegisterSummaryServiceServer(s grpc.ServiceRegistrar, srv SummaryServiceSer
 }
 
 func _SummaryService_GetSummary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetSummaryResquest)
+	in := new(GetSummaryRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -115,7 +115,7 @@ func _SummaryService_GetSummary_Handler(srv interface{}, ctx context.Context, de
 		FullMethod: SummaryService_GetSummary_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SummaryServiceServer).GetSummary(ctx, req.(*GetSummaryResquest))
+		return srv.(SummaryServiceServer).GetSummary(ctx, req.(*GetSummaryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

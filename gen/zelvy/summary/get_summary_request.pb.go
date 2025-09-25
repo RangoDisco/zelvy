@@ -21,7 +21,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type GetSummaryResquest struct {
+type GetSummaryRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// TODO: use pb's date type instead of string
 	Day           string `protobuf:"bytes,1,opt,name=day,proto3" json:"day,omitempty"`
@@ -29,20 +29,20 @@ type GetSummaryResquest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetSummaryResquest) Reset() {
-	*x = GetSummaryResquest{}
+func (x *GetSummaryRequest) Reset() {
+	*x = GetSummaryRequest{}
 	mi := &file_zelvy_summary_get_summary_request_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetSummaryResquest) String() string {
+func (x *GetSummaryRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetSummaryResquest) ProtoMessage() {}
+func (*GetSummaryRequest) ProtoMessage() {}
 
-func (x *GetSummaryResquest) ProtoReflect() protoreflect.Message {
+func (x *GetSummaryRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_zelvy_summary_get_summary_request_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -54,12 +54,12 @@ func (x *GetSummaryResquest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetSummaryResquest.ProtoReflect.Descriptor instead.
-func (*GetSummaryResquest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetSummaryRequest.ProtoReflect.Descriptor instead.
+func (*GetSummaryRequest) Descriptor() ([]byte, []int) {
 	return file_zelvy_summary_get_summary_request_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetSummaryResquest) GetDay() string {
+func (x *GetSummaryRequest) GetDay() string {
 	if x != nil {
 		return x.Day
 	}
@@ -70,8 +70,8 @@ var File_zelvy_summary_get_summary_request_proto protoreflect.FileDescriptor
 
 const file_zelvy_summary_get_summary_request_proto_rawDesc = "" +
 	"\n" +
-	"'zelvy/summary/get_summary_request.proto\x12\rzelvy.summary\"&\n" +
-	"\x12GetSummaryResquest\x12\x10\n" +
+	"'zelvy/summary/get_summary_request.proto\x12\rzelvy.summary\"%\n" +
+	"\x11GetSummaryRequest\x12\x10\n" +
 	"\x03day\x18\x01 \x01(\tR\x03dayB/Z-github.com/rangodisco/zelvy/gen/zelvy/summaryb\x06proto3"
 
 var (
@@ -88,7 +88,7 @@ func file_zelvy_summary_get_summary_request_proto_rawDescGZIP() []byte {
 
 var file_zelvy_summary_get_summary_request_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_zelvy_summary_get_summary_request_proto_goTypes = []any{
-	(*GetSummaryResquest)(nil), // 0: zelvy.summary.GetSummaryResquest
+	(*GetSummaryRequest)(nil), // 0: zelvy.summary.GetSummaryRequest
 }
 var file_zelvy_summary_get_summary_request_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
