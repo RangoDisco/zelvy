@@ -11,16 +11,20 @@ export const protobufPackage = "zelvy.user";
 
 export interface GetSummaryUserResponse {
   discordId: string;
+  name: string;
 }
 
 function createBaseGetSummaryUserResponse(): GetSummaryUserResponse {
-  return { discordId: "" };
+  return { discordId: "", name: "" };
 }
 
 export const GetSummaryUserResponse: MessageFns<GetSummaryUserResponse> = {
   encode(message: GetSummaryUserResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.discordId !== "") {
       writer.uint32(10).string(message.discordId);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
     }
     return writer;
   },
@@ -40,6 +44,14 @@ export const GetSummaryUserResponse: MessageFns<GetSummaryUserResponse> = {
           message.discordId = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -50,13 +62,19 @@ export const GetSummaryUserResponse: MessageFns<GetSummaryUserResponse> = {
   },
 
   fromJSON(object: any): GetSummaryUserResponse {
-    return { discordId: isSet(object.discordId) ? globalThis.String(object.discordId) : "" };
+    return {
+      discordId: isSet(object.discordId) ? globalThis.String(object.discordId) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+    };
   },
 
   toJSON(message: GetSummaryUserResponse): unknown {
     const obj: any = {};
     if (message.discordId !== "") {
       obj.discordId = message.discordId;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
     }
     return obj;
   },
@@ -67,6 +85,7 @@ export const GetSummaryUserResponse: MessageFns<GetSummaryUserResponse> = {
   fromPartial<I extends Exact<DeepPartial<GetSummaryUserResponse>, I>>(object: I): GetSummaryUserResponse {
     const message = createBaseGetSummaryUserResponse();
     message.discordId = object.discordId ?? "";
+    message.name = object.name ?? "";
     return message;
   },
 };
