@@ -10,6 +10,6 @@ import "zelvy/summary/add_summary_request.proto";
 import "zelvy/summary/add_summary_response.proto";
 
 service SummaryService {
-  rpc GetSummary(GetSummaryResquest) returns (GetSummaryResponse);
+  rpc GetSummary(GetSummaryRequest) returns (GetSummaryResponse);
   rpc AddSummary(AddSummaryRequest) returns(AddSummaryResponse);
 }

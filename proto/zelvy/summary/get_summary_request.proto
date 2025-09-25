@@ -3,7 +3,7 @@ syntax = "proto3";
 package zelvy.summary;
 option go_package = "github.com/rangodisco/zelvy/gen/zelvy/summary";
 
-message GetSummaryResquest {
+message GetSummaryRequest {
   // TODO: use pb's date type instead of string
   string day = 1;
 }
