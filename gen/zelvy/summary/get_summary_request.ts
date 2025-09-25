@@ -9,27 +9,27 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "zelvy.summary";
 
-export interface GetSummaryResquest {
+export interface GetSummaryRequest {
   /** TODO: use pb's date type instead of string */
   day: string;
 }
 
-function createBaseGetSummaryResquest(): GetSummaryResquest {
+function createBaseGetSummaryRequest(): GetSummaryRequest {
   return { day: "" };
 }
 
-export const GetSummaryResquest: MessageFns<GetSummaryResquest> = {
-  encode(message: GetSummaryResquest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const GetSummaryRequest: MessageFns<GetSummaryRequest> = {
+  encode(message: GetSummaryRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.day !== "") {
       writer.uint32(10).string(message.day);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetSummaryResquest {
+  decode(input: BinaryReader | Uint8Array, length?: number): GetSummaryRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetSummaryResquest();
+    const message = createBaseGetSummaryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -50,11 +50,11 @@ export const GetSummaryResquest: MessageFns<GetSummaryResquest> = {
     return message;
   },
 
-  fromJSON(object: any): GetSummaryResquest {
+  fromJSON(object: any): GetSummaryRequest {
     return { day: isSet(object.day) ? globalThis.String(object.day) : "" };
   },
 
-  toJSON(message: GetSummaryResquest): unknown {
+  toJSON(message: GetSummaryRequest): unknown {
     const obj: any = {};
     if (message.day !== "") {
       obj.day = message.day;
@@ -62,11 +62,11 @@ export const GetSummaryResquest: MessageFns<GetSummaryResquest> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetSummaryResquest>, I>>(base?: I): GetSummaryResquest {
-    return GetSummaryResquest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<GetSummaryRequest>, I>>(base?: I): GetSummaryRequest {
+    return GetSummaryRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GetSummaryResquest>, I>>(object: I): GetSummaryResquest {
-    const message = createBaseGetSummaryResquest();
+  fromPartial<I extends Exact<DeepPartial<GetSummaryRequest>, I>>(object: I): GetSummaryRequest {
+    const message = createBaseGetSummaryRequest();
     message.day = object.day ?? "";
     return message;
   },

@@ -24,21 +24,21 @@ var File_zelvy_summary_summary_service_proto protoreflect.FileDescriptor
 
 const file_zelvy_summary_summary_service_proto_rawDesc = "" +
 	"\n" +
-	"#zelvy/summary/summary_service.proto\x12\rzelvy.summary\x1a'zelvy/summary/get_summary_request.proto\x1a(zelvy/summary/get_summary_response.proto\x1a'zelvy/summary/add_summary_request.proto\x1a(zelvy/summary/add_summary_response.proto2\xb7\x01\n" +
-	"\x0eSummaryService\x12R\n" +
+	"#zelvy/summary/summary_service.proto\x12\rzelvy.summary\x1a'zelvy/summary/get_summary_request.proto\x1a(zelvy/summary/get_summary_response.proto\x1a'zelvy/summary/add_summary_request.proto\x1a(zelvy/summary/add_summary_response.proto2\xb6\x01\n" +
+	"\x0eSummaryService\x12Q\n" +
 	"\n" +
-	"GetSummary\x12!.zelvy.summary.GetSummaryResquest\x1a!.zelvy.summary.GetSummaryResponse\x12Q\n" +
+	"GetSummary\x12 .zelvy.summary.GetSummaryRequest\x1a!.zelvy.summary.GetSummaryResponse\x12Q\n" +
 	"\n" +
 	"AddSummary\x12 .zelvy.summary.AddSummaryRequest\x1a!.zelvy.summary.AddSummaryResponseB/Z-github.com/rangodisco/zelvy/gen/zelvy/summaryb\x06proto3"
 
 var file_zelvy_summary_summary_service_proto_goTypes = []any{
-	(*GetSummaryResquest)(nil), // 0: zelvy.summary.GetSummaryResquest
+	(*GetSummaryRequest)(nil),  // 0: zelvy.summary.GetSummaryRequest
 	(*AddSummaryRequest)(nil),  // 1: zelvy.summary.AddSummaryRequest
 	(*GetSummaryResponse)(nil), // 2: zelvy.summary.GetSummaryResponse
 	(*AddSummaryResponse)(nil), // 3: zelvy.summary.AddSummaryResponse
 }
 var file_zelvy_summary_summary_service_proto_depIdxs = []int32{
-	0, // 0: zelvy.summary.SummaryService.GetSummary:input_type -> zelvy.summary.GetSummaryResquest
+	0, // 0: zelvy.summary.SummaryService.GetSummary:input_type -> zelvy.summary.GetSummaryRequest
 	1, // 1: zelvy.summary.SummaryService.AddSummary:input_type -> zelvy.summary.AddSummaryRequest
 	2, // 2: zelvy.summary.SummaryService.GetSummary:output_type -> zelvy.summary.GetSummaryResponse
 	3, // 3: zelvy.summary.SummaryService.AddSummary:output_type -> zelvy.summary.AddSummaryResponse
