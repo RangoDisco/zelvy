@@ -31,7 +31,7 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 		q.Where("date >= ? AND date < ?", sod, eod)
 	}
 
-	// Query handlers from today
+	// Query handlers from given day
 	if err := q.First(&s).Error; err != nil {
 		return models.Summary{}, err
 	}
