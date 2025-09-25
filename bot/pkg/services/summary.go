@@ -16,7 +16,7 @@ func FetchSummary() (*pb_sum.GetSummaryResponse, error) {
 
 	ctx, cancel := context.WithTimeout(metadata.NewOutgoingContext(context.Background(), metadata.New(map[string]string{"authorization": config.ApiKey})), 10*time.Second)
 	defer cancel()
-	resp, err := client.GetSummary(ctx, &pb_sum.GetSummaryResquest{})
+	resp, err := client.GetSummary(ctx, &pb_sum.GetSummaryRequest{})
 	if err != nil {
 		return &pb_sum.GetSummaryResponse{}, fmt.Errorf("error fetching summary: %v", err)
 	}
