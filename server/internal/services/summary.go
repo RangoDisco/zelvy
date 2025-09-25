@@ -77,7 +77,7 @@ func CreateSummaryViewModel(summary *models.Summary) (*pb_sum.GetSummaryResponse
 	res.Id = summary.ID.String()
 	res.Day = fmt.Sprintf("%d %s %d", summary.Date.Day(), summary.Date.Month(), summary.Date.Year())
 
-	winner := pb_usr.GetSummaryUserResponse{DiscordId: summary.Winner.DiscordID}
+	winner := pb_usr.GetSummaryUserResponse{DiscordId: summary.Winner.DiscordID, Name: summary.Winner.Username}
 	res.Winner = &winner
 
 	return &res, nil
