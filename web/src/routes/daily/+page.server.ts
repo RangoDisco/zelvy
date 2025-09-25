@@ -7,7 +7,7 @@ import {createMetadataWithAuth} from "$lib/server/grpc";
 
 export const csr = false;
 
-export const load: PageLoad = async ({params}) => {
+export const load: PageLoad = async ({params}): Promise<{ summary: GetSummaryResponse }> => {
 
     const client = new SummaryServiceClient("localhost:50051", credentials.createInsecure());
     const req = GetSummaryResquest.create();
