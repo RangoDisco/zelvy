@@ -3,7 +3,7 @@
     import GoalCard from "$lib/ui/home/GoalCard.svelte";
     import WorkoutListItem from "$lib/ui/home/WorkoutListItem.svelte";
 
-    let {data}: PageProps = $props();
+    const {data}: PageProps = $props();
 </script>
 
 
