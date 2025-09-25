@@ -1,4 +1,4 @@
-import type {PageLoad} from "./$types";
+import type {PageServerLoad} from "./$types";
 import {credentials} from "@grpc/grpc-js";
 import {SummaryServiceClient} from "$lib/gen/zelvy/summary/summary_service";
 import {GetSummaryResquest} from "$lib/gen/zelvy/summary/get_summary_request";
@@ -7,7 +7,7 @@ import {createMetadataWithAuth} from "$lib/server/grpc";
 
 export const csr = false;
 
-export const load: PageLoad = async ({params}): Promise<{ summary: GetSummaryResponse }> => {
+export const load: PageServerLoad = async ({params}): Promise<{ summary: GetSummaryResponse }> => {
 
     const client = new SummaryServiceClient("localhost:50051", credentials.createInsecure());
     const req = GetSummaryResquest.create();
