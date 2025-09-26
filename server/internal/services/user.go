@@ -33,6 +33,10 @@ func UpsertUser(body *pb_usr.AddUserRequest) error {
 	return nil
 }
 
+func GetWinnersBetweenDates(sod, eod string, limit int64) ([]*pb_usr.WinnerViewModel, error) {
+
+}
+
 func findExistingUser(body *pb_usr.AddUserRequest) (*models.User, error) {
 	var existingUser models.User
 	if database.GetDB().Where("discord_id = ?", body.DiscordId).First(&existingUser).Error == nil {

@@ -19,6 +19,8 @@ import {
 } from "@grpc/grpc-js";
 import { AddUserRequest } from "./add_user_request";
 import { AddUserResponse } from "./add_user_response";
+import { GetWinnersRequest } from "./get_winners_request";
+import { GetWinnersResponse } from "./get_winners_response";
 
 export const protobufPackage = "zelvy.user";
 
@@ -33,10 +35,20 @@ export const UserServiceService = {
     responseSerialize: (value: AddUserResponse) => Buffer.from(AddUserResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => AddUserResponse.decode(value),
   },
+  getWinners: {
+    path: "/zelvy.user.UserService/GetWinners",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: GetWinnersRequest) => Buffer.from(GetWinnersRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => GetWinnersRequest.decode(value),
+    responseSerialize: (value: GetWinnersResponse) => Buffer.from(GetWinnersResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => GetWinnersResponse.decode(value),
+  },
 } as const;
 
 export interface UserServiceServer extends UntypedServiceImplementation {
   addUser: handleUnaryCall<AddUserRequest, AddUserResponse>;
+  getWinners: handleUnaryCall<GetWinnersRequest, GetWinnersResponse>;
 }
 
 export interface UserServiceClient extends Client {
@@ -54,6 +66,21 @@ export interface UserServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: AddUserResponse) => void,
+  ): ClientUnaryCall;
+  getWinners(
+    request: GetWinnersRequest,
+    callback: (error: ServiceError | null, response: GetWinnersResponse) => void,
+  ): ClientUnaryCall;
+  getWinners(
+    request: GetWinnersRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetWinnersResponse) => void,
+  ): ClientUnaryCall;
+  getWinners(
+    request: GetWinnersRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetWinnersResponse) => void,
   ): ClientUnaryCall;
 }
 

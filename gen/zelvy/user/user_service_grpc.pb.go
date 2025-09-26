@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_AddUser_FullMethodName = "/zelvy.user.UserService/AddUser"
+	UserService_AddUser_FullMethodName    = "/zelvy.user.UserService/AddUser"
+	UserService_GetWinners_FullMethodName = "/zelvy.user.UserService/GetWinners"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
 	AddUser(ctx context.Context, in *AddUserRequest, opts ...grpc.CallOption) (*AddUserResponse, error)
+	GetWinners(ctx context.Context, in *GetWinnersRequest, opts ...grpc.CallOption) (*GetWinnersResponse, error)
 }
 
 type userServiceClient struct {
@@ -47,11 +49,22 @@ func (c *userServiceClient) AddUser(ctx context.Context, in *AddUserRequest, opt
 	return out, nil
 }
 
+func (c *userServiceClient) GetWinners(ctx context.Context, in *GetWinnersRequest, opts ...grpc.CallOption) (*GetWinnersResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetWinnersResponse)
+	err := c.cc.Invoke(ctx, UserService_GetWinners_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
 type UserServiceServer interface {
 	AddUser(context.Context, *AddUserRequest) (*AddUserResponse, error)
+	GetWinners(context.Context, *GetWinnersRequest) (*GetWinnersResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedUserServiceServer struct{}
 
 func (UnimplementedUserServiceServer) AddUser(context.Context, *AddUserRequest) (*AddUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddUser not implemented")
+}
+func (UnimplementedUserServiceServer) GetWinners(context.Context, *GetWinnersRequest) (*GetWinnersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWinners not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 func (UnimplementedUserServiceServer) testEmbeddedByValue()                     {}
@@ -104,6 +120,24 @@ func _UserService_AddUser_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_GetWinners_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetWinnersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetWinners(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_GetWinners_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetWinners(ctx, req.(*GetWinnersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddUser",
 			Handler:    _UserService_AddUser_Handler,
+		},
+		{
+			MethodName: "GetWinners",
+			Handler:    _UserService_GetWinners_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
