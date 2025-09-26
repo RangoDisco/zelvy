@@ -23,3 +23,12 @@ func (s *server) AddUser(_ context.Context, req *pb_usr.AddUserRequest) (*pb_usr
 
 	return &pb_usr.AddUserResponse{Message: "Upsert successful"}, nil
 }
+
+func (s *server) GetWinners(_ context.Context, req *pb_usr.GetWinnersRequest) (*pb_usr.GetWinnersResponse, error) {
+	winners, err := services.GetWinnersBetweenDates(req.StartDate, req.EndDate, req.Limit)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb_usr.GetWinnersResponse{Winners: winners}, nil
+}
