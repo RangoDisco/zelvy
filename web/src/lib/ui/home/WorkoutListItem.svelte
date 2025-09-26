@@ -1,19 +1,21 @@
 <script lang="ts">
     import {WorkoutViewModel} from "$lib/gen/zelvy/workout/workout_view_model";
+    import Strength from "$lib/assets/img/strength.png";
+    import Cardio from "$lib/assets/img/cardio.png";
+    import {WorkoutActivityType, workoutActivityTypeToJSON} from "$lib/gen/zelvy/workout/workout_activity_type_enum";
 
     type Props = {
         workout: WorkoutViewModel
     }
-
-    let {workout}: Props = $props();
+    const {workout}: Props = $props();
+    const picto = workout.activityType === workoutActivityTypeToJSON(WorkoutActivityType.STRENGTH) ? Strength : Cardio;
 </script>
 
 <article data-testid="workoutsTemplateWorkout"
          class="flex items-center justify-between w-full bg-base-200 rounded-lg h-[70px] px-4">
     <div class="w-full flex gap-4 items-center">
-        <!--        TODO: HANDLE PICTURE-->
         <img
-                src=""
+                src={picto}
                 alt="wor"
                 class="w-10 h-10 rounded-md"
         />
