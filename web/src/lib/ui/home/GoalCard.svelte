@@ -19,8 +19,9 @@
         <p class="opacity-80 text-sm md:text-lg">Goal: <span
                 data-testid="summaryDetailsTemplateMetricThreshold">{goal.displayThreshold}</span></p>
         <div class="relative h-2 w-full">
-            <div class="bg-primary h-2 rounded-l-full absolute top-0 left-0
-            w-[{goal.progression}%]{goal.progression === 100 ? ' rounded-r-full' : ''}">
+            <div class="bg-primary h-2 rounded-l-full absolute top-0 left-0 {goal.progression === 100 ? 'rounded-r-full' : ''}"
+                 style="width:{goal.progression}%"
+            >
             </div>
             <div class="bg-primary-content h-2 w-full rounded-full"></div>
         </div>
