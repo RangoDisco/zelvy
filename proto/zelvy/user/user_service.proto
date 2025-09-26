@@ -6,7 +6,10 @@ option go_package = "github.com/rangodisco/zelvy/gen/zelvy/user";
 
 import "zelvy/user/add_user_request.proto";
 import "zelvy/user/add_user_response.proto";
+import "zelvy/user/get_winners_request.proto";
+import "zelvy/user/get_winners_response.proto";
 
 service UserService {
   rpc AddUser(AddUserRequest) returns (AddUserResponse);
+  rpc GetWinners(GetWinnersRequest) returns (GetWinnersResponse);
 }

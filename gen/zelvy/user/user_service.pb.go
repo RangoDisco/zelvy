@@ -25,19 +25,25 @@ var File_zelvy_user_user_service_proto protoreflect.FileDescriptor
 const file_zelvy_user_user_service_proto_rawDesc = "" +
 	"\n" +
 	"\x1dzelvy/user/user_service.proto\x12\n" +
-	"zelvy.user\x1a!zelvy/user/add_user_request.proto\x1a\"zelvy/user/add_user_response.proto2Q\n" +
+	"zelvy.user\x1a!zelvy/user/add_user_request.proto\x1a\"zelvy/user/add_user_response.proto\x1a$zelvy/user/get_winners_request.proto\x1a%zelvy/user/get_winners_response.proto2\x9e\x01\n" +
 	"\vUserService\x12B\n" +
-	"\aAddUser\x12\x1a.zelvy.user.AddUserRequest\x1a\x1b.zelvy.user.AddUserResponseB,Z*github.com/rangodisco/zelvy/gen/zelvy/userb\x06proto3"
+	"\aAddUser\x12\x1a.zelvy.user.AddUserRequest\x1a\x1b.zelvy.user.AddUserResponse\x12K\n" +
+	"\n" +
+	"GetWinners\x12\x1d.zelvy.user.GetWinnersRequest\x1a\x1e.zelvy.user.GetWinnersResponseB,Z*github.com/rangodisco/zelvy/gen/zelvy/userb\x06proto3"
 
 var file_zelvy_user_user_service_proto_goTypes = []any{
-	(*AddUserRequest)(nil),  // 0: zelvy.user.AddUserRequest
-	(*AddUserResponse)(nil), // 1: zelvy.user.AddUserResponse
+	(*AddUserRequest)(nil),     // 0: zelvy.user.AddUserRequest
+	(*GetWinnersRequest)(nil),  // 1: zelvy.user.GetWinnersRequest
+	(*AddUserResponse)(nil),    // 2: zelvy.user.AddUserResponse
+	(*GetWinnersResponse)(nil), // 3: zelvy.user.GetWinnersResponse
 }
 var file_zelvy_user_user_service_proto_depIdxs = []int32{
 	0, // 0: zelvy.user.UserService.AddUser:input_type -> zelvy.user.AddUserRequest
-	1, // 1: zelvy.user.UserService.AddUser:output_type -> zelvy.user.AddUserResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	1, // 1: zelvy.user.UserService.GetWinners:input_type -> zelvy.user.GetWinnersRequest
+	2, // 2: zelvy.user.UserService.AddUser:output_type -> zelvy.user.AddUserResponse
+	3, // 3: zelvy.user.UserService.GetWinners:output_type -> zelvy.user.GetWinnersResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -50,6 +56,8 @@ func file_zelvy_user_user_service_proto_init() {
 	}
 	file_zelvy_user_add_user_request_proto_init()
 	file_zelvy_user_add_user_response_proto_init()
+	file_zelvy_user_get_winners_request_proto_init()
+	file_zelvy_user_get_winners_response_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
