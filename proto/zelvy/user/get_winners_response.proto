@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zelvy.user;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/user";
+
+import "zelvy/user/winner_view_model.proto";
+
+message GetWinnersResponse {
+  repeated WinnerViewModel winners = 1;
+}
