@@ -10,7 +10,7 @@
 
 <article data-testid="summaryDetailsTemplateMetric"
          class="carousel-item bg-base-200 flex-col px-4 justify-evenly rounded-lg aspect-square w-[43%]
-           md:rounded-none md:px-2 md:aspect-auto md:h-56 md:w-1/5">
+           md:rounded-none md:h-56 md:w-1/5">
     <p data-testid="summaryDetailsTemplateMetricName" class="text-base text-base-content/60 md:text-lg">
         {goal.name}
     </p>
