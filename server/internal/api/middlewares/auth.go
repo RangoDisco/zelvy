@@ -2,26 +2,22 @@ package middlewares
 
 import (
 	"context"
+	"github.com/rangodisco/zelvy/server/internal/services"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
-	"os"
 )
 
 func AuthInterceptor(ctx context.Context, req interface{}, _ *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
-	meta, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return nil, status.Error(codes.Unauthenticated, "UNAUTHORIZED")
-	}
-	reqKey := meta["authorization"]
-	if len(reqKey) == 0 {
-		return nil, status.Error(codes.Unauthenticated, "UNAUTHORIZED")
+
+	whitelisted := services.IsWhitelisted(&ctx)
+	if !whitelisted {
+		return nil, status.Error(codes.PermissionDenied, "BLACKLISTED")
 	}
 
-	serverAPIKey := os.Getenv("API_KEY")
-	if reqKey[0] != serverAPIKey {
-		return nil, status.Error(codes.Unauthenticated, "UNAUTHORIZED")
+	isAuthorized := services.IsAuthorized(&ctx)
+	if !isAuthorized {
+		return nil, status.Error(codes.PermissionDenied, "UNAUTHORIZED")
 	}
 
 	return handler(ctx, req)
