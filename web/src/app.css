@@ -2,16 +2,22 @@
 
 @plugin "daisyui";
 
+@font-face {
+    font-family: "Quicksand";
+    src: url("./lib/assets/fonts/quicksand.ttf") format("truetype");
+}
+
 @plugin "daisyui/theme" {
     name: "zelvy";
     default: true;
     prefersdark: true;
     color-scheme: "dark";
-    --color-base-100: oklch(0 0 0);
-    --color-base-200:oklch(0.2264 0 0);
-    --color-base-content: oklch(0.8015 0 0);
+    font-family: "Quicksand";
+    --color-base-100: oklch(0.1913 0 0);
+    --color-base-200: oklch(0.252 0 0);
+    --color-base-content: oklch(0.9551 0 0);
     --color-primary: oklch(0.4732 0.1399 252.61);
-    --color-primary-content: oklch(1 0 0 / 84.71%);
+    --color-primary-content: oklch(0.9551 0 0);
     --color-secondary: oklch(0.7512 0.0823 94.37);
     --color-secondary-content: oklch(0.1492 0.0172 96.68);
     --color-accent: oklch(0.7039 0.1255 52.95);
@@ -34,7 +40,5 @@
     --border: 1px;
     --depth: 0;
     --noise: 0;
-    --text-3xl: 32px;
-    --text-sm: 14px;
     --rounded-lg: 10px;
 }
