@@ -12,6 +12,7 @@ type User struct {
 	Username    string    `gorm:"type:varchar(75)" json:"username"`
 	DiscordID   string    `gorm:"type:varchar(75);unique_index" json:"discordID"`
 	PaypalEmail string    `gorm:"type:varchar(75);unique_index" json:"paypalEmail"`
+	Picture     string    `gorm:"type:varchar(255)" json:"picture"`
 	CreatedAt   time.Time `json:"createdAt"`
 }
 
