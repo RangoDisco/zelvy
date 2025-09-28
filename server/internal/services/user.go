@@ -34,7 +34,16 @@ func UpsertUser(body *pb_usr.AddUserRequest) error {
 }
 
 func GetWinnersBetweenDates(sod, eod string, limit int64) ([]*pb_usr.WinnerViewModel, error) {
+	var winners []*pb_usr.WinnerViewModel
+	err := database.GetDB().Raw(""+
+		"SELECT u.username, count(u.id) as wins FROM summaries s INNER JOIN users u ON s.winner_id = u.id WHERE s.date >= ? AND s.date <= ? AND s.deleted_at IS null GROUP BY u.username ORDER BY wins DESC LIMIT ?",
+		sod, eod, limit).Scan(&winners).Error
 
+	if err != nil {
+		return nil, err
+	}
+
+	return winners, nil
 }
 
 func findExistingUser(body *pb_usr.AddUserRequest) (*models.User, error) {
