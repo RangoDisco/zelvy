@@ -49,6 +49,7 @@
 	"dependencies": {
 		"@bufbuild/protobuf": "^2.9.0",
 		"@grpc/grpc-js": "^1.14.0",
+		"@lucide/svelte": "^0.544.0",
 		"daisyui": "^5.1.14"
 	}
 }
