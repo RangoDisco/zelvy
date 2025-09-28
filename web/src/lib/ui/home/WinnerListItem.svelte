@@ -27,7 +27,14 @@
 <article class="flex items-center justify-between w-full bg-base-200 rounded-lg h-[70px] px-4">
     <div class="w-full flex gap-4 items-center">
         <p class="font-bold items-start w-[20px] text-center {color}">{index + 1}</p>
-        <p class="font-bold">{winner.username}</p>
+        <div class="flex items-center gap-2">
+            <div class="avatar">
+                <div class="w-6 rounded-full">
+                    <img src={winner.picture} alt="{winner.username}'s picture"/>
+                </div>
+            </div>
+            <p class="font-bold">{winner.username}</p>
+        </div>
     </div>
     <div class="font-medium items-center justify-self-end">{winner.wins}</div>
 </article>
