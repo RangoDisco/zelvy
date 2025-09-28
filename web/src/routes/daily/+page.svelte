@@ -2,7 +2,7 @@
     import type {PageProps} from "./$types";
     import GoalCard from "$lib/ui/home/GoalCard.svelte";
     import WorkoutListItem from "$lib/ui/home/WorkoutListItem.svelte";
-    import ViewSelector from "$lib/ui/ViewSelector.svelte";
+    import ViewSelector from "$lib/ui/home/ViewSelector.svelte";
 
     const {data}: PageProps = $props();
 </script>
@@ -26,7 +26,7 @@
             <GoalCard goal={goal}/>
         {/each}
     </section>
-    <section class="flex flex-col gap-2 w-full md:mx-auto">
+    <section class="flex flex-col gap-2 w-full md:mx-auto md:flex-row">
         {#each data.summary.workouts as workout (workout.id)}
             <WorkoutListItem workout={workout}/>
         {/each}
