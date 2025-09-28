@@ -8,8 +8,9 @@
 
 <svelte:head>
     <link rel="icon" href={favicon}/>
+    <title>Zelvy dashboard</title>
+    <meta name="description" content="Zelvy dashboard"/>
 </svelte:head>
 <section class="bg-base-100 min-h-screen container mx-auto p-6 md:mx-none flex flex-col gap-6">
-    <ViewSelector/>
     {@render children?.()}
 </section>
