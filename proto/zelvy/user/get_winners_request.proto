@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zelvy.user;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/user";
+
+message GetWinnersRequest {
+  string startDate = 1;
+  string endDate = 2;
+  int64 limit = 3;
+}
