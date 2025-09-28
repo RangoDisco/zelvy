@@ -12,10 +12,11 @@ export const protobufPackage = "zelvy.user";
 export interface WinnerViewModel {
   username: string;
   wins: string;
+  picture: string;
 }
 
 function createBaseWinnerViewModel(): WinnerViewModel {
-  return { username: "", wins: "" };
+  return { username: "", wins: "", picture: "" };
 }
 
 export const WinnerViewModel: MessageFns<WinnerViewModel> = {
@@ -25,6 +26,9 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
     }
     if (message.wins !== "") {
       writer.uint32(18).string(message.wins);
+    }
+    if (message.picture !== "") {
+      writer.uint32(26).string(message.picture);
     }
     return writer;
   },
@@ -52,6 +56,14 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
           message.wins = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.picture = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -65,6 +77,7 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
     return {
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       wins: isSet(object.wins) ? globalThis.String(object.wins) : "",
+      picture: isSet(object.picture) ? globalThis.String(object.picture) : "",
     };
   },
 
@@ -76,6 +89,9 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
     if (message.wins !== "") {
       obj.wins = message.wins;
     }
+    if (message.picture !== "") {
+      obj.picture = message.picture;
+    }
     return obj;
   },
 
@@ -86,6 +102,7 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
     const message = createBaseWinnerViewModel();
     message.username = object.username ?? "";
     message.wins = object.wins ?? "";
+    message.picture = object.picture ?? "";
     return message;
   },
 };
