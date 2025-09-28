@@ -8,6 +8,10 @@
 
 </script>
 
+<svelte:head>
+    <title>Zelvy dashboard - Overview</title>
+    <meta name="description" content="Stats overview"/>
+</svelte:head>
 
 <section class="flex flex-col gap-6">
     <ViewSelector/>
