@@ -16,8 +16,10 @@ func IsWhitelisted(ctx *context.Context) bool {
 	if !ok {
 		return false
 	}
-
-	peerIp := strings.Split(peer.Addr.String(), ":")[0]
+	// Needed to handle ipv6 addresses
+	rawIp := peer.Addr.String()
+	lastIndex := strings.LastIndex(rawIp, ":")
+	peerIp := rawIp[:lastIndex]
 
 	for _, trustedIp := range trustedIps {
 		if peerIp == trustedIp {
