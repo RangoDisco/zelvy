@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zelvy.user;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/user";
+
+message WinnerViewModel {
+  string username = 1;
+  string wins = 2;
+}
