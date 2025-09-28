@@ -16,16 +16,16 @@
     <div class="w-full flex gap-4 items-center">
         <img
                 src={picto}
-                alt="wor"
+                alt="{workout.activityType} picto"
                 class="w-10 h-10 rounded-md"
         />
         <div>
-            <p data-testid="workoutsTemplateWorkoutName" class="text-lg text-base-content">{workout.name}</p>
-            <p data-testid="workoutsTemplateWorkoutDuration" class="text-md text-base-content">{workout.duration}</p>
+            <p data-testid="workoutsTemplateWorkoutName" class="font-bold text-base-content">{workout.name}</p>
+            <p data-testid="workoutsTemplateWorkoutDuration" class="text-base-content">{workout.duration}</p>
         </div>
     </div>
     <div data-testid="workoutsTemplateWorkoutActivityType"
-         class="self-end pb-2 text-base">{ workout.activityType.toLowerCase()}</div>
+         class="self-end pb-2 text-sm text-base-content/60">{ workout.activityType.toLowerCase()}</div>
 </article>
 
 
