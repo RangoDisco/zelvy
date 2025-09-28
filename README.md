@@ -30,13 +30,8 @@ This project is composed of four parts each containing a `README.md` file with m
 - 🖥 [Server](https://github.com/rangodisco/zelvy/tree/main/server) written in Go
   with [Protobuf](https://protobuf.dev/), [gRPC](https://grpc.io/), [Gorm](https://github.com/go-gorm/gorm)
   and [PostgreSQL](https://www.postgresql.org/).
-
-[//]: # (- 🌐 The server also includes a frontend written)
-
-[//]: # (  with [Templ]&#40;https://github.com/a-h/templ&#41;, [htmx]&#40;https://github.com/bigskysoftware/htmx&#41;, [TailwindCSS]&#40;https://github.com/tailwindlabs/tailwindcss&#41;)
-
-[//]: # (  and [DaisyUI]&#40;https://github.com/saadeghi/daisyui&#41;)
-- 📱 [Companion app](https://github.com/rangodisco/zelvy-companion) Written in Kotlin
+- 🌐 [Webapp](https://github.com/rangodisco/zelvy/tree/main/web) made with [SvelteKit](https://github.com/sveltejs/kit), [grpc-node](https://github.com/grpc/grpc-node) and [DaisyUI](https://daisyui.com/) 
+- 📱 [Companion app](https://github.com/rangodisco/android) <sub>soon</sub> Written in Kotlin with [Jetpack Compose](https://developer.android.com/compose)
 
 # Backstory
 
