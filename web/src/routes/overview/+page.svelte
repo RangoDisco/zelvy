@@ -2,7 +2,7 @@
     import type {PageProps} from "./$types";
     import WinnerListItem from "$lib/ui/home/WinnerListItem.svelte";
     import LeaderboardFilter from "$lib/ui/home/LeaderboardFilter.svelte";
-    import ViewSelector from "$lib/ui/ViewSelector.svelte";
+    import ViewSelector from "$lib/ui/home/ViewSelector.svelte";
 
     const {data}: PageProps = $props();
 
