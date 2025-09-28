@@ -7,7 +7,7 @@
     }
 
     const {winner, index}: Props = $props();
-    let color;
+    let color = $state();
     switch (index) {
         case 0:
             color = "text-secondary";
