@@ -6,6 +6,7 @@ import (
 )
 
 type Metric struct {
+	Timestamps
 	ID        uuid.UUID `gorm:"type:uuid;primary_key"`
 	Type      string    `json:"type"`
 	Value     float64   `json:"value"`
