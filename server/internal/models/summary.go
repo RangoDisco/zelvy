@@ -14,6 +14,7 @@ type Summary struct {
 	Workouts []Workout `gorm:"foreignKey:SummaryID"`
 	WinnerID uuid.UUID `gorm:"type:uuid; default:null"`
 	Winner   User      `gorm:"foreignKey:WinnerID;references:ID; default:null"`
+	Success  bool      `gorm:"default:false"`
 }
 
 // Generates UUID before persist
