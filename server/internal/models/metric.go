@@ -13,6 +13,7 @@ type Metric struct {
 	SummaryID uuid.UUID
 	GoalID    uuid.UUID `gorm:"type:uuid; default:null"`
 	Goal      Goal      `gorm:"foreignKey:GoalID;references:ID; default:null"`
+	Success   bool      `gorm:"default:false"`
 }
 
 func (m *Metric) BeforeCreate(tx *gorm.DB) (err error) {
