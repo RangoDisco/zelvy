@@ -20,6 +20,7 @@ func ConvertToWorkoutModel(w *pb_wrk.WorkoutInputModel, summaryId uuid.UUID) mod
 		ActivityType: w.ActivityType.String(),
 		Name:         getWorkoutName(w),
 		Duration:     w.Duration,
+		DoneAt:       w.DoneAt.AsTime(),
 	}
 }
 
