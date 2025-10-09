@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// FindAllActiveGoals queries the database to find all goals that aren't deleted
 func FindAllActiveGoals() (*[]models.Goal, error) {
 	// Fetch linked goal
 	var goals []models.Goal
@@ -21,22 +22,8 @@ func FindAllActiveGoals() (*[]models.Goal, error) {
 	return &goals, nil
 }
 
-// ConvertToMetricModel Converts a metric input to a db model
-func ConvertToMetricModel(sID uuid.UUID, g models.Goal, metrics []*metric.AddSummaryMetricRequest, workouts []models.Workout) (models.Metric, error) {
-
-	idx := slices.IndexFunc(metrics, func(m *metric.AddSummaryMetricRequest) bool {
-		return m.Type.String() == g.Type
-	})
-
-	var m *metric.AddSummaryMetricRequest
-
-	// Workouts related goals don't have a related metric
-	if idx == -1 {
-		m = nil
-	} else {
-		m = metrics[idx]
-	}
-
+// ConvertToMetricModel Compares a metric input to its goal and converts it to a db model
+func ConvertToMetricModel(sID uuid.UUID, g models.Goal, m *metric.AddSummaryMetricRequest, workouts []models.Workout) (models.Metric, error) {
 	value := getValue(m, &g, &workouts)
 	isOff := isOff(g.ID)
 	success := isAchieved(value, g.Value, g.Comparison, isOff)
@@ -50,6 +37,20 @@ func ConvertToMetricModel(sID uuid.UUID, g models.Goal, metrics []*metric.AddSum
 		Success:   success,
 		Disabled:  isOff,
 	}, nil
+}
+
+// GetMetricFromGoalID finds a metric in a slice by its goal ID
+func GetMetricFromGoalID(g models.Goal, metrics []*metric.AddSummaryMetricRequest) *metric.AddSummaryMetricRequest {
+	idx := slices.IndexFunc(metrics, func(m *metric.AddSummaryMetricRequest) bool {
+		return m.Type.String() == g.Type
+	})
+
+	// Workout goals don't have a related metric
+	if idx == -1 {
+		return nil
+	} else {
+		return metrics[idx]
+	}
 }
 
 // getMetricPicto Used to display picto in dashboard
