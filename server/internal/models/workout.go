@@ -13,7 +13,7 @@ type Workout struct {
 	KcalBurned   int64     `json:"kcalBurned"`
 	ActivityType string    `json:"activityType"`
 	Duration     float64   `json:"duration"`
-	SummaryID    uuid.UUID
+	SummaryID    uuid.UUID `gorm:"type:uuid;not null"`
 	DoneAt       time.Time `json:"doneAt"`
 }
 
