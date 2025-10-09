@@ -12,7 +12,7 @@ type Summary struct {
 	Date     time.Time `json:"date"`
 	Metrics  []Metric  `gorm:"foreignKey:SummaryID"`
 	Workouts []Workout `gorm:"foreignKey:SummaryID"`
-	WinnerID uuid.UUID `gorm:"type:uuid; default:null"`
+	WinnerID uuid.UUID `gorm:"type:uuid"`
 	Winner   User      `gorm:"foreignKey:WinnerID;references:ID; default:null"`
 	Success  bool      `gorm:"default:false"`
 }
