@@ -12,11 +12,11 @@ export const protobufPackage = "zelvy.user";
 export interface WinnerViewModel {
   username: string;
   wins: string;
-  picture: string;
+  picture?: string | undefined;
 }
 
 function createBaseWinnerViewModel(): WinnerViewModel {
-  return { username: "", wins: "", picture: "" };
+  return { username: "", wins: "", picture: undefined };
 }
 
 export const WinnerViewModel: MessageFns<WinnerViewModel> = {
@@ -27,7 +27,7 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
     if (message.wins !== "") {
       writer.uint32(18).string(message.wins);
     }
-    if (message.picture !== "") {
+    if (message.picture !== undefined) {
       writer.uint32(26).string(message.picture);
     }
     return writer;
@@ -77,7 +77,7 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
     return {
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       wins: isSet(object.wins) ? globalThis.String(object.wins) : "",
-      picture: isSet(object.picture) ? globalThis.String(object.picture) : "",
+      picture: isSet(object.picture) ? globalThis.String(object.picture) : undefined,
     };
   },
 
@@ -89,7 +89,7 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
     if (message.wins !== "") {
       obj.wins = message.wins;
     }
-    if (message.picture !== "") {
+    if (message.picture !== undefined) {
       obj.picture = message.picture;
     }
     return obj;
@@ -102,7 +102,7 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
     const message = createBaseWinnerViewModel();
     message.username = object.username ?? "";
     message.wins = object.wins ?? "";
-    message.picture = object.picture ?? "";
+    message.picture = object.picture ?? undefined;
     return message;
   },
 };

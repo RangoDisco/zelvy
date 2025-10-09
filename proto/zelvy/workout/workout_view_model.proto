@@ -3,6 +3,8 @@ syntax = "proto3";
 package zelvy.workout;
 
 option go_package = "github.com/rangodisco/zelvy/gen/zelvy/workout";
+import "google/protobuf/timestamp.proto";
+
 
 message WorkoutViewModel {
   string id = 1;
@@ -11,4 +13,5 @@ message WorkoutViewModel {
   string name = 4;
   string duration = 5;
   string picto = 6;
+  google.protobuf.Timestamp done_at = 7;
 }

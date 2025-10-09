@@ -63,3 +63,4 @@ logs
 .env.*
 !.env.example
 
+android
