@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/rangodisco/zelvy/gen/zelvy/metric"
 	"github.com/rangodisco/zelvy/server/internal/enums"
 	"strconv"
 	"time"
@@ -45,26 +46,24 @@ func createOffDay(goal models.Goal) error {
 }
 
 // convertToGoalViewModel Check if a goal is achieved, off or failed for each metric
-func convertToGoalViewModel(m *models.Metric, g *models.Goal, workouts *[]models.Workout) (pb_goa.GoalViewModel, error) {
+func convertToGoalViewModel(m *models.Metric, g *models.Goal) (pb_goa.GoalViewModel, error) {
 
-	value := getValue(m, g, workouts)
-	displayValue, displayThreshold := formatDisplayValue(value, g)
+	displayValue, displayThreshold := formatDisplayValue(m.Value, g)
 
-	isOff := isOff(g.ID)
 	return pb_goa.GoalViewModel{
-		Value:            value,
+		Value:            m.Value,
 		DisplayValue:     displayValue,
 		Threshold:        g.Value,
 		DisplayThreshold: displayThreshold,
 		Name:             g.Name,
-		IsSuccessful:     isAchieved(value, g.Value, g.Comparison, isOff),
-		IsOff:            isOff,
-		Progression:      getProgression(value, g.Value),
+		IsSuccessful:     m.Success,
+		IsOff:            m.Disabled,
+		Progression:      getProgression(m.Value, g.Value),
 		Picto:            getMetricPicto(g.Type),
 	}, nil
 }
 
-func getValue(m *models.Metric, g *models.Goal, w *[]models.Workout) float64 {
+func getValue(m *metric.AddSummaryMetricRequest, g *models.Goal, w *[]models.Workout) float64 {
 	if g.Type == pb_goa.GoalType_MAIN_WORKOUT_DURATION.String() || g.Type == pb_goa.GoalType_EXTRA_WORKOUT_DURATION.String() {
 		return calculateWorkoutDuration(w, g.Type)
 	}
