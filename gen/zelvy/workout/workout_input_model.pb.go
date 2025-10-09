@@ -9,6 +9,7 @@ package workout
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -27,6 +28,7 @@ type WorkoutInputModel struct {
 	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
 	KcalBurned    int64                  `protobuf:"varint,3,opt,name=kcal_burned,json=kcalBurned,proto3" json:"kcal_burned,omitempty"`
 	Duration      float64                `protobuf:"fixed64,4,opt,name=duration,proto3" json:"duration,omitempty"`
+	DoneAt        *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=done_at,json=doneAt,proto3" json:"done_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -89,17 +91,25 @@ func (x *WorkoutInputModel) GetDuration() float64 {
 	return 0
 }
 
+func (x *WorkoutInputModel) GetDoneAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DoneAt
+	}
+	return nil
+}
+
 var File_zelvy_workout_workout_input_model_proto protoreflect.FileDescriptor
 
 const file_zelvy_workout_workout_input_model_proto_rawDesc = "" +
 	"\n" +
-	"'zelvy/workout/workout_input_model.proto\x12\rzelvy.workout\x1a.zelvy/workout/workout_activity_type_enum.proto\"\xbb\x01\n" +
+	"'zelvy/workout/workout_input_model.proto\x12\rzelvy.workout\x1a.zelvy/workout/workout_activity_type_enum.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf0\x01\n" +
 	"\x11WorkoutInputModel\x12G\n" +
 	"\ractivity_type\x18\x01 \x01(\x0e2\".zelvy.workout.WorkoutActivityTypeR\factivityType\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01\x12\x1f\n" +
 	"\vkcal_burned\x18\x03 \x01(\x03R\n" +
 	"kcalBurned\x12\x1a\n" +
-	"\bduration\x18\x04 \x01(\x01R\bdurationB\a\n" +
+	"\bduration\x18\x04 \x01(\x01R\bduration\x123\n" +
+	"\adone_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x06doneAtB\a\n" +
 	"\x05_nameB/Z-github.com/rangodisco/zelvy/gen/zelvy/workoutb\x06proto3"
 
 var (
@@ -116,16 +126,18 @@ func file_zelvy_workout_workout_input_model_proto_rawDescGZIP() []byte {
 
 var file_zelvy_workout_workout_input_model_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_zelvy_workout_workout_input_model_proto_goTypes = []any{
-	(*WorkoutInputModel)(nil), // 0: zelvy.workout.WorkoutInputModel
-	(WorkoutActivityType)(0),  // 1: zelvy.workout.WorkoutActivityType
+	(*WorkoutInputModel)(nil),     // 0: zelvy.workout.WorkoutInputModel
+	(WorkoutActivityType)(0),      // 1: zelvy.workout.WorkoutActivityType
+	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
 }
 var file_zelvy_workout_workout_input_model_proto_depIdxs = []int32{
 	1, // 0: zelvy.workout.WorkoutInputModel.activity_type:type_name -> zelvy.workout.WorkoutActivityType
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: zelvy.workout.WorkoutInputModel.done_at:type_name -> google.protobuf.Timestamp
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_zelvy_workout_workout_input_model_proto_init() }

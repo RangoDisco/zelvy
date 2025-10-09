@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../../google/protobuf/timestamp";
 
 export const protobufPackage = "zelvy.workout";
 
@@ -16,10 +17,11 @@ export interface WorkoutViewModel {
   name: string;
   duration: string;
   picto: string;
+  doneAt: Date | undefined;
 }
 
 function createBaseWorkoutViewModel(): WorkoutViewModel {
-  return { id: "", kcalBurned: 0, activityType: "", name: "", duration: "", picto: "" };
+  return { id: "", kcalBurned: 0, activityType: "", name: "", duration: "", picto: "", doneAt: undefined };
 }
 
 export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
@@ -41,6 +43,9 @@ export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
     }
     if (message.picto !== "") {
       writer.uint32(50).string(message.picto);
+    }
+    if (message.doneAt !== undefined) {
+      Timestamp.encode(toTimestamp(message.doneAt), writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -100,6 +105,14 @@ export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
           message.picto = reader.string();
           continue;
         }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.doneAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -117,6 +130,7 @@ export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       duration: isSet(object.duration) ? globalThis.String(object.duration) : "",
       picto: isSet(object.picto) ? globalThis.String(object.picto) : "",
+      doneAt: isSet(object.doneAt) ? fromJsonTimestamp(object.doneAt) : undefined,
     };
   },
 
@@ -140,6 +154,9 @@ export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
     if (message.picto !== "") {
       obj.picto = message.picto;
     }
+    if (message.doneAt !== undefined) {
+      obj.doneAt = message.doneAt.toISOString();
+    }
     return obj;
   },
 
@@ -154,6 +171,7 @@ export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
     message.name = object.name ?? "";
     message.duration = object.duration ?? "";
     message.picto = object.picto ?? "";
+    message.doneAt = object.doneAt ?? undefined;
     return message;
   },
 };
@@ -169,6 +187,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function longToNumber(int64: { toString(): string }): number {
   const num = globalThis.Number(int64.toString());
