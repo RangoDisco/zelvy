@@ -1,7 +1,6 @@
 package services
 
 import (
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 
 	"github.com/google/uuid"
@@ -14,6 +13,8 @@ import (
 
 // ConvertToWorkoutModel converts a WorkoutInputModel to a Workout model (used when creating a new workout)
 func ConvertToWorkoutModel(w *pb_wrk.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
+	doneAt := getTimeWithTimeZone(w)
+
 	return models.Workout{
 		ID:           uuid.New(),
 		SummaryID:    summaryId,
@@ -21,7 +22,7 @@ func ConvertToWorkoutModel(w *pb_wrk.WorkoutInputModel, summaryId uuid.UUID) mod
 		ActivityType: w.ActivityType.String(),
 		Name:         getWorkoutName(w),
 		Duration:     w.Duration,
-		DoneAt:       w.DoneAt.AsTime(),
+		DoneAt:       doneAt,
 	}
 }
 
@@ -34,7 +35,7 @@ func ConvertToWorkoutViewModel(w *models.Workout) *pb_wrk.WorkoutViewModel {
 		Name:         w.Name,
 		Duration:     convertMsToHour(w.Duration),
 		Picto:        getWorkoutPicto(w.ActivityType),
-		DoneAt:       timestamppb.New(w.DoneAt),
+		DoneAt:       w.DoneAt.String(),
 	}
 }
 
@@ -105,5 +106,14 @@ func fetchChartWorkouts() ([]models.Workout, []models.Workout, error) {
 	}
 
 	return thisWeek, lastWeek, nil
+}
 
+func getTimeWithTimeZone(w *pb_wrk.WorkoutInputModel) time.Time {
+	rawTime := w.DoneAt.AsTime()
+	location, err := time.LoadLocation("Europe/Paris")
+	// Defaulting to local timezone
+	if err != nil {
+		location = time.Local
+	}
+	return rawTime.In(location)
 }
