@@ -3,6 +3,7 @@ package models
 import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"time"
 )
 
 type Workout struct {
@@ -13,6 +14,7 @@ type Workout struct {
 	ActivityType string    `json:"activityType"`
 	Duration     float64   `json:"duration"`
 	SummaryID    uuid.UUID
+	DoneAt       time.Time `json:"doneAt"`
 }
 
 // Generates UUID before persist
