@@ -5,7 +5,6 @@ import (
 	pb_usr "github.com/rangodisco/zelvy/gen/zelvy/user"
 	"github.com/rangodisco/zelvy/server/config/database"
 	"github.com/rangodisco/zelvy/server/internal/models"
-	"time"
 )
 
 // UpsertUser tries to find a user by its discord's id, in case it exists, updates the mail, otherwise creates a new user
@@ -70,6 +69,5 @@ func convertToInputModel(body *pb_usr.AddUserRequest) models.User {
 		Username:    body.Username,
 		DiscordID:   body.DiscordId,
 		PaypalEmail: body.PaypalEmail,
-		CreatedAt:   time.Now(),
 	}
 }
