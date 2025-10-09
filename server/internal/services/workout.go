@@ -1,6 +1,7 @@
 package services
 
 import (
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 
 	"github.com/google/uuid"
@@ -33,6 +34,7 @@ func ConvertToWorkoutViewModel(w *models.Workout) *pb_wrk.WorkoutViewModel {
 		Name:         w.Name,
 		Duration:     convertMsToHour(w.Duration),
 		Picto:        getWorkoutPicto(w.ActivityType),
+		DoneAt:       timestamppb.New(w.DoneAt),
 	}
 }
 
