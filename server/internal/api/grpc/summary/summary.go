@@ -48,12 +48,12 @@ func (s *server) AddSummary(_ context.Context, request *pb_sum.AddSummaryRequest
 		summary.Workouts = append(summary.Workouts, workout)
 	}
 
-	// Build and add metrics to the summary object
 	goals, err := services.FindAllActiveGoals()
 	if err != nil {
 		return &pb_sum.AddSummaryResponse{}, err
 	}
 
+	// Build and add metrics to the summary object
 	for _, g := range *goals {
 		relatedMetric := services.GetMetricFromGoalID(g, request.Metrics)
 		metric, err := services.ConvertToMetricModel(summary.ID, g, relatedMetric, summary.Workouts)
