@@ -42,19 +42,24 @@ func (s *server) AddSummary(_ context.Context, request *pb_sum.AddSummaryRequest
 		Date: time.Now(),
 	}
 
-	// Build and add metrics to the summary object
-	for _, m := range request.Metrics {
-		mm, success := services.ConvertToMetricModel(m, summary.ID)
-		if !success {
-			continue
-		}
-		summary.Metrics = append(summary.Metrics, mm)
-	}
-
 	// Build and add workouts to the summary object
 	for _, w := range request.Workouts {
 		workout := services.ConvertToWorkoutModel(w, summary.ID)
 		summary.Workouts = append(summary.Workouts, workout)
+	}
+
+	// Build and add metrics to the summary object
+	goals, err := services.FindAllActiveGoals()
+	if err != nil {
+		return &pb_sum.AddSummaryResponse{}, err
+	}
+
+	for _, g := range *goals {
+		metric, err := services.ConvertToMetricModel(summary.ID, g, request.Metrics, summary.Workouts)
+		if err != nil {
+			continue
+		}
+		summary.Metrics = append(summary.Metrics, metric)
 	}
 
 	// Pick winner

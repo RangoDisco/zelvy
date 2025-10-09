@@ -14,10 +14,9 @@ import (
 // ConvertToWorkoutModel converts a WorkoutInputModel to a Workout model (used when creating a new workout)
 func ConvertToWorkoutModel(w *pb_wrk.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
 	return models.Workout{
-		ID:         uuid.New(),
-		SummaryID:  summaryId,
-		KcalBurned: w.KcalBurned,
-		// TODO: handle enum
+		ID:           uuid.New(),
+		SummaryID:    summaryId,
+		KcalBurned:   w.KcalBurned,
 		ActivityType: w.ActivityType.String(),
 		Name:         getWorkoutName(w),
 		Duration:     w.Duration,

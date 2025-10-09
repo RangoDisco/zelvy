@@ -61,7 +61,7 @@ func CreateSummaryViewModel(summary *models.Summary) (*pb_sum.GetSummaryResponse
 			m = &summary.Metrics[idx]
 		}
 
-		goalModel, err := convertToGoalViewModel(m, &g, &summary.Workouts)
+		goalModel, err := convertToGoalViewModel(m, &g)
 		if err != nil {
 			return &pb_sum.GetSummaryResponse{}, err
 		}
