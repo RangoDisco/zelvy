@@ -55,7 +55,8 @@ func (s *server) AddSummary(_ context.Context, request *pb_sum.AddSummaryRequest
 	}
 
 	for _, g := range *goals {
-		metric, err := services.ConvertToMetricModel(summary.ID, g, request.Metrics, summary.Workouts)
+		relatedMetric := services.GetMetricFromGoalID(g, request.Metrics)
+		metric, err := services.ConvertToMetricModel(summary.ID, g, relatedMetric, summary.Workouts)
 		if err != nil {
 			continue
 		}
