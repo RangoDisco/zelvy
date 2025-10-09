@@ -3,7 +3,6 @@ package models
 import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"time"
 )
 
 type User struct {
@@ -13,7 +12,6 @@ type User struct {
 	DiscordID   string    `gorm:"type:varchar(75);unique_index" json:"discordID"`
 	PaypalEmail string    `gorm:"type:varchar(75);unique_index" json:"paypalEmail"`
 	Picture     string    `gorm:"type:varchar(255)" json:"picture"`
-	CreatedAt   time.Time `json:"createdAt"`
 }
 
 // Generate UUID before persist
