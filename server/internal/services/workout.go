@@ -13,8 +13,6 @@ import (
 
 // ConvertToWorkoutModel converts a WorkoutInputModel to a Workout model (used when creating a new workout)
 func ConvertToWorkoutModel(w *pb_wrk.WorkoutInputModel, summaryId uuid.UUID) models.Workout {
-	doneAt := getTimeWithTimeZone(w)
-
 	return models.Workout{
 		ID:           uuid.New(),
 		SummaryID:    summaryId,
@@ -22,7 +20,7 @@ func ConvertToWorkoutModel(w *pb_wrk.WorkoutInputModel, summaryId uuid.UUID) mod
 		ActivityType: w.ActivityType.String(),
 		Name:         getWorkoutName(w),
 		Duration:     w.Duration,
-		DoneAt:       doneAt,
+		DoneAt:       w.DoneAt.AsTime(),
 	}
 }
 
@@ -35,7 +33,7 @@ func ConvertToWorkoutViewModel(w *models.Workout) *pb_wrk.WorkoutViewModel {
 		Name:         w.Name,
 		Duration:     convertMsToHour(w.Duration),
 		Picto:        getWorkoutPicto(w.ActivityType),
-		DoneAt:       w.DoneAt.String(),
+		DoneAt:       w.DoneAt.Format(time.RFC3339),
 	}
 }
 
@@ -106,14 +104,4 @@ func fetchChartWorkouts() ([]models.Workout, []models.Workout, error) {
 	}
 
 	return thisWeek, lastWeek, nil
-}
-
-func getTimeWithTimeZone(w *pb_wrk.WorkoutInputModel) time.Time {
-	rawTime := w.DoneAt.AsTime()
-	location, err := time.LoadLocation("Europe/Paris")
-	// Defaulting to local timezone
-	if err != nil {
-		location = time.Local
-	}
-	return rawTime.In(location)
 }
