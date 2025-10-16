@@ -26,9 +26,13 @@
             <GoalCard goal={goal}/>
         {/each}
     </section>
-    <section class="flex flex-col gap-2 w-full md:mx-auto md:flex-row">
-        {#each data.summary.workouts as workout (workout.id)}
-            <WorkoutListItem workout={workout}/>
-        {/each}
+
+    <section class="w-full p-2 bg-base-200 rounded-lg md:w-1/3">
+        <ul class="timeline timeline-snap-icon timeline-vertical">
+            {#each data.summary.workouts as workout, i (workout.id)}
+                <WorkoutListItem workout={workout} index={i}/>
+            {/each}
+        </ul>
+
     </section>
 </section>
