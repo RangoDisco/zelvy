@@ -6,26 +6,39 @@
 
     type Props = {
         workout: WorkoutViewModel
+        index: number
     }
-    const {workout}: Props = $props();
+    const {workout, index}: Props = $props();
     const picto = workout.activityType === workoutActivityTypeToJSON(WorkoutActivityType.STRENGTH) ? Strength : Cardio;
+    const date = new Date(workout.doneAt);
+    const time = `${date.getHours()}h${date.getMinutes()}`;
 </script>
 
-<article data-testid="workoutsTemplateWorkout"
-         class="flex items-center justify-between w-full bg-base-200 rounded-lg h-[70px] px-4">
-    <div class="w-full flex gap-4 items-center">
+<li data-testid="workoutsTemplateWorkout" class="gap-2">
+    {#if index !== 0}
+        <hr class="bg-primary/50"/>
+    {/if}
+    <div class="timeline-start">
+        <time class="text-base-content">{time}</time>
+    </div>
+    <div class="timeline-middle bg-primary rounded-full h-4 w-4">
+    </div>
+    <div class="timeline-end flex gap-2">
         <img
                 src={picto}
                 alt="{workout.activityType} picto"
                 class="w-10 h-10 rounded-md"
         />
-        <div>
-            <p data-testid="workoutsTemplateWorkoutName" class="font-bold text-base-content">{workout.name}</p>
-            <p data-testid="workoutsTemplateWorkoutDuration" class="text-base-content">{workout.duration}</p>
+        <div class="flex flex-col">
+            <p data-testid="workoutsTemplateWorkoutName" class="text-base-content">{workout.name}</p>
+            <p data-testid="workoutsTemplateWorkoutDuration" class="text-base-content/60">{workout.duration}</p>
+            <div>
+            </div>
         </div>
     </div>
-    <div data-testid="workoutsTemplateWorkoutActivityType"
-         class="self-end pb-2 text-sm text-base-content/60">{ workout.activityType.toLowerCase()}</div>
-</article>
+    {#if index === 0}
+        <hr class="bg-primary/50"/>
+    {/if}
+</li>
 
 

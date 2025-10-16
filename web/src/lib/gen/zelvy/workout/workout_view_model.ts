@@ -16,10 +16,11 @@ export interface WorkoutViewModel {
   name: string;
   duration: string;
   picto: string;
+  doneAt: string;
 }
 
 function createBaseWorkoutViewModel(): WorkoutViewModel {
-  return { id: "", kcalBurned: 0, activityType: "", name: "", duration: "", picto: "" };
+  return { id: "", kcalBurned: 0, activityType: "", name: "", duration: "", picto: "", doneAt: "" };
 }
 
 export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
@@ -41,6 +42,9 @@ export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
     }
     if (message.picto !== "") {
       writer.uint32(50).string(message.picto);
+    }
+    if (message.doneAt !== "") {
+      writer.uint32(58).string(message.doneAt);
     }
     return writer;
   },
@@ -100,6 +104,14 @@ export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
           message.picto = reader.string();
           continue;
         }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.doneAt = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -117,6 +129,7 @@ export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       duration: isSet(object.duration) ? globalThis.String(object.duration) : "",
       picto: isSet(object.picto) ? globalThis.String(object.picto) : "",
+      doneAt: isSet(object.doneAt) ? globalThis.String(object.doneAt) : "",
     };
   },
 
@@ -140,6 +153,9 @@ export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
     if (message.picto !== "") {
       obj.picto = message.picto;
     }
+    if (message.doneAt !== "") {
+      obj.doneAt = message.doneAt;
+    }
     return obj;
   },
 
@@ -154,6 +170,7 @@ export const WorkoutViewModel: MessageFns<WorkoutViewModel> = {
     message.name = object.name ?? "";
     message.duration = object.duration ?? "";
     message.picto = object.picto ?? "";
+    message.doneAt = object.doneAt ?? "";
     return message;
   },
 };

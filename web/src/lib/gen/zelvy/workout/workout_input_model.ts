@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../../google/protobuf/timestamp";
 import {
   WorkoutActivityType,
   workoutActivityTypeFromJSON,
@@ -19,10 +20,11 @@ export interface WorkoutInputModel {
   name?: string | undefined;
   kcalBurned: number;
   duration: number;
+  doneAt: Date | undefined;
 }
 
 function createBaseWorkoutInputModel(): WorkoutInputModel {
-  return { activityType: 0, name: undefined, kcalBurned: 0, duration: 0 };
+  return { activityType: 0, name: undefined, kcalBurned: 0, duration: 0, doneAt: undefined };
 }
 
 export const WorkoutInputModel: MessageFns<WorkoutInputModel> = {
@@ -38,6 +40,9 @@ export const WorkoutInputModel: MessageFns<WorkoutInputModel> = {
     }
     if (message.duration !== 0) {
       writer.uint32(33).double(message.duration);
+    }
+    if (message.doneAt !== undefined) {
+      Timestamp.encode(toTimestamp(message.doneAt), writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -81,6 +86,14 @@ export const WorkoutInputModel: MessageFns<WorkoutInputModel> = {
           message.duration = reader.double();
           continue;
         }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.doneAt = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -96,6 +109,7 @@ export const WorkoutInputModel: MessageFns<WorkoutInputModel> = {
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       kcalBurned: isSet(object.kcalBurned) ? globalThis.Number(object.kcalBurned) : 0,
       duration: isSet(object.duration) ? globalThis.Number(object.duration) : 0,
+      doneAt: isSet(object.doneAt) ? fromJsonTimestamp(object.doneAt) : undefined,
     };
   },
 
@@ -113,6 +127,9 @@ export const WorkoutInputModel: MessageFns<WorkoutInputModel> = {
     if (message.duration !== 0) {
       obj.duration = message.duration;
     }
+    if (message.doneAt !== undefined) {
+      obj.doneAt = message.doneAt.toISOString();
+    }
     return obj;
   },
 
@@ -125,6 +142,7 @@ export const WorkoutInputModel: MessageFns<WorkoutInputModel> = {
     message.name = object.name ?? undefined;
     message.kcalBurned = object.kcalBurned ?? 0;
     message.duration = object.duration ?? 0;
+    message.doneAt = object.doneAt ?? undefined;
     return message;
   },
 };
@@ -140,6 +158,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function longToNumber(int64: { toString(): string }): number {
   const num = globalThis.Number(int64.toString());

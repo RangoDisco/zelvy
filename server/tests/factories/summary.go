@@ -51,6 +51,5 @@ func CreateWinner() models.User {
 		DiscordID:   "123456789",
 		Username:    "Test User",
 		PaypalEmail: "dummy@test.com",
-		CreatedAt:   time.Now(),
 	}
 }

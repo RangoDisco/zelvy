@@ -2,11 +2,9 @@ package database
 
 import (
 	"fmt"
-	"os"
-	"time"
-
 	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
 	"github.com/rangodisco/zelvy/server/internal/models"
+	"os"
 
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
@@ -74,7 +72,6 @@ func InitTestDatabase() error {
 		Username:    "test123",
 		DiscordID:   "123456789",
 		PaypalEmail: "testEmail@gmail.com",
-		CreatedAt:   time.Now(),
 	}
 	res := db.Create(&testUser)
 

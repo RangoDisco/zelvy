@@ -10,8 +10,8 @@ type Metric struct {
 	ID        uuid.UUID `gorm:"type:uuid;primary_key"`
 	Type      string    `json:"type"`
 	Value     float64   `json:"value"`
-	SummaryID uuid.UUID
-	GoalID    uuid.UUID `gorm:"type:uuid; default:null"`
+	SummaryID uuid.UUID `gorm:"type:uuid;not null"`
+	GoalID    uuid.UUID `gorm:"type:uuid;not null"`
 	Goal      Goal      `gorm:"foreignKey:GoalID;references:ID; default:null"`
 	Success   bool      `gorm:"default:false"`
 	Disabled  bool      `gorm:"default:false"`
