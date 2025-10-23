@@ -2,9 +2,10 @@ package database
 
 import (
 	"fmt"
+	"os"
+
 	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
 	"github.com/rangodisco/zelvy/server/internal/models"
-	"os"
 
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"

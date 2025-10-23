@@ -24,7 +24,7 @@ const (
 type WinnerViewModel struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	Wins          string                 `protobuf:"bytes,2,opt,name=wins,proto3" json:"wins,omitempty"`
+	Wins          int64                  `protobuf:"varint,2,opt,name=wins,proto3" json:"wins,omitempty"`
 	Picture       *string                `protobuf:"bytes,3,opt,name=picture,proto3,oneof" json:"picture,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -67,11 +67,11 @@ func (x *WinnerViewModel) GetUsername() string {
 	return ""
 }
 
-func (x *WinnerViewModel) GetWins() string {
+func (x *WinnerViewModel) GetWins() int64 {
 	if x != nil {
 		return x.Wins
 	}
-	return ""
+	return 0
 }
 
 func (x *WinnerViewModel) GetPicture() string {
@@ -89,7 +89,7 @@ const file_zelvy_user_winner_view_model_proto_rawDesc = "" +
 	"zelvy.user\"l\n" +
 	"\x0fWinnerViewModel\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x12\n" +
-	"\x04wins\x18\x02 \x01(\tR\x04wins\x12\x1d\n" +
+	"\x04wins\x18\x02 \x01(\x03R\x04wins\x12\x1d\n" +
 	"\apicture\x18\x03 \x01(\tH\x00R\apicture\x88\x01\x01B\n" +
 	"\n" +
 	"\b_pictureB,Z*github.com/rangodisco/zelvy/gen/zelvy/userb\x06proto3"
