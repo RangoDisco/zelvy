@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zelvy.summary;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/summary";
+
+message HeatmapItemViewModel {
+  string id = 1;
+  string date = 2;
+  bool success = 3;
+}

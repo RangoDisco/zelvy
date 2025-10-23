@@ -19,6 +19,8 @@ import {
 } from "@grpc/grpc-js";
 import { AddSummaryRequest } from "./add_summary_request";
 import { AddSummaryResponse } from "./add_summary_response";
+import { GetSummaryHeatmapRequest } from "./get_summary_heatmap_request";
+import { GetSummaryHeatmapResponse } from "./get_summary_heatmap_response";
 import { GetSummaryRequest } from "./get_summary_request";
 import { GetSummaryResponse } from "./get_summary_response";
 
@@ -44,11 +46,22 @@ export const SummaryServiceService = {
     responseSerialize: (value: AddSummaryResponse) => Buffer.from(AddSummaryResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer) => AddSummaryResponse.decode(value),
   },
+  getSummaryHeatmap: {
+    path: "/zelvy.summary.SummaryService/GetSummaryHeatmap",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (value: GetSummaryHeatmapRequest) => Buffer.from(GetSummaryHeatmapRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer) => GetSummaryHeatmapRequest.decode(value),
+    responseSerialize: (value: GetSummaryHeatmapResponse) =>
+      Buffer.from(GetSummaryHeatmapResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer) => GetSummaryHeatmapResponse.decode(value),
+  },
 } as const;
 
 export interface SummaryServiceServer extends UntypedServiceImplementation {
   getSummary: handleUnaryCall<GetSummaryRequest, GetSummaryResponse>;
   addSummary: handleUnaryCall<AddSummaryRequest, AddSummaryResponse>;
+  getSummaryHeatmap: handleUnaryCall<GetSummaryHeatmapRequest, GetSummaryHeatmapResponse>;
 }
 
 export interface SummaryServiceClient extends Client {
@@ -81,6 +94,21 @@ export interface SummaryServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: AddSummaryResponse) => void,
+  ): ClientUnaryCall;
+  getSummaryHeatmap(
+    request: GetSummaryHeatmapRequest,
+    callback: (error: ServiceError | null, response: GetSummaryHeatmapResponse) => void,
+  ): ClientUnaryCall;
+  getSummaryHeatmap(
+    request: GetSummaryHeatmapRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: GetSummaryHeatmapResponse) => void,
+  ): ClientUnaryCall;
+  getSummaryHeatmap(
+    request: GetSummaryHeatmapRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: GetSummaryHeatmapResponse) => void,
   ): ClientUnaryCall;
 }
 

@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SummaryService_GetSummary_FullMethodName = "/zelvy.summary.SummaryService/GetSummary"
-	SummaryService_AddSummary_FullMethodName = "/zelvy.summary.SummaryService/AddSummary"
+	SummaryService_GetSummary_FullMethodName        = "/zelvy.summary.SummaryService/GetSummary"
+	SummaryService_AddSummary_FullMethodName        = "/zelvy.summary.SummaryService/AddSummary"
+	SummaryService_GetSummaryHeatmap_FullMethodName = "/zelvy.summary.SummaryService/GetSummaryHeatmap"
 )
 
 // SummaryServiceClient is the client API for SummaryService service.
@@ -29,6 +30,7 @@ const (
 type SummaryServiceClient interface {
 	GetSummary(ctx context.Context, in *GetSummaryRequest, opts ...grpc.CallOption) (*GetSummaryResponse, error)
 	AddSummary(ctx context.Context, in *AddSummaryRequest, opts ...grpc.CallOption) (*AddSummaryResponse, error)
+	GetSummaryHeatmap(ctx context.Context, in *GetSummaryHeatmapRequest, opts ...grpc.CallOption) (*GetSummaryHeatmapResponse, error)
 }
 
 type summaryServiceClient struct {
@@ -59,12 +61,23 @@ func (c *summaryServiceClient) AddSummary(ctx context.Context, in *AddSummaryReq
 	return out, nil
 }
 
+func (c *summaryServiceClient) GetSummaryHeatmap(ctx context.Context, in *GetSummaryHeatmapRequest, opts ...grpc.CallOption) (*GetSummaryHeatmapResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSummaryHeatmapResponse)
+	err := c.cc.Invoke(ctx, SummaryService_GetSummaryHeatmap_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SummaryServiceServer is the server API for SummaryService service.
 // All implementations must embed UnimplementedSummaryServiceServer
 // for forward compatibility.
 type SummaryServiceServer interface {
 	GetSummary(context.Context, *GetSummaryRequest) (*GetSummaryResponse, error)
 	AddSummary(context.Context, *AddSummaryRequest) (*AddSummaryResponse, error)
+	GetSummaryHeatmap(context.Context, *GetSummaryHeatmapRequest) (*GetSummaryHeatmapResponse, error)
 	mustEmbedUnimplementedSummaryServiceServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedSummaryServiceServer) GetSummary(context.Context, *GetSummary
 }
 func (UnimplementedSummaryServiceServer) AddSummary(context.Context, *AddSummaryRequest) (*AddSummaryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddSummary not implemented")
+}
+func (UnimplementedSummaryServiceServer) GetSummaryHeatmap(context.Context, *GetSummaryHeatmapRequest) (*GetSummaryHeatmapResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSummaryHeatmap not implemented")
 }
 func (UnimplementedSummaryServiceServer) mustEmbedUnimplementedSummaryServiceServer() {}
 func (UnimplementedSummaryServiceServer) testEmbeddedByValue()                        {}
@@ -138,6 +154,24 @@ func _SummaryService_AddSummary_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SummaryService_GetSummaryHeatmap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSummaryHeatmapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SummaryServiceServer).GetSummaryHeatmap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SummaryService_GetSummaryHeatmap_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SummaryServiceServer).GetSummaryHeatmap(ctx, req.(*GetSummaryHeatmapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SummaryService_ServiceDesc is the grpc.ServiceDesc for SummaryService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var SummaryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddSummary",
 			Handler:    _SummaryService_AddSummary_Handler,
+		},
+		{
+			MethodName: "GetSummaryHeatmap",
+			Handler:    _SummaryService_GetSummaryHeatmap_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
