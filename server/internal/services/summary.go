@@ -2,11 +2,12 @@ package services
 
 import (
 	"fmt"
-	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
-	pb_usr "github.com/rangodisco/zelvy/gen/zelvy/user"
 	"slices"
 	"strconv"
 	"time"
+
+	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
+	pb_usr "github.com/rangodisco/zelvy/gen/zelvy/user"
 
 	"github.com/google/uuid"
 	"github.com/rangodisco/zelvy/server/config/database"
@@ -37,6 +38,19 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 	}
 
 	return s, nil
+}
+
+func FindHeatmapResults(startDate, endDate string) ([]*pb_sum.HeatmapItemViewModel, error) {
+	var items []*pb_sum.HeatmapItemViewModel
+	err := database.GetDB().Raw(
+		"SELECT s.id, s.date, s.success FROM summaries s WHERE s.deleted_at IS null AND s.date >= ? AND s.date <= ?",
+		startDate, endDate).Scan(&items).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return items, nil
 }
 
 // CreateSummaryViewModel Converts a summary model to ViewModel that matches fields needed by the frontend
