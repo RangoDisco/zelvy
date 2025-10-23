@@ -24,26 +24,31 @@ var File_zelvy_summary_summary_service_proto protoreflect.FileDescriptor
 
 const file_zelvy_summary_summary_service_proto_rawDesc = "" +
 	"\n" +
-	"#zelvy/summary/summary_service.proto\x12\rzelvy.summary\x1a'zelvy/summary/get_summary_request.proto\x1a(zelvy/summary/get_summary_response.proto\x1a'zelvy/summary/add_summary_request.proto\x1a(zelvy/summary/add_summary_response.proto2\xb6\x01\n" +
+	"#zelvy/summary/summary_service.proto\x12\rzelvy.summary\x1a'zelvy/summary/get_summary_request.proto\x1a(zelvy/summary/get_summary_response.proto\x1a'zelvy/summary/add_summary_request.proto\x1a(zelvy/summary/add_summary_response.proto\x1a/zelvy/summary/get_summary_heatmap_request.proto\x1a0zelvy/summary/get_summary_heatmap_response.proto2\x9e\x02\n" +
 	"\x0eSummaryService\x12Q\n" +
 	"\n" +
 	"GetSummary\x12 .zelvy.summary.GetSummaryRequest\x1a!.zelvy.summary.GetSummaryResponse\x12Q\n" +
 	"\n" +
-	"AddSummary\x12 .zelvy.summary.AddSummaryRequest\x1a!.zelvy.summary.AddSummaryResponseB/Z-github.com/rangodisco/zelvy/gen/zelvy/summaryb\x06proto3"
+	"AddSummary\x12 .zelvy.summary.AddSummaryRequest\x1a!.zelvy.summary.AddSummaryResponse\x12f\n" +
+	"\x11GetSummaryHeatmap\x12'.zelvy.summary.GetSummaryHeatmapRequest\x1a(.zelvy.summary.GetSummaryHeatmapResponseB/Z-github.com/rangodisco/zelvy/gen/zelvy/summaryb\x06proto3"
 
 var file_zelvy_summary_summary_service_proto_goTypes = []any{
-	(*GetSummaryRequest)(nil),  // 0: zelvy.summary.GetSummaryRequest
-	(*AddSummaryRequest)(nil),  // 1: zelvy.summary.AddSummaryRequest
-	(*GetSummaryResponse)(nil), // 2: zelvy.summary.GetSummaryResponse
-	(*AddSummaryResponse)(nil), // 3: zelvy.summary.AddSummaryResponse
+	(*GetSummaryRequest)(nil),         // 0: zelvy.summary.GetSummaryRequest
+	(*AddSummaryRequest)(nil),         // 1: zelvy.summary.AddSummaryRequest
+	(*GetSummaryHeatmapRequest)(nil),  // 2: zelvy.summary.GetSummaryHeatmapRequest
+	(*GetSummaryResponse)(nil),        // 3: zelvy.summary.GetSummaryResponse
+	(*AddSummaryResponse)(nil),        // 4: zelvy.summary.AddSummaryResponse
+	(*GetSummaryHeatmapResponse)(nil), // 5: zelvy.summary.GetSummaryHeatmapResponse
 }
 var file_zelvy_summary_summary_service_proto_depIdxs = []int32{
 	0, // 0: zelvy.summary.SummaryService.GetSummary:input_type -> zelvy.summary.GetSummaryRequest
 	1, // 1: zelvy.summary.SummaryService.AddSummary:input_type -> zelvy.summary.AddSummaryRequest
-	2, // 2: zelvy.summary.SummaryService.GetSummary:output_type -> zelvy.summary.GetSummaryResponse
-	3, // 3: zelvy.summary.SummaryService.AddSummary:output_type -> zelvy.summary.AddSummaryResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	2, // 2: zelvy.summary.SummaryService.GetSummaryHeatmap:input_type -> zelvy.summary.GetSummaryHeatmapRequest
+	3, // 3: zelvy.summary.SummaryService.GetSummary:output_type -> zelvy.summary.GetSummaryResponse
+	4, // 4: zelvy.summary.SummaryService.AddSummary:output_type -> zelvy.summary.AddSummaryResponse
+	5, // 5: zelvy.summary.SummaryService.GetSummaryHeatmap:output_type -> zelvy.summary.GetSummaryHeatmapResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -58,6 +63,8 @@ func file_zelvy_summary_summary_service_proto_init() {
 	file_zelvy_summary_get_summary_response_proto_init()
 	file_zelvy_summary_add_summary_request_proto_init()
 	file_zelvy_summary_add_summary_response_proto_init()
+	file_zelvy_summary_get_summary_heatmap_request_proto_init()
+	file_zelvy_summary_get_summary_heatmap_response_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -8,8 +8,11 @@ import "zelvy/summary/get_summary_request.proto";
 import "zelvy/summary/get_summary_response.proto";
 import "zelvy/summary/add_summary_request.proto";
 import "zelvy/summary/add_summary_response.proto";
+import "zelvy/summary/get_summary_heatmap_request.proto";
+import "zelvy/summary/get_summary_heatmap_response.proto";
 
 service SummaryService {
   rpc GetSummary(GetSummaryRequest) returns (GetSummaryResponse);
   rpc AddSummary(AddSummaryRequest) returns(AddSummaryResponse);
+  rpc GetSummaryHeatmap(GetSummaryHeatmapRequest) returns (GetSummaryHeatmapResponse);
 }

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zelvy.summary;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/summary";
+
+import "zelvy/summary/heatmap_item_view_model.proto";
+
+message GetSummaryHeatmapResponse {
+  repeated HeatmapItemViewModel items = 1;
+}
