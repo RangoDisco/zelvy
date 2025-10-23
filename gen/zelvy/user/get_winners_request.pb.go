@@ -23,8 +23,8 @@ const (
 
 type GetWinnersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	StartDate     string                 `protobuf:"bytes,1,opt,name=startDate,proto3" json:"startDate,omitempty"`
-	EndDate       string                 `protobuf:"bytes,2,opt,name=endDate,proto3" json:"endDate,omitempty"`
+	StartDate     string                 `protobuf:"bytes,1,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	EndDate       string                 `protobuf:"bytes,2,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
 	Limit         int64                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -86,10 +86,11 @@ var File_zelvy_user_get_winners_request_proto protoreflect.FileDescriptor
 const file_zelvy_user_get_winners_request_proto_rawDesc = "" +
 	"\n" +
 	"$zelvy/user/get_winners_request.proto\x12\n" +
-	"zelvy.user\"a\n" +
-	"\x11GetWinnersRequest\x12\x1c\n" +
-	"\tstartDate\x18\x01 \x01(\tR\tstartDate\x12\x18\n" +
-	"\aendDate\x18\x02 \x01(\tR\aendDate\x12\x14\n" +
+	"zelvy.user\"c\n" +
+	"\x11GetWinnersRequest\x12\x1d\n" +
+	"\n" +
+	"start_date\x18\x01 \x01(\tR\tstartDate\x12\x19\n" +
+	"\bend_date\x18\x02 \x01(\tR\aendDate\x12\x14\n" +
 	"\x05limit\x18\x03 \x01(\x03R\x05limitB,Z*github.com/rangodisco/zelvy/gen/zelvy/userb\x06proto3"
 
 var (
