@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zelvy.summary;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/summary";
+
+message GetSummaryHeatmapRequest {
+  string start_date = 1;
+  string end_date = 2;
+}
