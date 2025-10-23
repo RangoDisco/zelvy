@@ -5,6 +5,6 @@ option go_package = "github.com/rangodisco/zelvy/gen/zelvy/user";
 
 message WinnerViewModel {
   string username = 1;
-  string wins = 2;
+  int64 wins = 2;
   optional string picture = 3;
 }

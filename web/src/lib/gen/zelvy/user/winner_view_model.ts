@@ -11,12 +11,12 @@ export const protobufPackage = "zelvy.user";
 
 export interface WinnerViewModel {
   username: string;
-  wins: string;
+  wins: number;
   picture?: string | undefined;
 }
 
 function createBaseWinnerViewModel(): WinnerViewModel {
-  return { username: "", wins: "", picture: undefined };
+  return { username: "", wins: 0, picture: undefined };
 }
 
 export const WinnerViewModel: MessageFns<WinnerViewModel> = {
@@ -24,8 +24,8 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
     if (message.username !== "") {
       writer.uint32(10).string(message.username);
     }
-    if (message.wins !== "") {
-      writer.uint32(18).string(message.wins);
+    if (message.wins !== 0) {
+      writer.uint32(16).int64(message.wins);
     }
     if (message.picture !== undefined) {
       writer.uint32(26).string(message.picture);
@@ -49,11 +49,11 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
           continue;
         }
         case 2: {
-          if (tag !== 18) {
+          if (tag !== 16) {
             break;
           }
 
-          message.wins = reader.string();
+          message.wins = longToNumber(reader.int64());
           continue;
         }
         case 3: {
@@ -76,7 +76,7 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
   fromJSON(object: any): WinnerViewModel {
     return {
       username: isSet(object.username) ? globalThis.String(object.username) : "",
-      wins: isSet(object.wins) ? globalThis.String(object.wins) : "",
+      wins: isSet(object.wins) ? globalThis.Number(object.wins) : 0,
       picture: isSet(object.picture) ? globalThis.String(object.picture) : undefined,
     };
   },
@@ -86,8 +86,8 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
     if (message.username !== "") {
       obj.username = message.username;
     }
-    if (message.wins !== "") {
-      obj.wins = message.wins;
+    if (message.wins !== 0) {
+      obj.wins = Math.round(message.wins);
     }
     if (message.picture !== undefined) {
       obj.picture = message.picture;
@@ -101,7 +101,7 @@ export const WinnerViewModel: MessageFns<WinnerViewModel> = {
   fromPartial<I extends Exact<DeepPartial<WinnerViewModel>, I>>(object: I): WinnerViewModel {
     const message = createBaseWinnerViewModel();
     message.username = object.username ?? "";
-    message.wins = object.wins ?? "";
+    message.wins = object.wins ?? 0;
     message.picture = object.picture ?? undefined;
     return message;
   },
@@ -118,6 +118,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
