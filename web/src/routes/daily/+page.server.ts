@@ -3,7 +3,7 @@ import {credentials} from "@grpc/grpc-js";
 import {SummaryServiceClient} from "$lib/gen/zelvy/summary/summary_service";
 import {GetSummaryRequest} from "$lib/gen/zelvy/summary/get_summary_request";
 import type {GetSummaryResponse} from "$lib/gen/zelvy/summary/get_summary_response";
-import {createMetadataWithAuth} from "$lib/server/grpc";
+import {createMetadataWithAuth} from "$lib/server/grpc/metadata";
 
 export const csr = false;
 
