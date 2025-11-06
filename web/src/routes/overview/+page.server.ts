@@ -1,29 +1,42 @@
 import type {PageServerLoad} from "./$types";
-import {credentials} from "@grpc/grpc-js";
-import {UserServiceClient} from "$lib/gen/zelvy/user/user_service";
-import {GetWinnersRequest} from "$lib/gen/zelvy/user/get_winners_request";
 import type {GetWinnersResponse} from "$lib/gen/zelvy/user/get_winners_response";
-import {createMetadataWithAuth} from "$lib/server/grpc";
+import type {GetSummaryHeatmapResponse} from "$lib/gen/zelvy/summary/get_summary_heatmap_response";
+import setDefaultDateRangeParams from "$lib/utils/setDefaultDateRangeParams";
+import {isDate} from "node:util/types";
+import {getSummaryHeatmap} from "$lib/server/grpc/summary";
+import {getWinners} from "$lib/server/grpc/user";
 
 
-const LIMIT = 10;
+export const load: PageServerLoad = async ({url}): Promise<{
+    winRes: GetWinnersResponse,
+    hmRes: GetSummaryHeatmapResponse
+} | null> => {
+    const eDParam = url.searchParams.get("end_date");
+    const sDParam = url.searchParams.get("start_date");
 
-export const load: PageServerLoad = async ({params}): Promise<GetWinnersResponse> => {
-    const endDate = new Date();
-    const startDate = new Date(endDate.getFullYear(), endDate.getMonth() - 1, endDate.getDate());
+    if (eDParam === null || sDParam === null) {
+        setDefaultDateRangeParams(url);
+        return null;
+    }
 
-    const client = new UserServiceClient("localhost:50051", credentials.createInsecure());
-    const req = GetWinnersRequest.create();
-    req.endDate = endDate.toISOString().slice(0, 10);
-    req.startDate = startDate.toISOString().slice(0, 10);
-    req.limit = LIMIT;
+    const endDate = new Date(eDParam);
+    const startDate = new Date(sDParam);
 
-    const res: GetWinnersResponse = await new Promise((resolve, reject) => {
-        client.getWinners(req, createMetadataWithAuth(), (err, response) => {
-            if (err) reject(err);
-            else resolve(response);
-        });
-    });
+    if (startDate > endDate || !isDate(endDate) || !isDate(startDate)) {
+        setDefaultDateRangeParams(url);
+        return null;
+    }
 
-    return res;
+    const formattedED = endDate.toISOString().slice(0, 10);
+    const formattedSD = startDate.toISOString().slice(0, 10);
+
+    const winnersResponse = await getWinners(formattedSD, formattedED);
+
+    const heatmapResponse = await getSummaryHeatmap(formattedSD, formattedED);
+
+
+    return {
+        winRes: winnersResponse,
+        hmRes: heatmapResponse
+    };
 };
