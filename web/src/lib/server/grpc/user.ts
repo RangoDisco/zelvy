@@ -14,7 +14,6 @@ export const getWinners = async (formattedSD: string, formattedED: string) => {
     winnerReq.limit = LIMIT;
 
     return await new Promise((resolve, reject) => {
-        console.log(formattedSD);
         client.getWinners(winnerReq, createMetadataWithAuth(), (err, response) => {
             if (err) reject(err);
             else resolve(response);
