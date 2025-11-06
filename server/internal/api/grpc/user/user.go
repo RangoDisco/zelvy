@@ -2,6 +2,8 @@ package user
 
 import (
 	"context"
+	"errors"
+
 	pb_usr "github.com/rangodisco/zelvy/gen/zelvy/user"
 	"github.com/rangodisco/zelvy/server/internal/services"
 	"google.golang.org/grpc"
@@ -27,7 +29,7 @@ func (s *server) AddUser(_ context.Context, req *pb_usr.AddUserRequest) (*pb_usr
 func (s *server) GetWinners(_ context.Context, req *pb_usr.GetWinnersRequest) (*pb_usr.GetWinnersResponse, error) {
 	winners, err := services.GetWinnersBetweenDates(req.StartDate, req.EndDate, req.Limit)
 	if err != nil {
-		return nil, err
+		return nil, errors.New("unable to get winners")
 	}
 
 	return &pb_usr.GetWinnersResponse{Winners: winners}, nil

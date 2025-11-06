@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+
 	"github.com/google/uuid"
 	pb_usr "github.com/rangodisco/zelvy/gen/zelvy/user"
 	"github.com/rangodisco/zelvy/server/config/database"
@@ -12,13 +14,13 @@ func UpsertUser(body *pb_usr.AddUserRequest) error {
 
 	eU, err := findExistingUser(body)
 	if err != nil {
-		return err
+		return errors.New("an error occurred while searching for user")
 	}
 
 	if eU != nil {
 		err = updateUserEmail(eU, body.PaypalEmail)
 		if err != nil {
-			return err
+			return errors.New("an error occurred while updating user email")
 		}
 		return nil
 	}
@@ -26,7 +28,7 @@ func UpsertUser(body *pb_usr.AddUserRequest) error {
 	iM := convertToInputModel(body)
 
 	if err = database.GetDB().Save(&iM).Error; err != nil {
-		return err
+		return errors.New("an error occurred while inserting user")
 	}
 
 	return nil
