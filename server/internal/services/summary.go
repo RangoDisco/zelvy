@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"fmt"
 	"slices"
 	"strconv"
@@ -23,10 +24,11 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 
 	// In case a date is provided, we want to fetch the summary for that date
 	if date != "" {
-		sod, eod, err := formatDate(date)
+		sod, err := getTimeFromString(date)
 		if err != nil {
 			return models.Summary{}, err
 		}
+		eod := sod.Add(24 * time.Hour)
 
 		// Add clause with the date provided
 		q.Where("date >= ? AND date < ?", sod, eod)
@@ -41,20 +43,34 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 }
 
 func FindHeatmapResults(startDate, endDate string) ([]*pb_sum.HeatmapItemViewModel, error) {
+	parsedStartDate, err := getTimeFromString(startDate)
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("could not parse start date: %s", err))
+	}
+
+	parsedEndDate, err := getTimeFromString(endDate)
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("could not parse end date: %s", err))
+	}
+
+	if parsedStartDate.After(parsedEndDate) {
+		return nil, errors.New("start date cannot be after end date")
+	}
+
 	var items []*pb_sum.HeatmapItemViewModel
-	err := database.GetDB().Raw(`
+	err = database.GetDB().Raw(`
 		    SELECT s.id, s.success, d.date
 			   FROM (
-				  SELECT generate_series(min(date), max(date), '1d')::date AS date
-				  FROM summaries
+				  SELECT date
+				  FROM calendar WHERE date >= ? AND date <= ?
 				   ) d
 			   LEFT JOIN summaries s ON s.date::date = d.date
-			   ORDER BY d.date DESC;
+			   ORDER BY d.date ASC;
 		`,
-		startDate, endDate).Scan(&items).Error
+		parsedStartDate, parsedEndDate).Scan(&items).Error
 
 	if err != nil {
-		return nil, err
+		return nil, errors.New(fmt.Sprintf("could not fetch heatmap items"))
 	}
 
 	return items, nil
@@ -112,17 +128,6 @@ func convertMsToHour(ms float64) string {
 	return strconv.Itoa(hours) + "h" + strconv.Itoa(minutes) + "m"
 }
 
-func formatDate(stringDate string) (time.Time, time.Time, error) {
-	// Parse date
-	sod, err := time.Parse("2006-01-02", stringDate)
-	if err != nil {
-		return time.Time{}, time.Time{}, err
-	}
-	eod := sod.Add(24 * time.Hour)
-
-	return sod, eod, nil
-}
-
 // PickWinner randomly selects a user from the database
 func PickWinner() (uuid.UUID, error) {
 	var u models.User
@@ -133,4 +138,14 @@ func PickWinner() (uuid.UUID, error) {
 	}
 
 	return u.ID, nil
+}
+
+// getTimeFromString converts a string date into a time.Time and check that if it is valid
+func getTimeFromString(stringDate string) (time.Time, error) {
+	parsedDate, err := time.Parse("2006-01-02", stringDate)
+	if err != nil {
+		return time.Time{}, errors.New(fmt.Sprintf("could not parse date: %s", err))
+	}
+
+	return parsedDate, nil
 }

@@ -97,7 +97,7 @@ func (s *server) GetSummaryHeatmap(_ context.Context, request *pb_sum.GetSummary
 	items, err := services.FindHeatmapResults(request.StartDate, request.EndDate)
 
 	if err != nil {
-		return &pb_sum.GetSummaryHeatmapResponse{}, errors.New("unable to generate heatmap data")
+		return &pb_sum.GetSummaryHeatmapResponse{}, err
 	}
 
 	return &pb_sum.GetSummaryHeatmapResponse{Items: items}, nil
