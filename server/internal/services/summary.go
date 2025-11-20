@@ -42,6 +42,7 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 	return s, nil
 }
 
+// FindHeatmapResults fetches each day from a calendar between two dates and returns the summary for each
 func FindHeatmapResults(startDate, endDate string) ([]*pb_sum.HeatmapItemViewModel, error) {
 	parsedStartDate, err := getTimeFromString(startDate)
 	if err != nil {
@@ -120,14 +121,6 @@ func CreateSummaryViewModel(summary *models.Summary) (*pb_sum.GetSummaryResponse
 	return &res, nil
 }
 
-// convertMsToHour and minute format
-func convertMsToHour(ms float64) string {
-	duration := time.Duration(ms) * time.Second
-	hours := int(duration.Hours())
-	minutes := int(duration.Minutes()) % 60
-	return strconv.Itoa(hours) + "h" + strconv.Itoa(minutes) + "m"
-}
-
 // PickWinner randomly selects a user from the database
 func PickWinner() (uuid.UUID, error) {
 	var u models.User
@@ -138,6 +131,14 @@ func PickWinner() (uuid.UUID, error) {
 	}
 
 	return u.ID, nil
+}
+
+// convertMsToHour and minute format
+func convertMsToHour(ms float64) string {
+	duration := time.Duration(ms) * time.Second
+	hours := int(duration.Hours())
+	minutes := int(duration.Minutes()) % 60
+	return strconv.Itoa(hours) + "h" + strconv.Itoa(minutes) + "m"
 }
 
 // getTimeFromString converts a string date into a time.Time and check that if it is valid
