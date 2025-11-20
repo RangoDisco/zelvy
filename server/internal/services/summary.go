@@ -42,8 +42,15 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 
 func FindHeatmapResults(startDate, endDate string) ([]*pb_sum.HeatmapItemViewModel, error) {
 	var items []*pb_sum.HeatmapItemViewModel
-	err := database.GetDB().Raw(
-		"SELECT s.id, s.date, s.success FROM summaries s WHERE s.deleted_at IS null AND s.date >= ? AND s.date <= ?",
+	err := database.GetDB().Raw(`
+		    SELECT s.id, s.success, d.date
+			   FROM (
+				  SELECT generate_series(min(date), max(date), '1d')::date AS date
+				  FROM summaries
+				   ) d
+			   LEFT JOIN summaries s ON s.date::date = d.date
+			   ORDER BY d.date DESC;
+		`,
 		startDate, endDate).Scan(&items).Error
 
 	if err != nil {
