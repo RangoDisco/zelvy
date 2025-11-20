@@ -59,16 +59,13 @@ func FindHeatmapResults(startDate, endDate string) ([]*pb_sum.HeatmapItemViewMod
 	}
 
 	var items []*pb_sum.HeatmapItemViewModel
-	err = database.GetDB().Raw(`
-		    SELECT s.id, s.success, d.date
-			   FROM (
-				  SELECT date
-				  FROM calendar WHERE date >= ? AND date <= ?
-				   ) d
-			   LEFT JOIN summaries s ON s.date::date = d.date
-			   ORDER BY d.date ASC;
-		`,
-		parsedStartDate, parsedEndDate).Scan(&items).Error
+	err = database.GetDB().
+		Table("calendar").
+		Select("summaries.id AS id, COALESCE(summaries.success, true) AS success, calendar.date_without_time AS date").
+		Joins("LEFT JOIN summaries on calendar.date_without_time = summaries.date::date").
+		Where("calendar.date_without_time >= ? AND calendar.date_without_time <= ?", parsedStartDate, parsedEndDate).
+		Order("calendar.date_without_time ASC").
+		Scan(&items).Error
 
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("could not fetch heatmap items"))
