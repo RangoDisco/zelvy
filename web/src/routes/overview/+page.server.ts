@@ -31,9 +31,7 @@ export const load: PageServerLoad = async ({url}): Promise<{
     const formattedSD = startDate.toISOString().slice(0, 10);
 
     const winnersResponse = await getWinners(formattedSD, formattedED);
-
     const heatmapResponse = await getSummaryHeatmap(formattedSD, formattedED);
-
 
     return {
         winRes: winnersResponse,
