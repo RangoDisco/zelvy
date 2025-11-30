@@ -22,7 +22,7 @@
     </section>
     <ViewSelector/>
     <section class="carousel w-full bg-base-900 gap-3 md:gap-0 md:rounded-lg">
-        {#each data.summary.goals as goal}
+        {#each data.summary.goals as goal (goal.name)}
             <GoalCard goal={goal}/>
         {/each}
     </section>
