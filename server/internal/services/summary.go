@@ -63,7 +63,7 @@ func FindHeatmapResults(startDate, endDate string) ([]*pb_sum.HeatmapItemViewMod
 		Table("calendar").
 		Select("summaries.id AS id, COALESCE(summaries.success, true) AS success, calendar.date_without_time AS date").
 		Joins("LEFT JOIN summaries on calendar.date_without_time = summaries.date::date").
-		Where("calendar.date_without_time >= ? AND calendar.date_without_time <= ?", parsedStartDate, parsedEndDate).
+		Where("summaries.deleted_at IS null AND calendar.date_without_time >= ? AND calendar.date_without_time <= ?", parsedStartDate, parsedEndDate).
 		Order("calendar.date_without_time ASC").
 		Scan(&items).Error
 
