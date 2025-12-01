@@ -131,6 +131,25 @@ func InitTestDatabase() error {
 	for _, g := range goals {
 		res = db.Create(&g)
 	}
+
+	// Add calendar table needed for the heatmap
+	err = db.Exec(`
+		CREATE TABLE calendar
+		(
+			date_id           INTEGER PRIMARY KEY,
+			date_without_time DATETIME NOT NULL
+		);
+		
+		INSERT INTO calendar (date_without_time)
+		VALUES (datetime()),
+		       (datetime(datetime(), '+1 day')),
+			   (datetime(datetime(), '+2 days'));
+`).Error
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
