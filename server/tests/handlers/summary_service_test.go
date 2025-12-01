@@ -2,13 +2,14 @@ package tests
 
 import (
 	"context"
+	"os"
+	"testing"
+	"time"
+
 	"github.com/joho/godotenv"
 	"github.com/rangodisco/zelvy/config"
 	pb_sum "github.com/rangodisco/zelvy/gen/zelvy/summary"
 	"github.com/rangodisco/zelvy/server/tests/utils"
-	"os"
-	"testing"
-	"time"
 
 	"github.com/rangodisco/zelvy/server/config/database"
 	"github.com/rangodisco/zelvy/server/tests/factories"
@@ -61,4 +62,21 @@ func TestGetSummary(t *testing.T) {
 	}
 
 	assert.Greater(t, len(resp.Workouts), 0)
+}
+
+func TestGetHeatmap(t *testing.T) {
+	client := pb_sum.NewSummaryServiceClient(utils.Conn)
+
+	body := factories.CreateHeatmapQueryBody()
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	resp, err := client.GetSummaryHeatmap(ctx, body)
+	if err != nil {
+		t.Fatal(err, resp)
+	}
+
+	assert.Equal(t, len(resp.Items), 2)
+	assert.NotEqual(t, resp.Items[0].Id, "")
+	assert.Equal(t, resp.Items[1].Id, "")
 }
