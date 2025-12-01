@@ -134,7 +134,7 @@ func InitTestDatabase() error {
 
 	// Add calendar table needed for the heatmap
 	err = db.Exec(`
-		CREATE TABLE calendar
+		CREATE TABLE IF NOT EXISTS calendar
 		(
 			date_id           INTEGER PRIMARY KEY,
 			date_without_time DATETIME NOT NULL
