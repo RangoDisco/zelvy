@@ -10,10 +10,10 @@
 	if (item.success === true) {
 		color = item.id !== '' ? 'bg-secondary' : 'bg-secondary/50';
 	} else {
-		color = 'bg-red-500';
+		color = 'bg-error/50';
 	}
 
 </script>
 
 <a href="/daily?date={item.date}" aria-label="date's details"
-	 class="min-h-8 max-h-10 aspect-square bg-secondary rounded-md {color}"></a>
+	 class="min-h-8 max-h-10 aspect-square rounded-md {color}"></a>
