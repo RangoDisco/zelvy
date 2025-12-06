@@ -10,7 +10,7 @@
 
 </script>
 
-<article class="w-[48%] flex flex-col bg-base-200 rounded-lg p-4">
+<article class="w-[48%] md:w-[24%] flex flex-col bg-base-200 rounded-lg p-4">
     <div class="flex flex-row flex-wrap items-center gap-1">
         <p>{picto}</p>
         <p class="font-bold">{title}</p>
