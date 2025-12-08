@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package zelvy.workout;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/workout";
+
+message GetWorkoutsRequest {
+  optional string start_date = 1;
+  optional string end_date = 2;
+}

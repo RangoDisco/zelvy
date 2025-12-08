@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package zelvy.workout;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/workout";
+
+import "zelvy/workout/get_workouts_request.proto";
+import "zelvy/workout/get_workouts_response.proto";
+
+service WorkoutService {
+  rpc GetWorkouts(GetWorkoutsRequest) returns (GetWorkoutsResponse);
+}
