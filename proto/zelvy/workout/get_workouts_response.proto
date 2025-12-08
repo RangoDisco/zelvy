@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package zelvy.workout;
+option go_package = "github.com/rangodisco/zelvy/gen/zelvy/workout";
+
+import "zelvy/workout/workout_view_model.proto";
+
+message GetWorkoutsResponse {
+  repeated WorkoutViewModel workouts = 1;
+}
