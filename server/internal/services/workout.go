@@ -1,6 +1,8 @@
 package services
 
 import (
+	"errors"
+	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -50,11 +52,25 @@ func calculateWorkoutDuration(w *[]models.Workout, target string) float64 {
 	return duration
 }
 
-// fetchWorkoutsByDateRange fetches all the workouts in the database between two dates
-func fetchWorkoutsByDateRange(startDate time.Time, endDate time.Time) ([]models.Workout, error) {
+// FetchWorkoutsByDateRange fetches all the workouts in the database between two dates
+func FetchWorkoutsByDateRange(startDate *string, endDate *string) ([]models.Workout, error) {
+	sd, err := GetTimeFromString(startDate)
+	if err != nil {
+		return []models.Workout{}, errors.New(fmt.Sprintf("could not parse date: %s", err))
+	}
+
+	ed, err := GetTimeFromString(endDate)
+	if err != nil {
+		return []models.Workout{}, errors.New(fmt.Sprintf("could not parse date: %s", err))
+	}
+
 	var workouts []models.Workout
-	err := database.GetDB().Raw("SELECT * FROM workouts w INNER JOIN summaries s ON w.summary_id = s.id WHERE s.date >= ? AND s.date < ?", startDate, endDate).Scan(&workouts).Error
-	return workouts, err
+	err = database.GetDB().Raw("SELECT * FROM workouts w INNER JOIN summaries s ON w.summary_id = s.id WHERE s.date >= ? AND s.date < ?", sd, ed).Scan(&workouts).Error
+	if err != nil {
+		return nil, errors.New(fmt.Sprintf("could not fetch workouts"))
+	}
+
+	return workouts, nil
 }
 
 func getWorkoutPicto(activityType string) string {
@@ -84,24 +100,4 @@ func getWorkoutName(w *pb_wrk.WorkoutInputModel) string {
 	default:
 		return "Random silly workout"
 	}
-}
-
-func fetchChartWorkouts() ([]models.Workout, []models.Workout, error) {
-	// Get dates of the current week
-	sow := time.Now().Add(-168 * time.Hour)
-	eow := time.Now()
-
-	// Get the number of workouts during the last 7 days
-	thisWeek, err := fetchWorkoutsByDateRange(sow, eow)
-	if err != nil {
-		return []models.Workout{}, []models.Workout{}, err
-	}
-
-	// Get the number of workouts between 14 days ago and 7 days ago
-	lastWeek, err := fetchWorkoutsByDateRange(sow.Add(-168*time.Hour), sow)
-	if err != nil {
-		return []models.Workout{}, []models.Workout{}, err
-	}
-
-	return thisWeek, lastWeek, nil
 }
