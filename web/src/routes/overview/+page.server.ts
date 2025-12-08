@@ -5,11 +5,14 @@ import setDefaultDateRangeParams from "$lib/utils/setDefaultDateRangeParams";
 import {isDate} from "node:util/types";
 import {getSummaryHeatmap} from "$lib/server/grpc/summary";
 import {getWinners} from "$lib/server/grpc/user";
+import {getWorkouts} from "$lib/server/grpc/workout";
+import type {GetWorkoutsResponse} from "$lib/gen/zelvy/workout/get_workouts_response";
 
 
 export const load: PageServerLoad = async ({url}): Promise<{
     winRes: GetWinnersResponse,
-    hmRes: GetSummaryHeatmapResponse
+    hmRes: GetSummaryHeatmapResponse,
+    wkrRes: GetWorkoutsResponse
 } | null> => {
     const eDParam = url.searchParams.get("end_date");
     const sDParam = url.searchParams.get("start_date");
@@ -32,9 +35,11 @@ export const load: PageServerLoad = async ({url}): Promise<{
 
     const winnersResponse = await getWinners(formattedSD, formattedED);
     const heatmapResponse = await getSummaryHeatmap(formattedSD, formattedED);
+    const workoutsResponse = await getWorkouts(formattedSD, formattedED);
 
     return {
         winRes: winnersResponse,
-        hmRes: heatmapResponse
+        hmRes: heatmapResponse,
+        wkrRes: workoutsResponse
     };
 };

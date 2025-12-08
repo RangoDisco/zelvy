@@ -20,5 +20,4 @@ export const getSummaryHeatmap = async (formattedSD: string, formattedED: string
 
 function getClient() {
     return new SummaryServiceClient("localhost:50051", credentials.createInsecure());
-
 }
