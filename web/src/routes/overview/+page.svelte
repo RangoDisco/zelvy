@@ -6,12 +6,15 @@
     import OverviewStatCard from "$lib/ui/overview/OverviewStatCard.svelte";
     import {formatSuccessRate, formatWinner, formatLongestStreak} from "$lib/utils/formatOverviewStats";
     import {getNewPeriodTitle, handlePeriodChange} from "$lib/utils/periodChanger";
+    import {parseWorkouts} from "$lib/utils/chartFormatter";
+    import Radar from "$lib/ui/charts/Radar.svelte";
 
     const {data}: PageProps = $props();
     let rowsNumber = $state(data.hmRes.items.length > 50 ? 7 : 4);
     let rowString = $state(rowsNumber === 7 ? "grid-rows-7" : "grid-rows-4");
     let gridTemplate = $state(`${rowString} grid-cols-${Math.ceil(data.hmRes.items.length / rowsNumber)}`);
     let period = $derived(getNewPeriodTitle(data.hmRes.items));
+    const workoutRadarData = $derived(parseWorkouts(data.wkrRes.workouts));
 </script>
 
 <svelte:head>
@@ -50,13 +53,19 @@
             <OverviewStatCard picto="O" title="KanaPei" subtitle="Most wins" value="35"/>
         </section>
     </section>
-    <section class="flex flex-col gap-2 md:w-1/2 p-1">
-        <h3 class="text-lg">Heatmap</h3>
-        <section
-                class="bg-base-200 grid grid-flow-col {gridTemplate} gap-1 rounded-lg overflow-auto p-4">
-            {#each data.hmRes.items as item (item.date)}
-                <HeatmapItem item={item}/>
-            {/each}
+    <section class="flex flex-row flex-wrap justify-center md:justify-between gap-6 md:gap-2">
+        <section class="flex flex-col gap-2 md:w-[48%] p-1">
+            <h3 class="text-lg">Heatmap</h3>
+            <section
+                    class="bg-base-200 grid grid-flow-col {gridTemplate} gap-1 rounded-lg overflow-auto p-4">
+                {#each data.hmRes.items as item (item.date)}
+                    <HeatmapItem item={item}/>
+                {/each}
+            </section>
+        </section>
+        <section class="flex flex-col gap-2 md:w-[48%] p-1">
+            <h3 class="text-lg">Workouts</h3>
+            <Radar data={workoutRadarData}/>
         </section>
     </section>
 </section>
