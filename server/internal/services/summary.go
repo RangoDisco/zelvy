@@ -24,7 +24,7 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 
 	// In case a date is provided, we want to fetch the summary for that date
 	if date != "" {
-		sod, err := getTimeFromString(date)
+		sod, err := GetTimeFromString(&date)
 		if err != nil {
 			return models.Summary{}, err
 		}
@@ -44,12 +44,12 @@ func FetchSummaryByDate(date string) (models.Summary, error) {
 
 // FindHeatmapResults fetches each day from a calendar between two dates and returns the summary for each
 func FindHeatmapResults(startDate, endDate string) ([]*pb_sum.HeatmapItemViewModel, error) {
-	parsedStartDate, err := getTimeFromString(startDate)
+	parsedStartDate, err := GetTimeFromString(&startDate)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("could not parse start date: %s", err))
 	}
 
-	parsedEndDate, err := getTimeFromString(endDate)
+	parsedEndDate, err := GetTimeFromString(&endDate)
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("could not parse end date: %s", err))
 	}
@@ -136,16 +136,6 @@ func convertMsToHour(ms float64) string {
 	hours := int(duration.Hours())
 	minutes := int(duration.Minutes()) % 60
 	return strconv.Itoa(hours) + "h" + strconv.Itoa(minutes) + "m"
-}
-
-// getTimeFromString converts a string date into a time.Time and check that if it is valid
-func getTimeFromString(stringDate string) (time.Time, error) {
-	parsedDate, err := time.Parse(time.DateOnly, stringDate)
-	if err != nil {
-		return time.Time{}, errors.New(fmt.Sprintf("could not parse date: %s", err))
-	}
-
-	return parsedDate, nil
 }
 
 // getDateFromString converts a string date into a time.Time and check that if it is valid
