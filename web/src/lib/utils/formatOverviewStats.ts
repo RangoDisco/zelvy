@@ -2,7 +2,10 @@ import type {WinnerViewModel} from "$lib/gen/zelvy/user/winner_view_model";
 import type {HeatmapItemViewModel} from "$lib/gen/zelvy/summary/heatmap_item_view_model";
 
 export const formatWinner = (winners: WinnerViewModel[]): OverviewStat => {
-    const winner = winners[0];
+    const winner = winners[0] ?? {
+        username: "No data",
+        value: 0
+    };
     return {
         picto: "👑",
         title: winner.username,
