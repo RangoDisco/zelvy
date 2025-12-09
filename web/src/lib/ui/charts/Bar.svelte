@@ -1,6 +1,6 @@
 <script lang="ts">
-    import {onMount} from "svelte";
     import Chart from "chart.js/auto";
+    import {afterNavigate} from "$app/navigation";
 
     type Props = {
         data: {
@@ -9,16 +9,21 @@
         }
     }
 
-    let {data}: Props = $props();
+    const {data}: Props = $props();
     let canvas: HTMLCanvasElement;
+    let chart: Chart<"bar">;
 
-    onMount(() => {
+    afterNavigate(() => {
         if (!canvas) {
             return;
         }
 
-        return new Chart(canvas, {
-            type: "line",
+        if (chart) {
+            chart.destroy();
+        }
+
+        chart = new Chart(canvas, {
+            type: "bar",
             data: {
                 labels: data.labels,
                 datasets: [
@@ -32,9 +37,6 @@
                 ]
             },
             options: {
-                layout: {
-                    padding: 0,
-                },
                 plugins: {
                     legend: {
                         display: false,
