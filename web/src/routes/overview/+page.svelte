@@ -7,7 +7,7 @@
     import {formatSuccessRate, formatWinner, formatLongestStreak} from "$lib/utils/formatOverviewStats";
     import {getNewPeriodTitle, handlePeriodChange} from "$lib/utils/periodChanger";
     import {parseWorkouts} from "$lib/utils/chartFormatter";
-    import Radar from "$lib/ui/charts/Radar.svelte";
+    import Bar from "$lib/ui/charts/Bar.svelte";
 
     const {data}: PageProps = $props();
     let rowsNumber = $state(data.hmRes.items.length > 50 ? 7 : 4);
@@ -24,7 +24,7 @@
 <section class="flex flex-col gap-6">
     <ViewSelector/>
     <section class="flex flex-row justify-between items-center">
-        <h2 class="text-xl">{period}</h2>
+        <h2 class="text-xl md:text-3xl">{period}</h2>
         <div class="flex flex-row gap-2">
             <button class="btn btn-circle" aria-label="previous period"
                     onclick={() => {handlePeriodChange(page.url, "previous")}}>
@@ -45,7 +45,7 @@
         </div>
     </section>
     <section class="flex flex-col gap-2">
-        <h3 class="text-lg">Stats</h3>
+        <h3 class="text-lg md:text-2xl">Stats</h3>
         <section class="flex flex-row justify-center md:justify-between flex-wrap gap-3">
             <OverviewStatCard {...formatWinner(data.winRes.winners)}/>
             <OverviewStatCard {...formatSuccessRate(data.hmRes.items)}/>
@@ -54,18 +54,18 @@
         </section>
     </section>
     <section class="flex flex-row flex-wrap justify-center md:justify-between gap-6 md:gap-2">
-        <section class="flex flex-col gap-2 md:w-[48%] p-1">
-            <h3 class="text-lg">Heatmap</h3>
+        <section class="w-full flex flex-col gap-2 md:w-[49%]">
+            <h3 class="text-lg md:text-2xl">Heatmap</h3>
             <section
-                    class="bg-base-200 grid grid-flow-col {gridTemplate} gap-1 rounded-lg overflow-auto p-4">
+                    class="bg-base-200 grid grid-flow-col {gridTemplate} gap-1 rounded-lg overflow-auto p-6">
                 {#each data.hmRes.items as item (item.date)}
                     <HeatmapItem item={item}/>
                 {/each}
             </section>
         </section>
-        <section class="flex flex-col gap-2 md:w-[48%] p-1">
-            <h3 class="text-lg">Workouts</h3>
-            <Radar data={workoutRadarData}/>
+        <section class="flex flex-col gap-2 md:w-[49%] p-1">
+            <h3 class="text-lg md:text-2xl">Workouts</h3>
+            <Bar data={workoutRadarData}/>
         </section>
     </section>
 </section>
