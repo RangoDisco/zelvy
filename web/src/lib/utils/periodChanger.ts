@@ -11,13 +11,13 @@ export const handlePeriodChange = (url: URL, direction: "previous" | "next") => 
 
     let endDate = new Date(rawED);
 
-    endDate.setMonth(direction === "next" ? endDate.getMonth() + 1 : endDate.getMonth() - 1);
+    endDate.setMonth(direction === "next" ? endDate.getMonth() + 1 : endDate.getMonth() - 3);
 
     if (new Date() < endDate) {
         endDate = new Date();
     }
 
-    const startDate = new Date(endDate.getFullYear(), endDate.getMonth() - 1);
+    const startDate = new Date(endDate.getFullYear(), endDate.getMonth() - 3);
 
     url.searchParams.set("end_date", endDate.toISOString().slice(0, 10));
     url.searchParams.set("start_date", startDate.toISOString().slice(0, 10));
