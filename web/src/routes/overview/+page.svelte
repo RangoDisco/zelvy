@@ -11,10 +11,11 @@
     import {ArrowLeft, ArrowRight} from "@lucide/svelte";
 
     const {data}: PageProps = $props();
-    let rowsNumber = $state(data.hmRes.items.length > 50 ? 7 : 4);
-    let rowString = $state(rowsNumber === 7 ? "grid-rows-7" : "grid-rows-4");
-    let gridTemplate = $state(`${rowString} grid-cols-${Math.ceil(data.hmRes.items.length / rowsNumber)}`);
-    let period = $derived(getNewPeriodTitle(data.hmRes.items));
+    const rowsNumber = $state(data.hmRes.items.length > 50 ? 7 : 4);
+    const rowString = $state(rowsNumber === 7 ? "grid-rows-7" : "grid-rows-4");
+    const gridTemplate = $state(`${rowString} grid-cols-${Math.ceil(data.hmRes.items.length / rowsNumber)}`);
+
+    const period = $derived(getNewPeriodTitle(data.hmRes.items));
     const workoutRadarData = $derived(parseWorkouts(data.wkrRes.workouts));
 </script>
 
@@ -22,7 +23,7 @@
     <title>Zelvy dashboard - Overview</title>
     <meta name="description" content="Stats overview"/>
 </svelte:head>
-<section class="flex flex-col gap-6">
+<div class="flex flex-col gap-6">
     <ViewSelector/>
     <section class="flex flex-row justify-between items-center">
         <h2 class="text-xl md:text-3xl">{period}</h2>
@@ -39,26 +40,26 @@
     </section>
     <section class="flex flex-col gap-2">
         <h3 class="text-lg md:text-2xl">Stats</h3>
-        <section class="flex flex-row justify-center md:justify-between flex-wrap gap-3">
+        <div class="flex flex-row justify-center md:justify-start lg:justify-between flex-wrap gap-3">
             <OverviewStatCard {...formatWinner(data.winRes.winners)}/>
             <OverviewStatCard {...formatSuccessRate(data.hmRes.items)}/>
             <OverviewStatCard {...formatLongestStreak(data.hmRes.items)}/>
             <OverviewStatCard picto="O" title="KanaPei" subtitle="Most wins" value="35"/>
-        </section>
+        </div>
     </section>
-    <section class="flex flex-row flex-wrap md:items-start justify-center md:justify-between gap-6 md:gap-2">
+    <div class="flex flex-row flex-wrap md:items-start justify-center md:justify-between gap-6 md:gap-2">
         <section class="w-full flex flex-col gap-2 md:w-[49%]">
             <h3 class="text-lg md:text-2xl">Heatmap</h3>
-            <section
+            <div
                     class="bg-base-200 grid grid-flow-col {gridTemplate} gap-1 rounded-lg overflow-auto p-6">
                 {#each data.hmRes.items as item (item.date)}
                     <HeatmapItem item={item}/>
                 {/each}
-            </section>
+            </div>
         </section>
         <section class="flex flex-col gap-2 w-full md:w-[49%] p-1">
             <h3 class="text-lg md:text-2xl">Workouts</h3>
             <Bar data={workoutRadarData}/>
         </section>
-    </section>
-</section>
+    </div>
+</div>
