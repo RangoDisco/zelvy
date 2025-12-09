@@ -40,11 +40,10 @@
     </section>
     <section class="flex flex-col gap-2">
         <h3 class="text-lg md:text-2xl">Stats</h3>
-        <div class="flex flex-row justify-center md:justify-start lg:justify-between flex-wrap gap-3">
+        <div class="flex flex-row justify-start lg:justify-between flex-wrap gap-3">
             <OverviewStatCard {...formatWinner(data.winRes.winners)}/>
             <OverviewStatCard {...formatSuccessRate(data.hmRes.items)}/>
             <OverviewStatCard {...formatLongestStreak(data.hmRes.items)}/>
-            <OverviewStatCard picto="O" title="KanaPei" subtitle="Most wins" value="35"/>
         </div>
     </section>
     <div class="flex flex-row flex-wrap md:items-start justify-center md:justify-between gap-6 md:gap-2">
@@ -57,7 +56,7 @@
                 {/each}
             </div>
         </section>
-        <section class="flex flex-col gap-2 w-full md:w-[49%] p-1">
+        <section class="flex flex-col gap-2 w-full md:w-[49%]">
             <h3 class="text-lg md:text-2xl">Workouts</h3>
             <Bar data={workoutRadarData}/>
         </section>
