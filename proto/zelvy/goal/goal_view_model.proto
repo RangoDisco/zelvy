@@ -13,4 +13,5 @@ message GoalViewModel {
   bool isOff = 7;
   int64 progression = 8;
   string picto = 9;
+  string type = 10;
 }

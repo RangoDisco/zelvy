@@ -1,10 +1,11 @@
 package services
 
 import (
-	"github.com/rangodisco/zelvy/gen/zelvy/metric"
-	"github.com/rangodisco/zelvy/server/internal/enums"
 	"strconv"
 	"time"
+
+	"github.com/rangodisco/zelvy/gen/zelvy/metric"
+	"github.com/rangodisco/zelvy/server/internal/enums"
 
 	pb_goa "github.com/rangodisco/zelvy/gen/zelvy/goal"
 	"github.com/rangodisco/zelvy/server/config/database"
@@ -60,6 +61,7 @@ func convertToGoalViewModel(m *models.Metric, g *models.Goal) (pb_goa.GoalViewMo
 		IsOff:            m.Disabled,
 		Progression:      getProgression(m.Value, g.Value),
 		Picto:            getMetricPicto(g.Type),
+		Type:             g.Type,
 	}, nil
 }
 
