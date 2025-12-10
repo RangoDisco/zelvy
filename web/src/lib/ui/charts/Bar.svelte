@@ -47,6 +47,6 @@
     });
 </script>
 
-<div class="flex items-center justify-center bg-base-200 rounded-lg p-6">
+<div class="flex items-center justify-center">
     <canvas bind:this={canvas}></canvas>
 </div>
