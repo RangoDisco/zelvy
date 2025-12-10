@@ -11,12 +11,12 @@
 </script>
 
 <article data-testid="summaryDetailsTemplateMetric"
-         class="carousel-item bg-base-200 flex-col px-4 justify-evenly rounded-lg aspect-square lg:aspect-auto lg:rounded-lg w-[43%]
+         class="carousel-item bg-base-200 flex-col px-4 justify-evenly rounded-lg aspect-square lg:aspect-auto lg:rounded-lg w-[33%]
            md:rounded-none md:h-45 md:w-1/5">
     <div class="flex flex-row justify-between">
         <div class="flex flex-col gap-2">
-            <h2 data-testid="summaryDetailsTemplateMetricValue" class="text-3xl font-semibold">{goal.displayValue}</h2>
-            <p data-testid="summaryDetailsTemplateMetricName" class="text-base text-base-content/60 md:text-lg">
+            <h2 data-testid="summaryDetailsTemplateMetricValue" class="text-2xl font-semibold">{goal.displayValue}</h2>
+            <p data-testid="summaryDetailsTemplateMetricName" class="text-base text-base-content/60">
                 {goal.name}
             </p>
         </div>
