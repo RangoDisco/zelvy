@@ -45,12 +45,13 @@
             </div>
         </div>
         {#if data.summary}
-            <section class="carousel w-full bg-base-900 gap-3 md:gap-0 md:rounded-lg">
-                {#each data.summary.goals as goal (goal.name)}
-                    <GoalCard goal={goal}/>
+            <section class="carousel w-full gap-3 bg-base-100">
+                {#each data.summary.goals as goal, i (goal.name)}
+                    <GoalCard goal={goal} index={i}/>
                 {/each}
             </section>
-            <section class="w-full p-2 bg-base-200 rounded-lg md:w-1/3">
+            <section class="w-full flex flex-col p-4 gap-4 bg-base-200 rounded-lg md:w-1/3">
+                <h1 class="text-2xl">Activity timeline</h1>
                 <ul class="timeline timeline-snap-icon timeline-vertical">
                     {#each data.summary.workouts as workout, i (workout.id)}
                         <WorkoutListItem workout={workout} index={i}/>

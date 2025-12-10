@@ -32,6 +32,6 @@
 </script>
 
 
-<div class="hidden lg:flex w-14 h-14 justify-center items-center rounded-lg {backgroundColor}">
+<div class="hidden lg:flex w-12 h-12 justify-center items-center rounded-lg {backgroundColor}">
     <IconComponent class={color}/>
 </div>
