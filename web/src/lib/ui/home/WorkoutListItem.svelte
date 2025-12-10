@@ -14,7 +14,7 @@
     const time = `${date.getHours()}h${date.getMinutes()}`;
 </script>
 
-<li data-testid="workoutsTemplateWorkout" class="gap-2">
+<li data-testid="workoutsTemplateWorkout" class="gap-2 justify-center items-center w-5/6">
     {#if index !== 0}
         <hr class="bg-primary/50"/>
     {/if}
