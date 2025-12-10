@@ -19,6 +19,7 @@ export interface GoalViewModel {
   isOff: boolean;
   progression: number;
   picto: string;
+  type: string;
 }
 
 function createBaseGoalViewModel(): GoalViewModel {
@@ -32,6 +33,7 @@ function createBaseGoalViewModel(): GoalViewModel {
     isOff: false,
     progression: 0,
     picto: "",
+    type: "",
   };
 }
 
@@ -63,6 +65,9 @@ export const GoalViewModel: MessageFns<GoalViewModel> = {
     }
     if (message.picto !== "") {
       writer.uint32(74).string(message.picto);
+    }
+    if (message.type !== "") {
+      writer.uint32(82).string(message.type);
     }
     return writer;
   },
@@ -146,6 +151,14 @@ export const GoalViewModel: MessageFns<GoalViewModel> = {
           message.picto = reader.string();
           continue;
         }
+        case 10: {
+          if (tag !== 82) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -166,6 +179,7 @@ export const GoalViewModel: MessageFns<GoalViewModel> = {
       isOff: isSet(object.isOff) ? globalThis.Boolean(object.isOff) : false,
       progression: isSet(object.progression) ? globalThis.Number(object.progression) : 0,
       picto: isSet(object.picto) ? globalThis.String(object.picto) : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
     };
   },
 
@@ -198,6 +212,9 @@ export const GoalViewModel: MessageFns<GoalViewModel> = {
     if (message.picto !== "") {
       obj.picto = message.picto;
     }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
     return obj;
   },
 
@@ -215,6 +232,7 @@ export const GoalViewModel: MessageFns<GoalViewModel> = {
     message.isOff = object.isOff ?? false;
     message.progression = object.progression ?? 0;
     message.picto = object.picto ?? "";
+    message.type = object.type ?? "";
     return message;
   },
 };

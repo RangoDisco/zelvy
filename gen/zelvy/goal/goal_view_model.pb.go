@@ -32,6 +32,7 @@ type GoalViewModel struct {
 	IsOff            bool                   `protobuf:"varint,7,opt,name=isOff,proto3" json:"isOff,omitempty"`
 	Progression      int64                  `protobuf:"varint,8,opt,name=progression,proto3" json:"progression,omitempty"`
 	Picto            string                 `protobuf:"bytes,9,opt,name=picto,proto3" json:"picto,omitempty"`
+	Type             string                 `protobuf:"bytes,10,opt,name=type,proto3" json:"type,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -129,12 +130,19 @@ func (x *GoalViewModel) GetPicto() string {
 	return ""
 }
 
+func (x *GoalViewModel) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
 var File_zelvy_goal_goal_view_model_proto protoreflect.FileDescriptor
 
 const file_zelvy_goal_goal_view_model_proto_rawDesc = "" +
 	"\n" +
 	" zelvy/goal/goal_view_model.proto\x12\n" +
-	"zelvy.goal\"\x9b\x02\n" +
+	"zelvy.goal\"\xaf\x02\n" +
 	"\rGoalViewModel\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\x01R\x05value\x12#\n" +
@@ -144,7 +152,9 @@ const file_zelvy_goal_goal_view_model_proto_rawDesc = "" +
 	"\fisSuccessful\x18\x06 \x01(\bR\fisSuccessful\x12\x14\n" +
 	"\x05isOff\x18\a \x01(\bR\x05isOff\x12 \n" +
 	"\vprogression\x18\b \x01(\x03R\vprogression\x12\x14\n" +
-	"\x05picto\x18\t \x01(\tR\x05pictoB,Z*github.com/rangodisco/zelvy/gen/zelvy/goalb\x06proto3"
+	"\x05picto\x18\t \x01(\tR\x05picto\x12\x12\n" +
+	"\x04type\x18\n" +
+	" \x01(\tR\x04typeB,Z*github.com/rangodisco/zelvy/gen/zelvy/goalb\x06proto3"
 
 var (
 	file_zelvy_goal_goal_view_model_proto_rawDescOnce sync.Once
