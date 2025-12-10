@@ -45,25 +45,21 @@
                 </button>
             </div>
         </section>
-        <section class="flex flex-col gap-2">
-            <h3 class="text-lg md:text-2xl">Stats</h3>
-            <div class="flex flex-row justify-start lg:justify-between flex-wrap gap-3">
-                <OverviewStatCard {...formatWinner(data.winRes.winners)}/>
-                <OverviewStatCard {...formatSuccessRate(data.hmRes.items)}/>
-                <OverviewStatCard {...formatLongestStreak(data.hmRes.items)}/>
-            </div>
+        <section class="flex flex-row justify-start lg:justify-between flex-wrap gap-3">
+            <OverviewStatCard {...formatWinner(data.winRes.winners)}/>
+            <OverviewStatCard {...formatSuccessRate(data.hmRes.items)}/>
+            <OverviewStatCard {...formatLongestStreak(data.hmRes.items)}/>
         </section>
         <div class="flex flex-row flex-wrap md:items-start justify-center md:justify-between gap-6 md:gap-2">
-            <section class="w-full flex flex-col gap-2 md:w-[49%]">
+            <section class="w-full flex flex-col gap-4 md:w-[49%] bg-base-200 rounded-lg p-6">
                 <h3 class="text-lg md:text-2xl">Heatmap</h3>
-                <div
-                        class="bg-base-200 grid grid-flow-col {gridTemplate} gap-1 rounded-lg overflow-auto p-6">
+                <div class="grid grid-flow-col {gridTemplate} gap-1 overflow-auto">
                     {#each data.hmRes.items as item (item.date)}
                         <HeatmapItem item={item}/>
                     {/each}
                 </div>
             </section>
-            <section class="flex flex-col gap-2 w-full md:w-[49%]">
+            <section class="flex flex-col gap-2 w-full md:w-[49%] bg-base-200 rounded-lg p-6">
                 <h3 class="text-lg md:text-2xl">Workouts</h3>
                 <Bar data={workoutRadarData}/>
             </section>
