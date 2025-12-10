@@ -24,7 +24,6 @@
     <meta name="description" content="Stats overview"/>
 </svelte:head>
 <div class="flex flex-col gap-6">
-    <ViewSelector/>
     <section class="flex flex-row justify-between items-center">
         <h2 class="text-xl md:text-3xl">{period}</h2>
         <div class="flex flex-row gap-2">
