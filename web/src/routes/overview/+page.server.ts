@@ -1,7 +1,7 @@
 import type {PageServerLoad} from "./$types";
 import type {GetWinnersResponse} from "$lib/gen/zelvy/user/get_winners_response";
 import type {GetSummaryHeatmapResponse} from "$lib/gen/zelvy/summary/get_summary_heatmap_response";
-import setDefaultDateRangeParams from "$lib/utils/setDefaultDateRangeParams";
+import setDefaultDateRangeParams from "$lib/utils/setDefaultDateParams";
 import {isDate} from "node:util/types";
 import {getSummaryHeatmap} from "$lib/server/grpc/summary";
 import {getWinners} from "$lib/server/grpc/user";
@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({url}): Promise<{
     const sDParam = url.searchParams.get("start_date");
 
     if (eDParam === null || sDParam === null) {
-        setDefaultDateRangeParams(url);
+        setDefaultDateRangeParams(url, true);
         return null;
     }
 
@@ -26,7 +26,7 @@ export const load: PageServerLoad = async ({url}): Promise<{
     const startDate = new Date(sDParam);
 
     if (startDate > endDate || !isDate(endDate) || !isDate(startDate)) {
-        setDefaultDateRangeParams(url);
+        setDefaultDateRangeParams(url, true);
         return null;
     }
 
