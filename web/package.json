@@ -19,6 +19,7 @@
     "@eslint/compat": "^1.2.5",
     "@eslint/js": "^9.22.0",
     "@sveltejs/adapter-auto": "^6.0.0",
+    "@sveltejs/adapter-node": "^5.4.0",
     "@sveltejs/kit": "^2.43.1",
     "@sveltejs/vite-plugin-svelte": "^6.0.0",
     "@tailwindcss/vite": "^4.1.13",
@@ -51,6 +52,7 @@
     "@grpc/grpc-js": "^1.14.0",
     "@lucide/svelte": "^0.544.0",
     "chart.js": "^4.5.1",
-    "daisyui": "^5.1.14"
+    "daisyui": "^5.1.14",
+    "dotenv": "^17.2.3"
   }
 }
