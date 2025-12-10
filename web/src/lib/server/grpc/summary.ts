@@ -3,6 +3,8 @@ import {credentials} from "@grpc/grpc-js";
 import {GetSummaryHeatmapRequest} from "$lib/gen/zelvy/summary/get_summary_heatmap_request";
 import type {GetSummaryHeatmapResponse} from "$lib/gen/zelvy/summary/get_summary_heatmap_response";
 import {createMetadataWithAuth} from "$lib/server/grpc/metadata";
+import {GetSummaryRequest} from "$lib/gen/zelvy/summary/get_summary_request";
+import type {GetSummaryResponse} from "$lib/gen/zelvy/summary/get_summary_response";
 
 export const getSummaryHeatmap = async (formattedSD: string, formattedED: string) => {
     const client = getClient();
@@ -16,6 +18,18 @@ export const getSummaryHeatmap = async (formattedSD: string, formattedED: string
             else resolve(response);
         });
     }) as GetSummaryHeatmapResponse;
+};
+
+export const getSummary = async (date: string) => {
+    const client = getClient();
+    const req = GetSummaryRequest.create();
+    req.day = date;
+    return await new Promise((resolve, reject) => {
+        client.getSummary(req, createMetadataWithAuth(), (err, response) => {
+            if (err) reject(err);
+            else resolve(response);
+        });
+    }) as GetSummaryResponse;
 };
 
 function getClient() {

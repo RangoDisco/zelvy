@@ -1,24 +1,35 @@
 import type {PageServerLoad} from "./$types";
-import {credentials} from "@grpc/grpc-js";
-import {SummaryServiceClient} from "$lib/gen/zelvy/summary/summary_service";
-import {GetSummaryRequest} from "$lib/gen/zelvy/summary/get_summary_request";
 import type {GetSummaryResponse} from "$lib/gen/zelvy/summary/get_summary_response";
-import {createMetadataWithAuth} from "$lib/server/grpc/metadata";
+import setDefaultDateRangeParams from "$lib/utils/setDefaultDateParams";
+import {isDate} from "node:util/types";
+import {getSummary} from "$lib/server/grpc/summary";
 
 export const csr = false;
 
-export const load: PageServerLoad = async ({params}): Promise<{ summary: GetSummaryResponse }> => {
+export const load: PageServerLoad = async ({url}): Promise<{ summary: GetSummaryResponse | null } | null> => {
+    const dateParam = url.searchParams.get("date");
 
-    const client = new SummaryServiceClient("localhost:50051", credentials.createInsecure());
-    const req = GetSummaryRequest.create();
-    const res: GetSummaryResponse = await new Promise((resolve, reject) => {
-        client.getSummary(req, createMetadataWithAuth(), (err, response) => {
-            if (err) reject(err);
-            else resolve(response);
-        });
-    });
+    if (dateParam === null) {
+        setDefaultDateRangeParams(url, false);
+        return null;
+    }
 
-    return {
-        summary: res
-    };
+    const date = new Date(dateParam);
+    if (!isDate(date) || new Date(date) > new Date()) {
+        setDefaultDateRangeParams(url, false);
+        return null;
+    }
+
+    const parsedDate = date.toISOString().slice(0, 10);
+    try {
+        const res = await getSummary(parsedDate);
+
+        return {
+            summary: res
+        };
+    } catch (error) {
+        return {
+            summary: null
+        };
+    }
 };
