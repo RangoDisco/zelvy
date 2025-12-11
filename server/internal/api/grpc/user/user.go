@@ -27,7 +27,7 @@ func (s *server) AddUser(_ context.Context, req *pb_usr.AddUserRequest) (*pb_usr
 }
 
 func (s *server) GetWinners(_ context.Context, req *pb_usr.GetWinnersRequest) (*pb_usr.GetWinnersResponse, error) {
-	winners, err := services.GetWinnersBetweenDates(req.StartDate, req.EndDate, req.Limit)
+	winners, err := services.GetWinnersBetweenDates(req.StartDate, req.EndDate, req.Limit, req.Filter)
 	if err != nil {
 		return nil, errors.New("unable to get winners")
 	}

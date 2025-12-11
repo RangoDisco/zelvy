@@ -34,11 +34,34 @@ func UpsertUser(body *pb_usr.AddUserRequest) error {
 	return nil
 }
 
-func GetWinnersBetweenDates(sod, eod string, limit int64) ([]*pb_usr.WinnerViewModel, error) {
+func GetWinnersBetweenDates(sod, eod string, limit int64, filter *pb_usr.WinnerFilterType) ([]*pb_usr.WinnerViewModel, error) {
 	var winners []*pb_usr.WinnerViewModel
-	err := database.GetDB().Raw(""+
-		"SELECT u.username, u.picture, count(u.id) as wins FROM summaries s INNER JOIN users u ON s.winner_id = u.id WHERE s.date >= ? AND s.date <= ? AND s.deleted_at IS null GROUP BY u.username, u.picture ORDER BY wins DESC LIMIT ?",
-		sod, eod, limit).Scan(&winners).Error
+	sqlFilter := ""
+
+	if filter != nil {
+		switch filter.String() {
+		case pb_usr.WinnerFilterType_RELEVENT.String():
+			sqlFilter = "success IS false"
+		case pb_usr.WinnerFilterType_IRRELEVENT.String():
+			sqlFilter = "success IS true"
+		}
+	}
+
+	query := database.GetDB().Table("summaries").
+		Select("users.username, picture, count(users.id) as wins").
+		Joins("INNER JOIN users ON summaries.winner_id = users.id").
+		Where("date >= ? AND date <= ?", sod, eod).
+		Where("summaries.deleted_at IS null")
+	if sqlFilter != "" {
+		query.Where(sqlFilter)
+	}
+	err := query.Group("users.username, users.picture").
+		Order("wins desc").
+		Limit(int(limit)).
+		Find(&winners).Error
+
+	//err := database.GetDB().Raw("SELECT u.username, u.picture, count(u.id) as wins FROM summaries s INNER JOIN users u ON s.winner_id = u.id WHERE s.date >= ? AND s.date <= ? AND s.deleted_at IS null AND s.success IS ? GROUP BY u.username, u.picture ORDER BY wins DESC LIMIT ?",
+	//	sod, eod, sqlFilter, limit).Scan(&winners).Error
 
 	if err != nil {
 		return nil, err
