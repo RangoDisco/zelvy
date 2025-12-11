@@ -3,8 +3,15 @@ syntax = "proto3";
 package zelvy.user;
 option go_package = "github.com/rangodisco/zelvy/gen/zelvy/user";
 
+enum WinnerFilterType {
+  UNSPECIFIED = 0;
+  RELEVENT = 1;
+  IRRELEVENT = 2;
+}
+
 message GetWinnersRequest {
   string start_date = 1;
   string end_date = 2;
   int64 limit = 3;
+  optional  WinnerFilterType filter = 4;
 }

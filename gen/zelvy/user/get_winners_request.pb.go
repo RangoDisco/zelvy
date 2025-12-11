@@ -21,11 +21,61 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type WinnerFilterType int32
+
+const (
+	WinnerFilterType_UNSPECIFIED WinnerFilterType = 0
+	WinnerFilterType_RELEVENT    WinnerFilterType = 1
+	WinnerFilterType_IRRELEVENT  WinnerFilterType = 2
+)
+
+// Enum value maps for WinnerFilterType.
+var (
+	WinnerFilterType_name = map[int32]string{
+		0: "UNSPECIFIED",
+		1: "RELEVENT",
+		2: "IRRELEVENT",
+	}
+	WinnerFilterType_value = map[string]int32{
+		"UNSPECIFIED": 0,
+		"RELEVENT":    1,
+		"IRRELEVENT":  2,
+	}
+)
+
+func (x WinnerFilterType) Enum() *WinnerFilterType {
+	p := new(WinnerFilterType)
+	*p = x
+	return p
+}
+
+func (x WinnerFilterType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (WinnerFilterType) Descriptor() protoreflect.EnumDescriptor {
+	return file_zelvy_user_get_winners_request_proto_enumTypes[0].Descriptor()
+}
+
+func (WinnerFilterType) Type() protoreflect.EnumType {
+	return &file_zelvy_user_get_winners_request_proto_enumTypes[0]
+}
+
+func (x WinnerFilterType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use WinnerFilterType.Descriptor instead.
+func (WinnerFilterType) EnumDescriptor() ([]byte, []int) {
+	return file_zelvy_user_get_winners_request_proto_rawDescGZIP(), []int{0}
+}
+
 type GetWinnersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	StartDate     string                 `protobuf:"bytes,1,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
 	EndDate       string                 `protobuf:"bytes,2,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
 	Limit         int64                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	Filter        *WinnerFilterType      `protobuf:"varint,4,opt,name=filter,proto3,enum=zelvy.user.WinnerFilterType,oneof" json:"filter,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -81,17 +131,31 @@ func (x *GetWinnersRequest) GetLimit() int64 {
 	return 0
 }
 
+func (x *GetWinnersRequest) GetFilter() WinnerFilterType {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return WinnerFilterType_UNSPECIFIED
+}
+
 var File_zelvy_user_get_winners_request_proto protoreflect.FileDescriptor
 
 const file_zelvy_user_get_winners_request_proto_rawDesc = "" +
 	"\n" +
 	"$zelvy/user/get_winners_request.proto\x12\n" +
-	"zelvy.user\"c\n" +
+	"zelvy.user\"\xa9\x01\n" +
 	"\x11GetWinnersRequest\x12\x1d\n" +
 	"\n" +
 	"start_date\x18\x01 \x01(\tR\tstartDate\x12\x19\n" +
 	"\bend_date\x18\x02 \x01(\tR\aendDate\x12\x14\n" +
-	"\x05limit\x18\x03 \x01(\x03R\x05limitB,Z*github.com/rangodisco/zelvy/gen/zelvy/userb\x06proto3"
+	"\x05limit\x18\x03 \x01(\x03R\x05limit\x129\n" +
+	"\x06filter\x18\x04 \x01(\x0e2\x1c.zelvy.user.WinnerFilterTypeH\x00R\x06filter\x88\x01\x01B\t\n" +
+	"\a_filter*A\n" +
+	"\x10WinnerFilterType\x12\x0f\n" +
+	"\vUNSPECIFIED\x10\x00\x12\f\n" +
+	"\bRELEVENT\x10\x01\x12\x0e\n" +
+	"\n" +
+	"IRRELEVENT\x10\x02B,Z*github.com/rangodisco/zelvy/gen/zelvy/userb\x06proto3"
 
 var (
 	file_zelvy_user_get_winners_request_proto_rawDescOnce sync.Once
@@ -105,16 +169,19 @@ func file_zelvy_user_get_winners_request_proto_rawDescGZIP() []byte {
 	return file_zelvy_user_get_winners_request_proto_rawDescData
 }
 
+var file_zelvy_user_get_winners_request_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_zelvy_user_get_winners_request_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_zelvy_user_get_winners_request_proto_goTypes = []any{
-	(*GetWinnersRequest)(nil), // 0: zelvy.user.GetWinnersRequest
+	(WinnerFilterType)(0),     // 0: zelvy.user.WinnerFilterType
+	(*GetWinnersRequest)(nil), // 1: zelvy.user.GetWinnersRequest
 }
 var file_zelvy_user_get_winners_request_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: zelvy.user.GetWinnersRequest.filter:type_name -> zelvy.user.WinnerFilterType
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_zelvy_user_get_winners_request_proto_init() }
@@ -122,18 +189,20 @@ func file_zelvy_user_get_winners_request_proto_init() {
 	if File_zelvy_user_get_winners_request_proto != nil {
 		return
 	}
+	file_zelvy_user_get_winners_request_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_zelvy_user_get_winners_request_proto_rawDesc), len(file_zelvy_user_get_winners_request_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_zelvy_user_get_winners_request_proto_goTypes,
 		DependencyIndexes: file_zelvy_user_get_winners_request_proto_depIdxs,
+		EnumInfos:         file_zelvy_user_get_winners_request_proto_enumTypes,
 		MessageInfos:      file_zelvy_user_get_winners_request_proto_msgTypes,
 	}.Build()
 	File_zelvy_user_get_winners_request_proto = out.File
