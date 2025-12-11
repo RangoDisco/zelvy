@@ -9,14 +9,54 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "zelvy.user";
 
+export enum WinnerFilterType {
+  UNSPECIFIED = 0,
+  RELEVENT = 1,
+  IRRELEVENT = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function winnerFilterTypeFromJSON(object: any): WinnerFilterType {
+  switch (object) {
+    case 0:
+    case "UNSPECIFIED":
+      return WinnerFilterType.UNSPECIFIED;
+    case 1:
+    case "RELEVENT":
+      return WinnerFilterType.RELEVENT;
+    case 2:
+    case "IRRELEVENT":
+      return WinnerFilterType.IRRELEVENT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return WinnerFilterType.UNRECOGNIZED;
+  }
+}
+
+export function winnerFilterTypeToJSON(object: WinnerFilterType): string {
+  switch (object) {
+    case WinnerFilterType.UNSPECIFIED:
+      return "UNSPECIFIED";
+    case WinnerFilterType.RELEVENT:
+      return "RELEVENT";
+    case WinnerFilterType.IRRELEVENT:
+      return "IRRELEVENT";
+    case WinnerFilterType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface GetWinnersRequest {
   startDate: string;
   endDate: string;
   limit: number;
+  filter?: WinnerFilterType | undefined;
 }
 
 function createBaseGetWinnersRequest(): GetWinnersRequest {
-  return { startDate: "", endDate: "", limit: 0 };
+  return { startDate: "", endDate: "", limit: 0, filter: undefined };
 }
 
 export const GetWinnersRequest: MessageFns<GetWinnersRequest> = {
@@ -29,6 +69,9 @@ export const GetWinnersRequest: MessageFns<GetWinnersRequest> = {
     }
     if (message.limit !== 0) {
       writer.uint32(24).int64(message.limit);
+    }
+    if (message.filter !== undefined) {
+      writer.uint32(32).int32(message.filter);
     }
     return writer;
   },
@@ -64,6 +107,14 @@ export const GetWinnersRequest: MessageFns<GetWinnersRequest> = {
           message.limit = longToNumber(reader.int64());
           continue;
         }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.filter = reader.int32() as any;
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -78,6 +129,7 @@ export const GetWinnersRequest: MessageFns<GetWinnersRequest> = {
       startDate: isSet(object.startDate) ? globalThis.String(object.startDate) : "",
       endDate: isSet(object.endDate) ? globalThis.String(object.endDate) : "",
       limit: isSet(object.limit) ? globalThis.Number(object.limit) : 0,
+      filter: isSet(object.filter) ? winnerFilterTypeFromJSON(object.filter) : undefined,
     };
   },
 
@@ -92,6 +144,9 @@ export const GetWinnersRequest: MessageFns<GetWinnersRequest> = {
     if (message.limit !== 0) {
       obj.limit = Math.round(message.limit);
     }
+    if (message.filter !== undefined) {
+      obj.filter = winnerFilterTypeToJSON(message.filter);
+    }
     return obj;
   },
 
@@ -103,6 +158,7 @@ export const GetWinnersRequest: MessageFns<GetWinnersRequest> = {
     message.startDate = object.startDate ?? "";
     message.endDate = object.endDate ?? "";
     message.limit = object.limit ?? 0;
+    message.filter = object.filter ?? undefined;
     return message;
   },
 };
