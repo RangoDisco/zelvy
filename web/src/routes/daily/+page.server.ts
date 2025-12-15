@@ -1,8 +1,8 @@
 import type {PageServerLoad} from "./$types";
 import type {GetSummaryResponse} from "$lib/gen/zelvy/summary/get_summary_response";
-import setDefaultDateRangeParams from "$lib/utils/setDefaultDateParams";
 import {isDate} from "node:util/types";
 import {getSummary} from "$lib/server/grpc/summary";
+import {setDefaultDateParams} from "$lib/utils/setDefaultDateParams";
 
 export const csr = false;
 
@@ -10,13 +10,13 @@ export const load: PageServerLoad = async ({url}): Promise<{ summary: GetSummary
     const dateParam = url.searchParams.get("date");
 
     if (dateParam === null) {
-        setDefaultDateRangeParams(url, false);
+        setDefaultDateParams(url, false);
         return null;
     }
 
     const date = new Date(dateParam);
     if (!isDate(date) || new Date(date) > new Date()) {
-        setDefaultDateRangeParams(url, false);
+        setDefaultDateParams(url, false);
         return null;
     }
 
