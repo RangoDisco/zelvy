@@ -4,6 +4,7 @@
         title: string;
         subtitle: string;
         value: string | number;
+        link: string | null;
     }
 
     const {picto, title, subtitle, value}: Props = $props();

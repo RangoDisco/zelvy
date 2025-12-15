@@ -3,4 +3,5 @@ type OverviewStat = {
     title: string,
     subtitle: string,
     value: string | number,
+    link: string | null
 }

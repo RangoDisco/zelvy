@@ -10,7 +10,8 @@ export const formatWinner = (winners: WinnerViewModel[]): OverviewStat => {
         picto: "👑",
         title: winner.username,
         subtitle: "Most wins",
-        value: winner.wins
+        value: winner.wins,
+        link: "/overview/leaderboard"
     };
 };
 
@@ -23,7 +24,8 @@ export const formatSuccessRate = (days: HeatmapItemViewModel[]): OverviewStat =>
         picto: "🎯",
         title: `${successRate}%`,
         subtitle: "Success Rate",
-        value: `${successNumber}/${totalDays}`
+        value: `${successNumber}/${totalDays}`,
+        link: null
     };
 };
 
@@ -42,6 +44,7 @@ export const formatLongestStreak = (days: HeatmapItemViewModel[]): OverviewStat 
         picto: "⛓️‍💥",
         title: `${longestStreak} days`,
         subtitle: "Longest Streak",
-        value: `Out of ${days.length}`
+        value: `Out of ${days.length}`,
+        link: null
     };
 };
