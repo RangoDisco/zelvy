@@ -25,21 +25,21 @@ type WinnerFilterType int32
 
 const (
 	WinnerFilterType_UNSPECIFIED WinnerFilterType = 0
-	WinnerFilterType_RELEVENT    WinnerFilterType = 1
-	WinnerFilterType_IRRELEVENT  WinnerFilterType = 2
+	WinnerFilterType_RELEVANT    WinnerFilterType = 1
+	WinnerFilterType_IRRELEVANT  WinnerFilterType = 2
 )
 
 // Enum value maps for WinnerFilterType.
 var (
 	WinnerFilterType_name = map[int32]string{
 		0: "UNSPECIFIED",
-		1: "RELEVENT",
-		2: "IRRELEVENT",
+		1: "RELEVANT",
+		2: "IRRELEVANT",
 	}
 	WinnerFilterType_value = map[string]int32{
 		"UNSPECIFIED": 0,
-		"RELEVENT":    1,
-		"IRRELEVENT":  2,
+		"RELEVANT":    1,
+		"IRRELEVANT":  2,
 	}
 )
 
@@ -153,9 +153,9 @@ const file_zelvy_user_get_winners_request_proto_rawDesc = "" +
 	"\a_filter*A\n" +
 	"\x10WinnerFilterType\x12\x0f\n" +
 	"\vUNSPECIFIED\x10\x00\x12\f\n" +
-	"\bRELEVENT\x10\x01\x12\x0e\n" +
+	"\bRELEVANT\x10\x01\x12\x0e\n" +
 	"\n" +
-	"IRRELEVENT\x10\x02B,Z*github.com/rangodisco/zelvy/gen/zelvy/userb\x06proto3"
+	"IRRELEVANT\x10\x02B,Z*github.com/rangodisco/zelvy/gen/zelvy/userb\x06proto3"
 
 var (
 	file_zelvy_user_get_winners_request_proto_rawDescOnce sync.Once
