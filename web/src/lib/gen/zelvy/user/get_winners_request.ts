@@ -11,8 +11,8 @@ export const protobufPackage = "zelvy.user";
 
 export enum WinnerFilterType {
   UNSPECIFIED = 0,
-  RELEVENT = 1,
-  IRRELEVENT = 2,
+  RELEVANT = 1,
+  IRRELEVANT = 2,
   UNRECOGNIZED = -1,
 }
 
@@ -22,11 +22,11 @@ export function winnerFilterTypeFromJSON(object: any): WinnerFilterType {
     case "UNSPECIFIED":
       return WinnerFilterType.UNSPECIFIED;
     case 1:
-    case "RELEVENT":
-      return WinnerFilterType.RELEVENT;
+    case "RELEVANT":
+      return WinnerFilterType.RELEVANT;
     case 2:
-    case "IRRELEVENT":
-      return WinnerFilterType.IRRELEVENT;
+    case "IRRELEVANT":
+      return WinnerFilterType.IRRELEVANT;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -38,10 +38,10 @@ export function winnerFilterTypeToJSON(object: WinnerFilterType): string {
   switch (object) {
     case WinnerFilterType.UNSPECIFIED:
       return "UNSPECIFIED";
-    case WinnerFilterType.RELEVENT:
-      return "RELEVENT";
-    case WinnerFilterType.IRRELEVENT:
-      return "IRRELEVENT";
+    case WinnerFilterType.RELEVANT:
+      return "RELEVANT";
+    case WinnerFilterType.IRRELEVANT:
+      return "IRRELEVANT";
     case WinnerFilterType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

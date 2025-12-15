@@ -5,8 +5,8 @@ option go_package = "github.com/rangodisco/zelvy/gen/zelvy/user";
 
 enum WinnerFilterType {
   UNSPECIFIED = 0;
-  RELEVENT = 1;
-  IRRELEVENT = 2;
+  RELEVANT = 1;
+  IRRELEVANT = 2;
 }
 
 message GetWinnersRequest {
