@@ -11,7 +11,7 @@
     </a>
     <a
             href="/overview"
-            class="text-base font-medium join-item btn md:btn-sm rounded-full w-1/2 {page.url.pathname === '/overview' ? 'bg-primary' : ''}"
+            class="text-base font-medium join-item btn md:btn-sm rounded-full w-1/2 {page.url.pathname.includes('/overview') ? 'bg-primary' : ''}"
     >
         Overview
     </a>
