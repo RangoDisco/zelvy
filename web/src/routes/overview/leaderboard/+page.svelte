@@ -11,8 +11,10 @@
     <meta name="description" content="Leaderboard"/>
 </svelte:head>
 <section class="w-full self-start flex gap-2">
-    <LeaderboardFilter label="This month" picto="calendar"/>
-    <LeaderboardFilter label="Overall" picto="sort"/>
+    <div class="flex flex-col gap-6">
+        <h1 class="text-xl md:text-3xl">Last 3 months</h1>
+        <LeaderboardFilter/>
+    </div>
 </section>
 
 <section class="flex flex-col gap-3 w-full md:mx-auto">
