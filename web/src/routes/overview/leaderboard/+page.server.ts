@@ -9,11 +9,12 @@ export const load: PageServerLoad = async ({url}): Promise<{
 } | null> => {
 
     const {formattedSD, formattedED, isInvalid} = getFormattedDateParams(url);
+    const filter = url.searchParams.get("filter");
     if (isInvalid) {
         setDefaultDateParams(url, true);
     }
 
-    const winnersResponse = await getWinners(formattedSD, formattedED);
+    const winnersResponse = await getWinners(formattedSD, formattedED, filter);
 
     return {
         winRes: winnersResponse
