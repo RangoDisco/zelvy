@@ -40,9 +40,9 @@ func GetWinnersBetweenDates(sod, eod string, limit int64, filter *pb_usr.WinnerF
 
 	if filter != nil {
 		switch filter.String() {
-		case pb_usr.WinnerFilterType_RELEVENT.String():
+		case pb_usr.WinnerFilterType_RELEVANT.String():
 			sqlFilter = "success IS false"
-		case pb_usr.WinnerFilterType_IRRELEVENT.String():
+		case pb_usr.WinnerFilterType_IRRELEVANT.String():
 			sqlFilter = "success IS true"
 		}
 	}
