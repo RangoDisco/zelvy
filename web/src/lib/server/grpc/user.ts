@@ -1,17 +1,21 @@
 import {UserServiceClient} from "$lib/gen/zelvy/user/user_service";
 import {credentials} from "@grpc/grpc-js";
-import {GetWinnersRequest} from "$lib/gen/zelvy/user/get_winners_request";
+import {GetWinnersRequest, winnerFilterTypeFromJSON} from "$lib/gen/zelvy/user/get_winners_request";
 import type {GetWinnersResponse} from "$lib/gen/zelvy/user/get_winners_response";
 import {createMetadataWithAuth} from "$lib/server/grpc/metadata";
 
 const LIMIT = 10;
 
-export const getWinners = async (formattedSD: string, formattedED: string) => {
+export const getWinners = async (formattedSD: string, formattedED: string, filter: string | null) => {
     const client = getClient();
     const winnerReq = GetWinnersRequest.create();
     winnerReq.endDate = formattedED;
     winnerReq.startDate = formattedSD;
     winnerReq.limit = LIMIT;
+
+    if (filter) {
+        winnerReq.filter = winnerFilterTypeFromJSON(filter);
+    }
 
     return await new Promise((resolve, reject) => {
         client.getWinners(winnerReq, createMetadataWithAuth(), (err, response) => {
