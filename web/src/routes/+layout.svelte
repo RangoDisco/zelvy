@@ -1,6 +1,6 @@
 <script lang="ts">
     import "../app.css";
-    import favicon from "$lib/assets/favicon.svg";
+    import favicon from "$lib/assets/favicon.ico";
     import ViewSelector from "$lib/ui/home/ViewSelector.svelte";
     import {afterNavigate, beforeNavigate} from "$app/navigation";
     import {navigationStates} from "$lib/state.svelte";
