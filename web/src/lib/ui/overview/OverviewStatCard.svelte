@@ -7,12 +7,13 @@
         subtitle: string;
         value: string | number;
         link: string | null;
+        dataTestId: string;
     }
 
-    const {picto, title, subtitle, value, link}: Props = $props();
+    const {picto, title, subtitle, value, link, dataTestId}: Props = $props();
 </script>
 
-<article class="w-[48%] md:w-[32%] flex flex-col bg-base-200 rounded-lg p-4 pr-0">
+<article class="w-[48%] md:w-[32%] flex flex-col bg-base-200 rounded-lg p-4 pr-0" data-testid={dataTestId}>
     <div class="flex flex-row items-center gap-1">
         <p class="text-sm lg:text-lg">{picto}</p>
         <p class="text-sm lg:text-lg font-bold">{title}</p>
