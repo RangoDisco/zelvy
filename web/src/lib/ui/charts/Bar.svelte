@@ -6,10 +6,11 @@
         data: {
             labels: string[],
             values: number[],
-        }
+        },
+        dataTestId: string,
     }
 
-    const {data}: Props = $props();
+    const {data, dataTestId}: Props = $props();
     let canvas: HTMLCanvasElement;
     let chart: Chart<"bar">;
 
@@ -47,6 +48,6 @@
     });
 </script>
 
-<div class="flex items-center justify-center">
+<div class="flex items-center justify-center" data-testId={dataTestId}>
     <canvas bind:this={canvas}></canvas>
 </div>
