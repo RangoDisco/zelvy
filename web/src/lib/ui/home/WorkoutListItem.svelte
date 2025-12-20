@@ -7,14 +7,15 @@
     type Props = {
         workout: WorkoutViewModel
         index: number
+        dataTestId: string
     }
-    const {workout, index}: Props = $props();
+    const {workout, index, dataTestId}: Props = $props();
     const picto = workout.activityType === workoutActivityTypeToJSON(WorkoutActivityType.STRENGTH) ? Strength : Cardio;
     const date = new Date(workout.doneAt);
     const time = `${date.getHours()}h${date.getMinutes()}`;
 </script>
 
-<li data-testid="workoutsTemplateWorkout" class="gap-2 justify-center items-center w-5/6">
+<li data-testid={dataTestId} class="gap-2 justify-center items-center w-5/6">
     {#if index !== 0}
         <hr class="bg-primary/50"/>
     {/if}
