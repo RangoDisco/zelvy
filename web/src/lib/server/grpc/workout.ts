@@ -1,9 +1,10 @@
 import {createMetadataWithAuth} from "$lib/server/grpc/metadata";
-import type {GetSummaryHeatmapResponse} from "$lib/gen/zelvy/summary/get_summary_heatmap_response";
 import {credentials} from "@grpc/grpc-js";
 import {GetWorkoutsRequest} from "$lib/gen/zelvy/workout/get_workouts_request";
 import {WorkoutServiceClient} from "$lib/gen/zelvy/workout/workout_service";
 import type {GetWorkoutsResponse} from "$lib/gen/zelvy/workout/get_workouts_response";
+import {API_URL} from "$env/static/private";
+
 
 export const getWorkouts = async (formattedSD: string, formattedED: string) => {
     const client = getClient();
@@ -20,5 +21,5 @@ export const getWorkouts = async (formattedSD: string, formattedED: string) => {
 };
 
 function getClient() {
-    return new WorkoutServiceClient("localhost:50051", credentials.createInsecure());
+    return new WorkoutServiceClient(API_URL, credentials.createSsl());
 }

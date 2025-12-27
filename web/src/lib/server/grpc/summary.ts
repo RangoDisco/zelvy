@@ -5,6 +5,8 @@ import type {GetSummaryHeatmapResponse} from "$lib/gen/zelvy/summary/get_summary
 import {createMetadataWithAuth} from "$lib/server/grpc/metadata";
 import {GetSummaryRequest} from "$lib/gen/zelvy/summary/get_summary_request";
 import type {GetSummaryResponse} from "$lib/gen/zelvy/summary/get_summary_response";
+import {API_URL} from "$env/static/private";
+
 
 export const getSummaryHeatmap = async (formattedSD: string, formattedED: string) => {
     const client = getClient();
@@ -33,5 +35,5 @@ export const getSummary = async (date: string) => {
 };
 
 function getClient() {
-    return new SummaryServiceClient("localhost:50051", credentials.createInsecure());
+    return new SummaryServiceClient(API_URL, credentials.createSsl());
 }

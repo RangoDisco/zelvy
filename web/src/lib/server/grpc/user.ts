@@ -3,6 +3,7 @@ import {credentials} from "@grpc/grpc-js";
 import {GetWinnersRequest, winnerFilterTypeFromJSON} from "$lib/gen/zelvy/user/get_winners_request";
 import type {GetWinnersResponse} from "$lib/gen/zelvy/user/get_winners_response";
 import {createMetadataWithAuth} from "$lib/server/grpc/metadata";
+import {API_URL} from "$env/static/private";
 
 const LIMIT = 10;
 
@@ -26,5 +27,5 @@ export const getWinners = async (formattedSD: string, formattedED: string, filte
 };
 
 const getClient = () => {
-    return new UserServiceClient("localhost:50051", credentials.createInsecure());
+    return new UserServiceClient(API_URL, credentials.createSsl());
 };
