@@ -98,7 +98,7 @@ func CreateSummaryViewModel(summary *models.Summary) (*pb_sum.GetSummaryResponse
 
 		goalModel, err := convertToGoalViewModel(m, &g)
 		if err != nil {
-			return &pb_sum.GetSummaryResponse{}, err
+			continue
 		}
 		res.Goals = append(res.Goals, &goalModel)
 	}

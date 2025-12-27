@@ -1,6 +1,7 @@
 package services
 
 import (
+	"errors"
 	"strconv"
 	"time"
 
@@ -48,6 +49,10 @@ func createOffDay(goal models.Goal) error {
 
 // convertToGoalViewModel Check if a goal is achieved, off or failed for each metric
 func convertToGoalViewModel(m *models.Metric, g *models.Goal) (pb_goa.GoalViewModel, error) {
+
+	if m == nil {
+		return pb_goa.GoalViewModel{}, errors.New("metric is nil")
+	}
 
 	displayValue, displayThreshold := formatDisplayValue(m.Value, g)
 
