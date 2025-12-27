@@ -25,36 +25,37 @@
     <div class="flex flex-col gap-6">
         <div class="flex flex-row justify-between items-start">
             <div class="flex flex-col gap-0">
-                <h3 class="text-xl font-medium">{data.summary?.day ?? page.url.searchParams.get("date")}</h3>
+                <h3 class="text-xl font-medium"
+                    data-testId="dailyDate">{data.summary?.day ?? page.url.searchParams.get("date")}</h3>
                 {#if data.summary}
                     <div class="flex gap-2">
                         <span class="text-base-content/60">Winner:</span>
-                        <span class="text-base">{data.summary.winner?.name}</span>
+                        <span class="text-base" data-testId="dailyWinnerName">{data.summary.winner?.name}</span>
                     </div>
                 {/if}
             </div>
             <div class="flex flex-row gap-2">
                 <button class="btn btn-square" aria-label="previous period" disabled={navigationStates.isLoading}
-                        onclick={() => {changeDailyPeriod(page.url, "previous")}}>
-                    <ArrowLeft/>
+                        onclick={() => {changeDailyPeriod(page.url, "previous")}} data-testid="dailyPreviousButton">
+                    <ArrowLeft data-testid="dailyPreviousIcon"/>
                 </button>
                 <button class="btn btn-square" aria-label="next period" disabled={navigationStates.isLoading}
-                        onclick={() => {changeDailyPeriod(page.url, "next")}}>
+                        onclick={() => {changeDailyPeriod(page.url, "next")}} data-testid="dailyNextButton">
                     <ArrowRight/>
                 </button>
             </div>
         </div>
         {#if data.summary}
-            <section class="carousel w-full gap-3 bg-base-100">
+            <section class="carousel w-full gap-3 bg-base-100" data-testId="dailyGoalCarousel">
                 {#each data.summary.goals as goal, i (goal.name)}
-                    <GoalCard goal={goal} index={i}/>
+                    <GoalCard goal={goal} index={i} dataTestId={`dailyGoal-${i}`}/>
                 {/each}
             </section>
             <section class="w-full flex flex-col p-4 gap-4 bg-base-200 rounded-lg md:w-1/3">
                 <h1 class="text-2xl">Activity timeline</h1>
-                <ul class="timeline timeline-snap-icon timeline-vertical">
+                <ul class="timeline timeline-snap-icon timeline-vertical" data-testId="dailyWorkoutsList">
                     {#each data.summary.workouts as workout, i (workout.id)}
-                        <WorkoutListItem workout={workout} index={i}/>
+                        <WorkoutListItem workout={workout} index={i} dataTestId={`dailyWorkoutItem-${i}`}/>
                     {/each}
                 </ul>
             </section>
