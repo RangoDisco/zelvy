@@ -7,7 +7,7 @@ import {API_URL} from "$env/static/private";
 
 const LIMIT = 10;
 
-export const getWinners = async (formattedSD: string, formattedED: string, filter: string | null) => {
+export const getWinners = async (formattedSD: string, formattedED: string, filter: string | null = null) => {
     const client = getClient();
     const winnerReq = GetWinnersRequest.create();
     winnerReq.endDate = formattedED;
