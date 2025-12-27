@@ -22,7 +22,7 @@
     <div class="flex flex-row items-center justify-between gap-1 pr-4">
         <p class="text-sm lg:text-md font-semibold">{value}</p>
         {#if link !== null}
-            <a href={link} target="_blank" rel="noopener noreferrer" class="bg-primary/50 rounded-full p-1">
+            <a href={link} rel="noopener noreferrer" class="bg-primary/50 rounded-full p-1">
                 <ArrowRight size="16"/>
             </a>
         {/if}
